@@ -1,30 +1,35 @@
-# React + TypeScript + Vite
+# Project Description
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project is a comprehensive task and collaboration management platform inspired by popular sites such as [Clickup](https://app.clickup.com) and [Todo.vu](https://todo.vu) .
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
 
-## Expanding the ESLint configuration
+- **User Authentication:** Users can log in, register, or reset their passwords.
+- **User Profile:** Each user has a profile where they can manage personal information, account details, and UI theme changes.
+- **Workspace:** A shared environment where users can manage projects. It includes features for task allocation, member listing, collaboration, search, and work filtering, along with workspace settings. Workspace settings allow customization of the workspace image, title, description, member permissions, and workspace deletion.
+- **Projects:** Projects can be created within a workspace, and each project can have multiple boards for task management. For example, boards can be created for tasks labeled as "Not Started," "In Progress," "Under Review," or "Completed."
+- **Tasks:** Tasks can be assigned to boards and specific users, containing detailed information such as title, description, category, comments, assigned users, dates, attachments, tags, and even a Pomodoro timer for time management. Users can also upload documents to tasks.
+- **Filters and Search:** Users can filter and search tasks based on various criteria such as priority, assignee, alphabetical order, past deadlines, and tags.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technology Stack
 
-- Configure the top-level `parserOptions` property like this:
+ React + TypeScript + Vite
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+## Getting Started
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### Install Dependencies:
+
+Before running the application, you need to install the necessary dependencies. Ensure you have Node.js and npm installed on your system, then run the following command in the project root directory: <code>npm install</code>
+
+### Running the Application:
+After installing the dependencies, you can start the application by running: <code>npm start</code>
+
+## Contributors
+
+- [Amir Shahidi](https://github.com/amir-shahidi-78)
+- [Amirhossein Darabi](https://github.com/amirhd-developer)
+- [Sarvenaz Moaye](https://github.com/sarvishere)
+- [Maya](https://github.com)
+- [Sobhan Omidi](https://github.com/sobhanomidi)
