@@ -91,4 +91,4 @@ const colors = {
   },
 };
 
-export { fontWeight, Size, colors };
+export { fontWeight, BodySize, Size, colors };
