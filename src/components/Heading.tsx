@@ -20,7 +20,7 @@ interface Props {
 const Heading = ({
   as,
   children,
-  color = "indigo",
+  color = "default",
   colorVariant = "primary",
   size = "XS",
   weight = "800",

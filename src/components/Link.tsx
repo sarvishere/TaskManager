@@ -14,7 +14,7 @@ const Link = ({
   children,
   underline = false,
   to,
-  color,
+  color = "default",
   colorVariant = "primary",
   weight = "400",
   size = "XS",
@@ -22,8 +22,8 @@ const Link = ({
   return (
     <RouterLink
       to={to}
-      className={`font-iranyekan font-black text-xs 
-      ${color && colors[color][colorVariant]} 
+      className={`font-iranyekan font-black text-2xl 
+      ${colors[color][colorVariant]} 
       ${underline && "underline underline-offset-4"}
       ${fontWeight[weight]}
       ${Size[size]}
