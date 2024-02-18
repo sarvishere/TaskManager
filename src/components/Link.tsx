@@ -1,6 +1,10 @@
 import { ReactNode } from "react";
 import { Link as RouterLink, LinkProps } from "react-router-dom";
-import { fontWeight, Size, colors } from "./SharedComponentStyles/sharedStyles";
+import {
+  fontWeight,
+  BodySize,
+  colors,
+} from "./SharedComponentStyles/sharedStyles";
 
 interface Props extends LinkProps {
   children: ReactNode;
@@ -8,26 +12,28 @@ interface Props extends LinkProps {
   underline?: boolean;
   color?: keyof typeof colors;
   colorVariant?: "primary" | "secondary";
-  size?: keyof typeof Size;
+  size?: keyof typeof BodySize;
 }
 const Link = ({
   children,
   underline = false,
-  to,
   color = "default",
+  className,
   colorVariant = "primary",
   weight = "400",
   size = "XS",
+  ...rest
 }: Props) => {
   return (
     <RouterLink
-      to={to}
       className={`font-iranyekan font-black text-2xl 
       ${colors[color][colorVariant]} 
       ${underline && "underline underline-offset-4"}
       ${fontWeight[weight]}
-      ${Size[size]}
+      ${BodySize[size]}
+      ${className}
       `}
+      {...rest}
     >
       {children}
     </RouterLink>
