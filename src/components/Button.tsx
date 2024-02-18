@@ -74,6 +74,7 @@ enum Size {
   full = "w-full",
 }
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  asChild?: boolean;
   variant?: "primary" | "secondary" | "darker" | "outline";
   color?: string;
   fontSize?: keyof typeof BodySize;
@@ -83,6 +84,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 const Button = React.forwardRef<HTMLButtonElement, Props>(
   (
     {
+      asChild,
       className,
       children,
       size = "default",
@@ -94,6 +96,8 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
     },
     ref
   ) => {
+    if (asChild) return <button {...props}>{children}</button>;
+
     return (
       <button
         ref={ref}
