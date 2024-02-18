@@ -28,7 +28,7 @@ const Link = ({
     <RouterLink
       className={`font-iranyekan font-black text-2xl 
       ${colors[color][colorVariant]} 
-      ${underline && "underline underline-offset-4"}
+      ${underline && "underline underline-offset-8"}
       ${fontWeight[weight]}
       ${BodySize[size]}
       ${className}
