@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+#root{
+  margin: 0px;
+  padding: 0px;
+}
+
 @font-face {
   font-family: "IRANYekan";
   src: url("../src/assets/fonts/IRANYekan/IRANYekanX-Thin.woff2")
@@ -67,4 +72,26 @@
   src: url("../src/assets/fonts/IRANYekan/IRANYekanX-Heavy.woff2")
     format("woff2");
   font-weight: 950;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+.authentication_bg{
+  background-image: url("./assets/images/auth-layout-svg.svg");
+  background-position: center bottom -120px;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.logo{
+  background:linear-gradient(90deg, #118C80 0%, #4AB7D8 120%);
+  color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    font-size: 32px;
 }
