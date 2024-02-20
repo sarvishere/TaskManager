@@ -8,17 +8,17 @@ import Text from "../Text";
 
 const LoginForm = () => {
   return (
-    <form>
-      <Card>
-        <Heading align="center" className="mb-8" as="h2" size="L">
-          به کوئرا تسک منیجر خوش برگشتی :)
-        </Heading>
+    <Card>
+      <Heading align="center" className="mb-8" as="h2" size="L">
+        به کوئرا تسک منیجر خوش برگشتی :)
+      </Heading>
+      <form>
         <Flex gap="L" direction="col">
           <Flex gap="M" direction="col">
             <Input id="username" label="نام کاربری" />
             <Flex direction="col">
               <Input type="password" id="password" label="رمز عبور" />
-              <Link to="/forgot" underline>
+              <Link to="/forgot-password" underline>
                 رمز عبور خود را فراموش کرده‌اید؟
               </Link>
             </Flex>
@@ -31,14 +31,14 @@ const LoginForm = () => {
               <Text size="M" weight="500">
                 ثبت‌نام نکرده‌ای؟
               </Text>
-              <Link to="/" color="brand" weight="800" size="M">
+              <Link to="/register" color="brand" weight="800" size="M">
                 ثبت نام
               </Link>
             </Flex>
           </Flex>
         </Flex>
-      </Card>
-    </form>
+      </form>
+    </Card>
   );
 };
 
