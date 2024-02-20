@@ -9,6 +9,7 @@ interface Props {
   colorVariant?: "primary" | "secondary";
   size?: keyof typeof BodySize;
   weight?: keyof typeof fontWeight;
+  className?: string;
 }
 
 const Text = ({
@@ -17,10 +18,15 @@ const Text = ({
   color = "default",
   size = "XS",
   weight = "400",
+  className,
 }: Props) => {
   return (
     <p
-      className={`font-iranyekan ${BodySize[size]} ${fontWeight[weight]} ${colors[color][colorVariant]}`}
+      className={`font-iranyekan 
+      ${BodySize[size]} 
+      ${fontWeight[weight]} 
+      ${colors[color][colorVariant]} 
+      ${className ?? ""}`}
     >
       {children}
     </p>
