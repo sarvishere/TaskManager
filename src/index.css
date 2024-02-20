@@ -86,7 +86,7 @@
   background-image: url("./assets/images/auth-layout-svg.svg");
   background-position: center bottom -120px;
   background-repeat: no-repeat;
-  background-size: 100vw 574px;
+  background-size: cover;
 }
 .logo{
   background:linear-gradient(90deg, #118C80 0%, #4AB7D8 120%);
