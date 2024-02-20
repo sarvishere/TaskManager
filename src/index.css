@@ -73,6 +73,15 @@
     format("woff2");
   font-weight: 950;
 }
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
 .authentication_bg{
   background-image: url("./assets/images/auth-layout-svg.svg");
   background-position: center bottom -120px;

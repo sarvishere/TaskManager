@@ -1,10 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import Test from "../pages/test";
+import AuthenticationLayout from "../layout/AuthenticationLayout";
+
 
 const router = createBrowserRouter([
     {
         path : "/",
-        element: <h1> login </h1>
+        element: <AuthenticationLayout />
+    },
+    {
+        path: "/register",
+        element: <AuthenticationLayout />
     },
     {
         path :'/test',
@@ -13,3 +19,4 @@ const router = createBrowserRouter([
 ]);
 
 export default router;
+
