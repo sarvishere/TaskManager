@@ -50,12 +50,13 @@ const Flex = ({
 }: Props) => {
   return (
     <div
-      className={`w-full flex 
+      className={`flex 
       ${Size[gap]}
       ${FlexDirection[direction]} 
       ${justifyContent ? justifyMap[justifyContent] : "justify-start"}
       ${alignItems ? alignMap[alignItems] : "items-start"}
-      ${className}
+      ${className ?? ""}
+      w-full
       `}
       {...rest}
     >
