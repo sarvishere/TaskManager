@@ -92,11 +92,17 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
       variant = "primary",
       fontSize = "S",
       weight = "800",
+      type = "button",
       ...props
     },
     ref
   ) => {
-    if (asChild) return <button {...props}>{children}</button>;
+    if (asChild)
+      return (
+        <button type={type} {...props}>
+          {children}
+        </button>
+      );
 
     return (
       <button
@@ -113,6 +119,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
            p-[10px]
            ${className}
         `}
+        type={type}
         {...props}
       >
         {children}
