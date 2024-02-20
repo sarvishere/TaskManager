@@ -33,7 +33,7 @@ const Input = React.forwardRef<HTMLInputElement, Props>(
         <input
           ref={ref}
           id={id}
-          className={`w-full ${colors["default"]["primary"]} rounded-[6px] border border-solid border-gray-aaa h-[40px] ${className}`}
+          className={`outline-none w-full p-1 ${colors["default"]["primary"]} rounded-[6px] border border-solid border-gray-aaa h-[40px] ${className}`}
           type="text"
           {...rest}
         />
