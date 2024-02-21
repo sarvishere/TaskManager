@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import Flex from "./Flex";
+import tick from "../../assets/Icons/tick.svg";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label: ReactNode;
@@ -13,10 +14,13 @@ const CheckBox = React.forwardRef<HTMLInputElement, Props>(
           <input
             id={id}
             ref={ref}
-            className={`appearance-none w-full h-full checked:bg-brand-secondary before:absolute before:inset-0 before:flex before:items-center before:justify-center before:text-brand-primary checked:before:content-['✓'] transition-all duration-300 border border-solid border-gray-999 rounded-[4px]`}
+            className={`peer appearance-none w-full h-full checked:bg-brand-secondary checked:border-brand-primary transition-all duration-300 border border-solid border-gray-999 rounded-[4px]`}
             type="checkbox"
             {...rest}
           />
+          <span className="absolute hidden peer-checked:flex pointer-events-none inset-0 justify-center items-center">
+            <img className="" src={tick} alt="tick icon" />
+          </span>
         </div>
         <label className="font-iranyekan" htmlFor={id}>
           {label}
