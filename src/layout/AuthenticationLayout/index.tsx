@@ -1,13 +1,11 @@
 import { ReactNode } from "react";
-import { useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Link from "../../components/ui/Link";
 
 interface IAuthenticationLayoutProps {
   children?: ReactNode;
 }
-const AuthenticationLayout: React.FC<IAuthenticationLayoutProps> = ({
-  children,
-}) => {
+const AuthenticationLayout: React.FC<IAuthenticationLayoutProps> = () => {
   const location = useLocation();
 
   return (
@@ -31,7 +29,7 @@ const AuthenticationLayout: React.FC<IAuthenticationLayoutProps> = ({
         </div>
       </header>
       <section className="flex justify-center items-center z-50">
-        {children}
+        <Outlet />
       </section>
       <div className="authentication_bg absolute h-3/4 w-full bottom-0"></div>
     </main>
