@@ -1,10 +1,10 @@
-import Button from "../Button";
-import Card from "../Card";
-import Flex from "../Flex";
-import Heading from "../Heading";
-import Input from "../Input";
-import Link from "../Link";
-import Text from "../Text";
+import Button from "../ui/Button";
+import Card from "../ui/Card";
+import Flex from "../ui/Flex";
+import Heading from "../ui/Heading";
+import Input from "../ui/Input";
+import Link from "../ui/Link";
+import Text from "../ui/Text";
 
 const LoginForm = () => {
   return (
@@ -24,7 +24,7 @@ const LoginForm = () => {
             </Flex>
           </Flex>
           <Flex className="" gap="M" direction="col">
-            <Button color="brand" size="full">
+            <Button type="submit" color="brand" size="full">
               ورود
             </Button>
             <Flex gap="XS" justifyContent="center" alignItems="center">
