@@ -2,7 +2,7 @@ import {
   colors,
   BodySize,
   fontWeight,
-} from "./SharedComponentStyles/sharedStyles";
+} from "../SharedComponentStyles/sharedStyles";
 interface Props {
   children?: string;
   color?: keyof typeof colors;

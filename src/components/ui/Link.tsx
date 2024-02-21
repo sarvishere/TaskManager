@@ -4,7 +4,7 @@ import {
   fontWeight,
   BodySize,
   colors,
-} from "./SharedComponentStyles/sharedStyles";
+} from "../SharedComponentStyles/sharedStyles";
 
 interface Props extends LinkProps {
   children: ReactNode;

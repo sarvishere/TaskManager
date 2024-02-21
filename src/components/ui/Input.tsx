@@ -1,6 +1,6 @@
 import React from "react";
 import Flex from "./Flex";
-import { colors, BodySize } from "./SharedComponentStyles/sharedStyles";
+import { colors, BodySize } from "../SharedComponentStyles/sharedStyles";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label: string;

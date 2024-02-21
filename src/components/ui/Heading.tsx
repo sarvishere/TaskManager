@@ -1,5 +1,9 @@
 import React from "react";
-import { fontWeight, colors, Size } from "./SharedComponentStyles/sharedStyles";
+import {
+  fontWeight,
+  colors,
+  Size,
+} from "../SharedComponentStyles/sharedStyles";
 
 enum TextAlign {
   center = "text-center",

@@ -1,5 +1,5 @@
 import React from "react";
-import { fontWeight, BodySize } from "./SharedComponentStyles/sharedStyles";
+import { fontWeight, BodySize } from "../SharedComponentStyles/sharedStyles";
 
 const colors: {
   [color: string]: {
