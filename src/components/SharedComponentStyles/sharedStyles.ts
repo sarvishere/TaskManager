@@ -58,8 +58,8 @@ const colors = {
     secondary: "text-violet-secondary",
   },
   indigo: {
-    primary: "text-inigo-primary",
-    secondary: "text-inigo-secondary",
+    primary: "text-indigo-primary",
+    secondary: "text-indigo-secondary",
   },
   blue: {
     primary: "text-blue-primary",
