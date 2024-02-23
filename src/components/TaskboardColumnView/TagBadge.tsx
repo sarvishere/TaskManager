@@ -30,7 +30,7 @@ const TagBadge: React.FC<Props> = ({
   className,
   children,
   size,
-  weight,
+  weight = "800",
 }) => {
   return (
     <span
