@@ -8,7 +8,7 @@ const colors = {
   pink: "bg-pink-secondary",
   grape: "bg-grape-secondary",
   violet: "bg-violet-secondary",
-  indigo: "bg-inigo-secondary",
+  indigo: "bg-indigo-secondary",
   blue: "bg-blue-secondary",
   cyan: "bg-cyan-secondary",
   teal: "bg-teal-secondary",
