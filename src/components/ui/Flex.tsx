@@ -37,6 +37,7 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
   gap?: keyof typeof Size;
   justifyContent?: "start" | "end" | "center" | "between" | "around" | "evenly";
   alignItems?: "start" | "end" | "center" | "baseline" | "stretch";
+  width?: "w-full" | "w-fit";
 }
 
 const Flex = ({
@@ -46,6 +47,7 @@ const Flex = ({
   direction = "row",
   gap = "XS",
   className,
+  width = "w-full",
   ...rest
 }: Props) => {
   return (
@@ -56,7 +58,7 @@ const Flex = ({
       ${justifyContent ? justifyMap[justifyContent] : "justify-start"}
       ${alignItems ? alignMap[alignItems] : "items-start"}
       ${className ?? ""}
-      w-full
+      ${width}
       `}
       {...rest}
     >
