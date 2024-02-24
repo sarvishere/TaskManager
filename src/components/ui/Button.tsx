@@ -36,7 +36,7 @@ const colors: {
     secondary: "bg-violet-secondary text-violet-primary",
   },
   indigo: {
-    primary: "bg-inigo-primary",
+    primary: "bg-indigo-primary",
     secondary: "bg-inigo-secondary text-inigo-primary",
   },
   blue: {
@@ -99,7 +99,7 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
   ) => {
     if (asChild)
       return (
-        <button type={type} {...props}>
+        <button className={className} type={type} {...props}>
           {children}
         </button>
       );
