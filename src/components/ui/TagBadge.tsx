@@ -1,5 +1,5 @@
 import { BodySize, fontWeight } from "../SharedComponentStyles/sharedStyles";
-import Text from "../ui/Text";
+import Text from "./Text";
 
 const colors = {
   brand: "bg-brand-secondary",
