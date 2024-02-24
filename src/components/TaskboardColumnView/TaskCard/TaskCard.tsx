@@ -3,7 +3,7 @@ import Button from "../../ui/Button";
 import Flex from "../../ui/Flex";
 import Icon from "../../ui/Icon";
 import Text from "../../ui/Text";
-import TagBadge from "../TagBadge";
+import TagBadge from "../../ui/TagBadge";
 import Heading from "../../ui/Heading";
 import Avatar from "../../ui/Avatar";
 
@@ -14,7 +14,7 @@ interface Props {
 const TaskCard: React.FC<Props> = ({ image }) => {
   return (
     <div
-      className={`${styles.multipleShadows} group w-[250px] bg-white rounded-lg p-4 `}
+      className={`${styles.multipleShadows} group w-[250px]  bg-white rounded-lg p-4`}
     >
       <Flex direction="col" gap="S">
         <img src={image} className=" object-cover w-full rounded-[4px]" />
@@ -44,7 +44,11 @@ const TaskCard: React.FC<Props> = ({ image }) => {
           <TagBadge color="grape">پروژه</TagBadge>
           <TagBadge color="blue">درس</TagBadge>
         </Flex>
-        <Flex direction="col" gap="S" className="hidden group-hover:flex">
+        <Flex
+          direction="col"
+          gap="S"
+          className="opacity-o  group-hover:flex group-[]:"
+        >
           <div className=" w-full h-[1px] bg-[#EFF0F0]"></div>
           <Flex justifyContent="between">
             <Button asChild>
