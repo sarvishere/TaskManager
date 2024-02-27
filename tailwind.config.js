@@ -22,7 +22,7 @@ export default {
 
     extend: {
       fontSize: {
-        lh: ["32px", "36px"], // => Heading L
+        lh: ["32px", "46px"], // => Heading L
         mh: ["28px", "34px"], // => Heading M
         /*
          * 2xl => Heading S || Body XL
