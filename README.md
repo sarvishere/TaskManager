@@ -15,25 +15,21 @@ This project is a comprehensive task and collaboration management platform inspi
 
 ## Technology Stack
 
-- **React**
-  - React v18.2.0
+- React v18.2.0
 
-- **Build Tool**
-  - Vite v5.1.0
+- Vite v5.1.0
 
-- **Language**
-  - TypeScript v5.2.2
-
-- **Styles**  
-  - Tailwind CSS v3.4.1
+- TypeScript v5.2.2
+ 
+- Tailwind CSS v3.4.1
 
 
  ## Getting Started
 
-  ### Install Dependencies:
+### Install Dependencies:
 
- Before running the application, you need to install the necessary dependencies. Ensure you have Node.js and npm installed on your   system, then run the following command in the project root directory: <code>npm install</code>
+Before running the application, you need to install the necessary dependencies. Ensure you have Node.js and npm installed on your   system, then run the following command in the project root directory: <code>npm install</code>
 
-  ### Running the Application:
+### Running the Application:
   
-   After installing the dependencies, you can start the application by running: <code>npm run dev</code>
+  After installing the dependencies, you can start the application by running: <code>npm run dev</code>
