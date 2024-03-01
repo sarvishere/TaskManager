@@ -1,6 +1,42 @@
 import React from "react";
 
 const iconMap = {
+  ChevronRight: ({ ...rest }) => (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#7D828C"
+      xmlns="http://www.w3.org/2000/svg"
+      {...rest}
+    >
+      <path
+        d="M10 16L14 12L10 8"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  ChevronLeft: ({ ...rest }) => (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#7D828C"
+      xmlns="http://www.w3.org/2000/svg"
+      {...rest}
+    >
+      <path
+        d="M14 8L10 12L14 16"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
   ChevronDown: ({ ...rest }) => (
     <svg
       width="24"
@@ -771,6 +807,50 @@ const iconMap = {
       <path
         d="M21 15.06H9"
         stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  ),
+  DatePickerCalendar: ({ ...rest }) => (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      stroke="#BDBDBD"
+      xmlns="http://www.w3.org/2000/svg"
+      {...rest}
+    >
+      <path
+        d="M21.3307 2.66699V8.00032"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M10.6654 2.66699V8.00032"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M3.9989 12.0007H27.9989"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M25.3322 5.33398H6.66557C5.19223 5.33398 3.9989 6.52732 3.9989 8.00065V25.334C3.9989 26.8073 5.19223 28.0007 6.66557 28.0007H25.3322C26.8056 28.0007 27.9989 26.8073 27.9989 25.334V8.00065C27.9989 6.52732 26.8056 5.33398 25.3322 5.33398Z"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M8.66522 22.8333C8.48122 22.8333 8.33188 22.9827 8.33322 23.1667C8.33322 23.3507 8.48255 23.5 8.66655 23.5C8.85055 23.5 8.99988 23.3507 8.99988 23.1667C8.99988 22.9827 8.85055 22.8333 8.66522 22.8333"
+        stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
       />
