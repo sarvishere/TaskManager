@@ -86,7 +86,7 @@ export default {
           primary: "#FAB005",
           secondary: "#FFF3BF",
         },
-        ornage: {
+        orange: {
           primary: "#FD7E14",
           secondary: "#FFE8CC",
         },
