@@ -29,7 +29,7 @@ const TaskNav = () => {
 
       </div>
 
-      <div className='pr-[16px] pl-[16px] flex gap-[5px] flex'>
+      <div className='pr-[16px] pl-[16px] flex gap-[5px]'>
       <Icon iconName="Share" />
         <h1 className='font-medium text-[16px] '> اشتراک گذاری </h1>
       </div>
