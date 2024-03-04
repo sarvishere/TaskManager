@@ -59,11 +59,6 @@ const Calendar: React.FC = () => {
 
   return (
     <div>
-      <div
-        dir="rtl"
-        className=' font-iranyekan flex justify-between w-[1034px] h-[64px] pt-[16px] pb-[16px] mt-[41px] mr-[16px]'
-      ></div>
-
       <FullCalendar
         ref={calendarRef}
         height="75vh"
@@ -71,7 +66,7 @@ const Calendar: React.FC = () => {
         direction="rtl"
         plugins={[dayGridPlugin, interactionPlugin]}
         headerToolbar={{
-          left: 'customTodayButton,prev,next today',
+          left: 'customTodayButton,prev,next',
           center: 'title',
           right: '',
         }}
@@ -83,6 +78,7 @@ const Calendar: React.FC = () => {
         dayMaxEvents={true}
         select={handleDateClick}
         eventsSet={(events) => setCurrentEvents(events)}
+        className={styles['fc-toolbar-title']}
       />
 
       {isModalOpen && (
