@@ -5,10 +5,13 @@ import interactionPlugin from '@fullcalendar/interaction';
 import TitleForm from '../Modal/Taskmodal.tsx'; 
 import styles from "./styles.module.css";
 
+
 const Calendar: React.FC = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null); 
+
+
 
   const handleDateClick = (selected: React.SetStateAction<null>) => {
     setSelectedDate(selected);
@@ -41,6 +44,7 @@ const Calendar: React.FC = () => {
     setModalOpen(false);
   };
 
+
   const customButtons = {
     customTodayButton: {
       text: 'امروز',
@@ -52,22 +56,22 @@ const Calendar: React.FC = () => {
           }
         }
       },
+      
     },
   };
 
   const calendarRef = React.useRef<FullCalendar>(null);
 
   return (
-    <div>
+    <div className='h-[779px] w-[1033]'>
       <FullCalendar
         ref={calendarRef}
-        height="75vh"
         locale="fa"
         direction="rtl"
         plugins={[dayGridPlugin, interactionPlugin]}
         headerToolbar={{
-          left: 'customTodayButton,prev,next',
-          center: 'title',
+          left: 'title',
+          center: 'customTodayButton,prev,next',
           right: '',
         }}
         customButtons={customButtons}
@@ -78,7 +82,6 @@ const Calendar: React.FC = () => {
         dayMaxEvents={true}
         select={handleDateClick}
         eventsSet={(events) => setCurrentEvents(events)}
-        className={styles['fc-toolbar-title']}
       />
 
       {isModalOpen && (
