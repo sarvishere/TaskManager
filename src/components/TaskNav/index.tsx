@@ -3,7 +3,7 @@ import Icon from '../ui/Icon';
 
 const TaskNav = () => {
   return (
-      <div dir="rtl" className=' font-iranyekan flex  border-b-[0.5px] border-[#AAAAAA] justify-between w-[1034px] h-[64px] pt-[16px] pb-[16px] mt-[41px] mr-[16px]'>
+      <div dir="rtl" className=' font-iranyekan flex  border-b-[0.5px] border-[#AAAAAA] justify-between w-[1033px] h-[64px] pt-[16px] pb-[16px] mt-[41px] mr-[16px]'>
 
       <div className='flex '>
 
@@ -29,7 +29,7 @@ const TaskNav = () => {
 
       </div>
 
-      <div className='pr-[16px] pl-[16px] flex gap-[5px] flex'>
+      <div className='pr-[16px] pl-[16px] flex gap-[5px]'>
       <Icon iconName="Share" />
         <h1 className='font-medium text-[16px] '> اشتراک گذاری </h1>
       </div>
