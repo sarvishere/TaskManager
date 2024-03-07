@@ -1,3 +1,4 @@
+import useAuthStore from "../stores/useAuthStore";
 import APIClient from "./api-client";
 
 interface TokenData {
@@ -9,20 +10,24 @@ interface TokenResponse {
 }
 
 class TokenManager {
-  static getAccessToken = () => localStorage.getItem("accessToken");
+  static getAccessToken = () => useAuthStore.getState().accessToken;
 
-  static setAccessToken = (token: string) =>
-    localStorage.setItem("accessToken", token);
+  static setAccessToken = (token: string) => {
+    useAuthStore.setState({ accessToken: token });
+  };
 
-  static getRefreshToken = () => localStorage.getItem("RefreshToken");
+  static getRefreshToken = () => useAuthStore.getState().refreshToken;
 
   static setRefreshToken = (token: string) =>
-    localStorage.setItem("RefreshToken", token);
+    useAuthStore.setState({ refreshToken: token });
 
-  static refreshToken = (): Promise<string> =>
+  static refreshToken = () =>
     new APIClient<TokenData, TokenResponse>("/accounts/refresh/")
-      .create({ refresh: TokenManager.getRefreshToken() ?? "" })
-      .then((res) => res.data.access)
+      .create({ refresh: TokenManager.getRefreshToken() })
+      .then(({ data: { access } }) => {
+        TokenManager.setAccessToken(access);
+        return access;
+      })
       .catch((err) => {
         throw new Error("Failed to get a new access token! " + err.message);
       });
