@@ -5,32 +5,35 @@ const axiosInstance = axios.create({
   baseURL: "http://185.8.174.74:8000",
 });
 
-axiosInstance.interceptors.request.use((config) => {
-  const accessToken = TokenManager.getAccessToken();
-  if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const accessToken = TokenManager.getAccessToken();
+    if (accessToken) config.headers.Authorization = `Bearer ${accessToken}`;
 
-  return config;
-});
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 axiosInstance.interceptors.response.use(
-  (res) => res,
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    try {
-      if (error.response?.status === 401 && !originalRequest._retry) {
-        originalRequest._retry = true;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
 
-        const newAccessToken = await TokenManager.refreshToken();
-
-        TokenManager.setAccessToken(newAccessToken);
+      try {
+        const newAccessToken = TokenManager.refreshToken();
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(originalRequest);
+        return axiosInstance(originalRequest);
+      } catch (error) {
+        console.error("Error refreshing token:", error);
+        window.location.href = "/";
       }
-    } catch (error) {
-      return Promise.reject(error);
     }
+    return Promise.reject(error);
   }
 );
 
@@ -42,7 +45,7 @@ class APIClient<TData, TResponse> {
   };
 
   get = async (id: number): Promise<AxiosResponse<TResponse>> => {
-    return axiosInstance.get<TResponse>(this.endpoint + "/" + id);
+    return axiosInstance.get<TResponse>(`${this.endpoint}/${id}`);
   };
 
   create = async (data: TData): Promise<AxiosResponse<TResponse>> => {
@@ -57,7 +60,7 @@ class APIClient<TData, TResponse> {
     id: number
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.put<TData, AxiosResponse<TResponse>>(
-      this.endpoint + "/" + id,
+      `${this.endpoint}/${id}`,
       data
     );
   };
@@ -67,13 +70,13 @@ class APIClient<TData, TResponse> {
     id: number
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.patch<TData, AxiosResponse<TResponse>>(
-      this.endpoint + "/" + id,
+      `${this.endpoint}/${id}`,
       data
     );
   };
 
   delete = async (id: number): Promise<AxiosResponse<void>> => {
-    return axiosInstance.delete<void>(this.endpoint + "/" + id);
+    return axiosInstance.delete<void>(`${this.endpoint}/${id}`);
   };
 }
 
