@@ -6,26 +6,59 @@ import Heading from "../../ui/Heading";
 import Input from "../../ui/Input";
 import Link from "../../ui/Link";
 import Text from "../../ui/Text";
+import { loginSchema } from "../schemas";
+import { FieldError, useForm } from "react-hook-form";
+import { z } from "zod";
+import ErrorMessage from "../ErrorMessage";
+
+type FormData = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
+  const {
+    register,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+  } = useForm<FormData>({ resolver: zodResolver(loginSchema) });
+
+  const onSubmit = (data: FormData) => {};
+
   return (
     <Card>
       <Heading align="center" className="mb-8" as="h2" size="L">
         به کوئرا تسک منیجر خوش برگشتی :)
       </Heading>
-      <form>
-        <Flex gap="L" direction="col">
-          <Flex gap="M" direction="col">
-            <Input id="username" label="نام کاربری" />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Flex gap={`${errors ? "XS" : "L"}`} direction="col">
+          <Flex gap={`${errors ? "XS" : "M"}`} direction="col">
+            <Input
+              {...register("username")}
+              className={getErrorStyles(errors.username)}
+              id="username"
+              label="نام کاربری"
+            />
+            <ErrorMessage error={errors.username} />
+
             <Flex direction="col">
-              <Input type="password" id="password" label="رمز عبور" />
+              <Input
+                {...register("password")}
+                className={getErrorStyles(errors.password)}
+                type="password"
+                id="password"
+                label="رمز عبور"
+              />
+              <ErrorMessage error={errors.password} />
               <Link to="/forgot-password" underline>
                 رمز عبور خود را فراموش کرده‌اید؟
               </Link>
             </Flex>
           </Flex>
           <Flex className="" gap="M" direction="col">
-            <Button type="submit" color="brand" size="full">
+            <Button
+              disabled={isSubmitting}
+              type="submit"
+              color="brand"
+              size="full"
+            >
               ورود
             </Button>
             <Flex gap="XS" justifyContent="center" alignItems="center">
@@ -41,6 +74,10 @@ const LoginForm = () => {
       </form>
     </Card>
   );
+};
+
+const getErrorStyles = (error: FieldError | undefined) => {
+  return error ? "border-red-600 border-2" : "";
 };
 
 export default LoginForm;
