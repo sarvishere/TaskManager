@@ -2,23 +2,25 @@ import { useState } from "react";
 import { FieldError, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import Button from "../ui/Button";
-import Card from "../ui/Card";
-import CheckBox from "../ui/CheckBox";
-import Flex from "../ui/Flex";
-import Heading from "../ui/Heading";
-import Input from "../ui/Input";
-import Text from "../ui/Text";
-import { TermsModal } from "../TermsModal";
+import Button from "../../ui/Button";
+import Card from "../../ui/Card";
+import CheckBox from "../../ui/CheckBox";
+import Flex from "../../ui/Flex";
+import Heading from "../../ui/Heading";
+import Input from "../../ui/Input";
+import Text from "../../ui/Text";
+import { TermsModal } from "../../TermsModal";
 
-const validationErrors = {
+type FormData = z.infer<typeof registrationSchema>;
+
+export const validationErrors = {
   username: "نام کاربری باید حداقل ۳ کاراکتر داشته باشد.",
   email: "لطفاً یک ایمیل معتبر وارد کنید.",
   password: "رمز عبور باید حداقل ۸ کاراکتر داشته باشد.",
   termsAndConditions: "برای ثبت‌نام، قوانین را باید بپذیرید.",
 };
 
-const registrationSchema = z.object({
+export const registrationSchema = z.object({
   username: z.string().min(3, { message: validationErrors.username }),
   email: z.string().email({ message: validationErrors.email }),
   password: z.string().min(8, { message: validationErrors.password }),
@@ -26,7 +28,11 @@ const registrationSchema = z.object({
     message: validationErrors.termsAndConditions,
   }),
 });
-type FormData = z.infer<typeof registrationSchema>;
+
+export const loginSchema = registrationSchema.omit({
+  email: true,
+  termsAndCondition: true,
+});
 
 const RegisterForm = () => {
   const [showModal, setShowModal] = useState(false);

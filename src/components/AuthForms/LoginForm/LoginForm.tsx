@@ -1,10 +1,11 @@
-import Button from "../ui/Button";
-import Card from "../ui/Card";
-import Flex from "../ui/Flex";
-import Heading from "../ui/Heading";
-import Input from "../ui/Input";
-import Link from "../ui/Link";
-import Text from "../ui/Text";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Button from "../../ui/Button";
+import Card from "../../ui/Card";
+import Flex from "../../ui/Flex";
+import Heading from "../../ui/Heading";
+import Input from "../../ui/Input";
+import Link from "../../ui/Link";
+import Text from "../../ui/Text";
 
 const LoginForm = () => {
   return (
