@@ -6,7 +6,7 @@ const ErrorMessage: React.FC<{
 }> = ({ error }) => {
   if (error) {
     return (
-      <Text color="red" size="S">
+      <Text className="self-start" color="red" size="S">
         {error.message}
       </Text>
     );
