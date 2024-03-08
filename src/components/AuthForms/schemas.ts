@@ -1,9 +1,11 @@
 import { z } from "zod";
+import errorMap from "zod/locales/en.js";
 
 export const validationErrors = {
   username: "نام کاربری باید حداقل ۳ کاراکتر داشته باشد.",
   email: "لطفاً یک ایمیل معتبر وارد کنید.",
   password: "رمز عبور باید حداقل ۸ کاراکتر داشته باشد.",
+  passwordRequired: "رمز عبور را وارد کنید.",
   termsAndConditions: "برای ثبت‌نام، قوانین را باید بپذیرید.",
 };
 
@@ -16,7 +18,10 @@ export const registrationSchema = z.object({
   }),
 });
 
-export const loginSchema = registrationSchema.omit({
-  email: true,
-  termsAndCondition: true,
-});
+export const loginSchema = registrationSchema
+  .pick({
+    username: true,
+  })
+  .extend({
+    password: z.string().min(1, { message: validationErrors.passwordRequired }),
+  });
