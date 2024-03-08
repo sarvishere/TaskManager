@@ -38,7 +38,7 @@ const RegisterForm = () => {
         ثبت‌نام در کوئرا تسک منیجر
       </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex gap={`${errors ? "S" : "M"}`} direction="col">
+        <Flex gap={`${errors ? "XS" : "M"}`} direction="col">
           <Input
             className={getErrorStyles(errors.username)}
             {...register("username")}
