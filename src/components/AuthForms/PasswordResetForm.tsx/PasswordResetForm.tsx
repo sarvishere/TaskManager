@@ -1,9 +1,9 @@
-import Button from "../ui/Button";
-import Card from "../ui/Card";
-import Flex from "../ui/Flex";
-import Heading from "../ui/Heading";
-import Input from "../ui/Input";
-import Link from "../ui/Link";
+import Button from "../../ui/Button";
+import Card from "../../ui/Card";
+import Flex from "../../ui/Flex";
+import Heading from "../../ui/Heading";
+import Input from "../../ui/Input";
+import Link from "../../ui/Link";
 
 const RegisterForm = () => {
   return (

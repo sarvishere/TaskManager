@@ -1,4 +1,4 @@
-import { PasswordResetForm } from "../../components/PasswordResetForm.tsx/index.ts";
+import { PasswordResetForm } from "../../components/AuthForms/PasswordResetForm.tsx/index.ts";
 
 const PasswordResetPage = () => {
   return <PasswordResetForm />;
