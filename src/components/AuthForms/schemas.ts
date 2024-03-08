@@ -25,3 +25,5 @@ export const loginSchema = registrationSchema
   .extend({
     password: z.string().min(1, { message: validationErrors.passwordRequired }),
   });
+
+export const passwordResetSchema = registrationSchema.pick({ email: true });
