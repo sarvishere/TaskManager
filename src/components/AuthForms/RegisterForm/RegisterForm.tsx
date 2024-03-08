@@ -9,15 +9,11 @@ import Flex from "../../ui/Flex";
 import Heading from "../../ui/Heading";
 import Input from "../../ui/Input";
 import Text from "../../ui/Text";
+import ErrorMessage from "../ErrorMessage";
 import { TermsModal } from "../../TermsModal";
 import { registrationSchema } from "../schemas";
 
 type FormData = z.infer<typeof registrationSchema>;
-
-export const loginSchema = registrationSchema.omit({
-  email: true,
-  termsAndCondition: true,
-});
 
 const RegisterForm = () => {
   const [showModal, setShowModal] = useState(false);
@@ -70,7 +66,7 @@ const RegisterForm = () => {
           <ErrorMessage error={errors.password} />
 
           <CheckBox
-            {...register("termsAndCondition", { required: true })}
+            {...register("termsAndCondition")}
             className={getErrorStyles(errors.termsAndCondition)}
             id="rules"
             label={
@@ -103,19 +99,6 @@ const RegisterForm = () => {
 
 const getErrorStyles = (error: FieldError | undefined) => {
   return error ? "border-red-600 border-2" : "";
-};
-
-const ErrorMessage: React.FC<{
-  error: FieldError | undefined;
-}> = ({ error }) => {
-  if (error) {
-    return (
-      <Text color="red" size="S">
-        {error.message}
-      </Text>
-    );
-  }
-  return null;
 };
 
 export default RegisterForm;
