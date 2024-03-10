@@ -108,7 +108,6 @@ const Button = React.forwardRef<HTMLButtonElement, Props>(
       <button
         ref={ref}
         className={`
-           font-iranyekan
           ${variant === "primary" && "text-white"} 
           ${colors[color][variant]}
           ${BodySize[fontSize]}
