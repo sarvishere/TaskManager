@@ -113,6 +113,21 @@ const useAuth = () => {
     }
   };
 
+  const resetPassword = async (data: ResetPasswordData, token: string) => {
+    try {
+      setIsLoading(true);
+
+      const response = await new APIClient<ResetPasswordData, any>(
+        "/accounts/reset-password/set-password/"
+      ).patch(data, { params: { token } });
+      return response;
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     useAuthStore.setState({}, true);
   };
@@ -123,6 +138,7 @@ const useAuth = () => {
     login,
     isLoading,
     sendResetLink,
+    resetPassword,
     signUp,
     logout,
     user,
