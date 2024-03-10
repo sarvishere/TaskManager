@@ -1,26 +1,51 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { FieldError, useForm } from "react-hook-form";
+import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { loginSchema } from "../schemas";
 import Button from "../../ui/Button";
 import Card from "../../ui/Card";
+import ErrorMessage from "../ErrorMessage";
 import Flex from "../../ui/Flex";
 import Heading from "../../ui/Heading";
 import Input from "../../ui/Input";
 import Link from "../../ui/Link";
 import Text from "../../ui/Text";
-import { loginSchema } from "../schemas";
-import { FieldError, useForm } from "react-hook-form";
-import { z } from "zod";
-import ErrorMessage from "../ErrorMessage";
+import axios from "axios";
 
 type FormData = z.infer<typeof loginSchema>;
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const { login, isLoading } = useAuth();
   const {
     register,
-    formState: { errors, isSubmitting },
     handleSubmit,
+    formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(loginSchema) });
 
-  const onSubmit = (data: FormData) => {};
+  const onSubmit = async (data: FormData) => {
+    try {
+      const status = await login(data);
+      if (status === 200)
+        toast.success(
+          <Text weight="500" size="M">
+            🎉 خوش آمدید
+          </Text>
+        );
+      navigate("/");
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        toast.error(
+          <Text weight="500" size="M">
+            نام کاربری یا کلمه عبور اشتباه است
+          </Text>
+        );
+      }
+    }
+  };
 
   return (
     <Card>
@@ -54,19 +79,19 @@ const LoginForm = () => {
           </Flex>
           <Flex className="" gap="M" direction="col">
             <Button
-              disabled={isSubmitting}
+              disabled={isLoading}
               type="submit"
               color="brand"
               size="full"
             >
-              ورود
+              {isLoading ? "در حال احراز هویت..." : "ورود"}
             </Button>
             <Flex gap="XS" justifyContent="center" alignItems="center">
               <Text size="M" weight="500">
                 ثبت‌نام نکرده‌ای؟
               </Text>
               <Link to="/register" color="brand" weight="800" size="M">
-                ثبت نام
+                {"ثبت نام"}
               </Link>
             </Flex>
           </Flex>
