@@ -97,6 +97,22 @@ const useAuth = () => {
     }
   };
 
+  const sendResetLink = async (data: SendResetLinkData) => {
+    try {
+      setIsLoading(true);
+
+      const response = await new APIClient<
+        SendResetLinkData,
+        ResetLinkResponse
+      >("/accounts/reset-password/").create(data);
+      return response;
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const logout = () => {
     useAuthStore.setState({}, true);
   };
@@ -106,6 +122,7 @@ const useAuth = () => {
   return {
     login,
     isLoading,
+    sendResetLink,
     signUp,
     logout,
     user,
