@@ -2,9 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-#root{
-  margin: 0px;
-  padding: 0px;
+#root {
+  @apply m-0 p-0 font-iranyekan;
 }
 
 @font-face {
@@ -82,16 +81,16 @@
   color: #888;
 }
 
-.authentication_bg{
+.authentication_bg {
   background-image: url("./assets/images/auth-layout-svg.svg");
   background-position: center bottom -120px;
   background-repeat: no-repeat;
   background-size: cover;
 }
-.logo{
-  background:linear-gradient(90deg, #118C80 0%, #4AB7D8 120%);
+.logo {
+  background: linear-gradient(90deg, #118c80 0%, #4ab7d8 120%);
   color: transparent;
-    background-clip: text;
-    font-weight: 800;
-    font-size: 32px;
+  background-clip: text;
+  font-weight: 800;
+  font-size: 32px;
 }
