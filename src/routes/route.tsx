@@ -6,6 +6,10 @@ import RegisterPage from "../pages/RegisterPage";
 import PasswordResetPage from "../pages/PasswordResetPage";
 import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
+import ProfileLayout from "../layout/ProfileLayout";
+import PersonalInfoPage from "../pages/PersonalInfoPage";
+import AccountsInfoPage from "../pages/AccountInfoPage";
+import SettingsPage from "../pages/SettingsPage";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +23,18 @@ const router = createBrowserRouter([
   },
   {
     element: <PrivateRoutes />,
-    children: [{ path: "users", element: <UsersPage /> }],
+    children: [
+      { path: "users", element: <UsersPage /> },
+      {
+        path: "profile",
+        element: <ProfileLayout />,
+        children: [
+          { path: "personalinfo", element: <PersonalInfoPage /> },
+          { path: "accountinfo", element: <AccountsInfoPage /> },
+          { path: "settings", element: <SettingsPage /> },
+        ],
+      },
+    ],
   },
   {
     path: "/test",
