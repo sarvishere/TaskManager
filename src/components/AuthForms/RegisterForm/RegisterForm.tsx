@@ -12,18 +12,40 @@ import Text from "../../ui/Text";
 import ErrorMessage from "../ErrorMessage";
 import { TermsModal } from "../../TermsModal";
 import { registrationSchema } from "../schemas";
+import useAuth from "../../../hooks/useAuth";
+import { toast } from "react-toastify";
 
 type FormData = z.infer<typeof registrationSchema>;
 
 const RegisterForm = () => {
+  const { signUp, isLoading } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const {
     register,
-    formState: { errors, isSubmitting },
     handleSubmit,
+    formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(registrationSchema) });
 
-  const onSubmit = (data: FormData) => {};
+  const onSubmit = async (data: FormData) => {
+    try {
+      await signUp(data);
+      toast.success(
+        <Text weight="500" size="M">
+          👌حساب کاربری با موفقیت ایجاد شد
+        </Text>
+      );
+    } catch (error) {
+      const { usernameError, emailError } = error as {
+        emailError: string;
+        usernameError: string;
+      };
+      toast.error(
+        <Text weight="500" size="M">
+          {usernameError || emailError}
+        </Text>
+      );
+    }
+  };
 
   const handleOpenModal = () => {
     setShowModal(true);
@@ -83,13 +105,8 @@ const RegisterForm = () => {
           <ErrorMessage error={errors.termsAndCondition} />
 
           <TermsModal visible={showModal} onClose={handleCloseModal} />
-          <Button
-            disabled={isSubmitting}
-            type="submit"
-            color="brand"
-            size="full"
-          >
-            ثبت‌نام
+          <Button disabled={isLoading} type="submit" color="brand" size="full">
+            {isLoading ? "در حال ارسال اطلاعات..." : "ثبت‌نام"}
           </Button>
         </Flex>
       </form>
