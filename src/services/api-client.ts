@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import TokenManager from "./token-service";
 
 const axiosInstance = axios.create({
@@ -20,7 +20,11 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      TokenManager.getRefreshToken()
+    ) {
       originalRequest._retry = true;
 
       try {
@@ -33,6 +37,7 @@ axiosInstance.interceptors.response.use(
         window.location.href = "/";
       }
     }
+
     return Promise.reject(error);
   }
 );
@@ -67,11 +72,13 @@ class APIClient<TData, TResponse> {
 
   patch = async (
     data: TData,
-    id: number
+    config?: AxiosRequestConfig,
+    id?: number
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.patch<TData, AxiosResponse<TResponse>>(
-      `${this.endpoint}/${id}`,
-      data
+      `${this.endpoint}/${id ?? ""}`,
+      data,
+      config
     );
   };
 
