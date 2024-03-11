@@ -45,8 +45,7 @@ const convertToPersian = (number: number | string) => {
   );
 };
 
-const dateFormat = "jYYYY/jMM/jDD";
-const outputFormat = (date: moment.Moment): string => date.format(dateFormat);
+const GregorianOutput = "YYYY-MM-DD";
 
 const monthAndDayFormat = (date: moment.Moment): string =>
   `${convertToPersian(date.jDate())} ${months[date.jMonth()]}`;
@@ -57,31 +56,47 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
   onClose,
   visible,
 }) => {
-  const [selectedFinishDate, setSelectedFinishDate] = useState(
-    moment().format(dateFormat)
-  );
-  const currentFinishDate = moment(selectedFinishDate, dateFormat);
-  const currentDate = moment();
+  const [selectedFinishDate, setSelectedFinishDate] = useState<moment.Moment>();
+  const [selectedStartDate, setSelectedStartDate] = useState<moment.Moment>();
+  const [currentDate, setCurrentDate] = useState<moment.Moment>(moment());
+
+  const today = moment();
 
   const handlePrevMonth = () => {
-    setSelectedFinishDate(
-      moment(selectedFinishDate, dateFormat)
-        .subtract(1, "jMonth")
-        .format(dateFormat)
-    );
+    setCurrentDate(currentDate?.clone().subtract(1, "jMonth"));
   };
   const handleNextMonth = () => {
-    setSelectedFinishDate(
-      moment(selectedFinishDate, dateFormat).add(1, "jMonth").format(dateFormat)
-    );
+    setCurrentDate(currentDate.clone().add(1, "jMonth"));
+  };
+  const handleDateChange = (date: moment.Moment) => {
+    if (!selectedStartDate) {
+      if (
+        !date.isBefore(today, "day") &&
+        (!selectedFinishDate || !date.isAfter(selectedFinishDate))
+      ) {
+        setSelectedStartDate(date);
+        onSelectStartDate(moment(date, GregorianOutput).toISOString());
+      }
+    } else if (!selectedFinishDate) {
+      if (date.isAfter(selectedStartDate)) {
+        setSelectedFinishDate(date);
+        onSelectFinishDate(date.clone().format(GregorianOutput));
+      }
+    } else {
+      if (date.isSame(selectedFinishDate, "day")) {
+        setSelectedFinishDate(undefined);
+      } else if (date.isSame(selectedStartDate, "day")) {
+        setSelectedStartDate(undefined);
+      }
+    }
   };
 
-  const handleFinishDateChange = (date: string) => {
-    setSelectedFinishDate(date);
-    onSelectFinishDate(date);
-  };
-  const handleStartDateChange = (date: string) => {
-    onSelectStartDate(date);
+  const handleStartDateChange = (date: moment.Moment) => {
+    if (!selectedFinishDate || date.isBefore(selectedFinishDate, "day")) {
+      setSelectedStartDate(date.clone());
+      const formattedDate = moment(date, GregorianOutput).toISOString();
+      onSelectStartDate(formattedDate);
+    }
   };
 
   if (!visible) return null;
@@ -99,12 +114,18 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
             <Text size="XL" weight="500">
               زمان شروع
             </Text>
+            <Text weight="500" size="XL" color="brand">
+              {selectedStartDate && monthAndDayFormat(selectedStartDate)}
+            </Text>
           </Flex>
 
           <Flex alignItems="center" className=" border-r pr-2">
             <Icon iconName="DatePickerCalendar" width={32} height={32} />
             <Text size="XL" weight="500">
               زمان پایان
+            </Text>
+            <Text weight="500" size="XL" color="brand">
+              {selectedFinishDate && monthAndDayFormat(selectedFinishDate)}
             </Text>
           </Flex>
         </header>
@@ -117,7 +138,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
           </div>
 
           {/* Finish Time Section */}
-          <div className="grid justify-items-center w-full p-7 grid-cols-7 gap-[10px]">
+          <div className="grid w-full justify-items-center gap-3 p-7 grid-cols-7">
             <Flex
               className="w-[202px] gap-5 my-5 justify-self-start col-span-7"
               alignItems="center"
@@ -127,8 +148,8 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
                 size="L"
                 className="flex w-24 whitespace-nowrap items-center"
               >
-                {months[currentFinishDate.jMonth()]}{" "}
-                {convertToPersian(currentFinishDate.jYear())}
+                {months[currentDate.jMonth()]}{" "}
+                {convertToPersian(currentDate.jYear())}
               </Text>
 
               {/* Month Navigation Buttons */}
@@ -142,9 +163,9 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
               </Flex>
 
               <Text weight="500" size="L">
-                {currentDate.isSame(currentFinishDate, "day")
+                {currentDate.isSame(today, "day")
                   ? "امروز"
-                  : convertToPersian(currentFinishDate.jDate())}
+                  : convertToPersian(currentDate.jDate())}
               </Text>
             </Flex>
 
@@ -153,8 +174,10 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
 
             {/* Rendering days of month */}
             <CalendarDays
-              currentFinishDate={currentFinishDate}
-              onFinishDateChange={handleFinishDateChange}
+              currentDate={currentDate}
+              selectedFinishDate={selectedFinishDate}
+              selectedStartDate={selectedStartDate}
+              onDateChange={handleDateChange}
             />
 
             <Button
@@ -173,7 +196,7 @@ const DatePickerCard: React.FC<DatePickerCardProps> = ({
 };
 
 const TimeDeltaButtons: React.FC<{
-  onChange: (date: string) => void;
+  onChange: (date: moment.Moment) => void;
 }> = ({ onChange }) => {
   const currentStartDate = moment();
 
@@ -181,50 +204,50 @@ const TimeDeltaButtons: React.FC<{
     [index: string]: {
       label: string;
       value: string;
-      date: string;
+      date: moment.Moment;
     };
   } = {
     today: {
       label: "امروز",
       value: daysOfWeek[currentStartDate.jDay()],
-      date: outputFormat(currentStartDate),
+      date: currentStartDate,
     },
     inAFewMinutes: {
       label: "کمی بعد",
       value: convertToPersian(moment().add(30, "minutes").format("HH:mm")),
-      date: outputFormat(moment().add(30, "minutes")),
+      date: moment().add(30, "minutes"),
     },
     tomorrow: {
       label: "فردا",
       value: daysOfWeek[currentStartDate.clone().add(1, "day").jDay()],
-      date: outputFormat(currentStartDate.clone().add(1, "day")),
+      date: currentStartDate.clone().add(1, "day"),
     },
     weekend: {
       label: "این آخر هفته",
       value: daysOfWeek[currentStartDate.clone().endOf("jDay").day(5).jDay()],
-      date: outputFormat(currentStartDate.clone().endOf("jDay").day(5)),
+      date: currentStartDate.clone().endOf("jDay").day(5),
     },
     nextWeek: {
       label: "هفته‌ی آینده",
       value: daysOfWeek[currentStartDate.clone().add(1, "week").jDay()],
-      date: outputFormat(currentStartDate.clone().add(1, "week")),
+      date: currentStartDate.clone().add(1, "week"),
     },
     endOfNextWeek: {
       label: "آخرهفته‌ی آینده",
       value: monthAndDayFormat(
         currentStartDate.clone().endOf("jDay").add(1, "week").day(5)
       ),
-      date: outputFormat(currentStartDate.clone().add(1, "week").day(5)),
+      date: currentStartDate.clone().add(1, "week").day(5),
     },
     twoWeeksLater: {
       label: "دو هفته دیگر",
       value: monthAndDayFormat(currentStartDate.clone().add(2, "week")),
-      date: outputFormat(currentStartDate.clone().add(2, "week")),
+      date: currentStartDate.clone().add(2, "week"),
     },
     fourWeeksLater: {
       label: "۴ هفته دیگر",
       value: monthAndDayFormat(currentStartDate.clone().add(4, "week")),
-      date: outputFormat(currentStartDate.clone().add(4, "week")),
+      date: currentStartDate.clone().add(4, "week"),
     },
   };
 
@@ -267,11 +290,15 @@ const DaysOfWeek: React.FC<{ days: string[] }> = ({ days }) => {
 };
 
 const CalendarDays: React.FC<{
-  currentFinishDate: moment.Moment;
-  onFinishDateChange: (date: string) => void;
-}> = ({ currentFinishDate, onFinishDateChange }) => {
-  const startOfMonth = currentFinishDate.clone().startOf("jMonth");
-  const endOfMonth = currentFinishDate.clone().endOf("jMonth");
+  selectedStartDate: moment.Moment | undefined;
+  selectedFinishDate: moment.Moment | undefined;
+  currentDate: moment.Moment;
+  onDateChange: (date: moment.Moment) => void;
+}> = ({ onDateChange, selectedFinishDate, selectedStartDate, currentDate }) => {
+  const startOfMonth = currentDate.clone().startOf("jMonth");
+  const endOfMonth = currentDate.clone().endOf("jMonth");
+  const today = moment();
+
   const days: moment.Moment[] = [];
 
   for (let i = 0; i < startOfMonth.jDay(); i++)
@@ -285,26 +312,52 @@ const CalendarDays: React.FC<{
 
   return (
     <>
-      {days.map((d) => (
-        <Button
-          key={`${d.jMonth()}-${d.jDate()}`}
-          asChild
-          onClick={() => onFinishDateChange(d.format(dateFormat))}
-        >
-          <Text
-            size="L"
-            weight="500"
-            className={`w-[44px] h-[44px] py-[5px] px-[10px] flex justify-center items-center rounded-full 
-        ${
-          d.format(dateFormat) === currentFinishDate.format(dateFormat)
-            ? " border border-brand-primary"
-            : ""
-        } `}
+      {days.map((d) => {
+        let isInRange;
+        if (selectedFinishDate && selectedStartDate) {
+          isInRange = d.isBetween(
+            selectedStartDate?.clone().add(1, "day"),
+            selectedFinishDate?.clone().subtract(1, "day"),
+            "day",
+            "[]"
+          );
+        }
+
+        return (
+          <Button
+            className={`${
+              isInRange
+                ? " relative z-10 before:absolute before:bg-[#E3FDFB] before:-left-14 before:-right-14 before:-z-30 before:top-0 before:bottom-0 before:content-[''] flex justify-center items-center"
+                : ""
+            }`}
+            key={`${d.jMonth()}-${d.jDate()}`}
+            asChild
+            onClick={() => onDateChange(d.clone())}
           >
-            {convertToPersian(d.jDate())}
-          </Text>
-        </Button>
-      ))}
+            <Text
+              size="L"
+              weight="500"
+              className={`relative z-20 py-[5px] px-[10px] flex justify-center items-center 
+        ${
+          d.isSame(today, "day") &&
+          !d.isSame(selectedStartDate) &&
+          !d.isSame(selectedFinishDate)
+            ? " border w-[44px] h-[44px] border-brand-primary rounded-full "
+            : ""
+        }
+        ${
+          (selectedFinishDate && d.isSame(selectedFinishDate, "day")) ||
+          (selectedStartDate && d.isSame(selectedStartDate, "day"))
+            ? "bg-[#4BECE2] w-[33px] h-[38px] rounded"
+            : ""
+        }
+         `}
+            >
+              {convertToPersian(d.jDate())}
+            </Text>
+          </Button>
+        );
+      })}
     </>
   );
 };
