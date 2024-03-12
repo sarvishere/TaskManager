@@ -48,28 +48,39 @@ axiosInstance.interceptors.request.use(
 class APIClient<TData, TResponse> {
   constructor(readonly endpoint: string) {}
 
-  getAll = async (): Promise<AxiosResponse<TResponse[]>> => {
-    return axiosInstance.get<TResponse[]>(this.endpoint);
+  getAll = async (
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResponse[]>> => {
+    return axiosInstance.get<TResponse[]>(this.endpoint, config);
   };
 
-  get = async (id: number): Promise<AxiosResponse<TResponse>> => {
-    return axiosInstance.get<TResponse>(`${this.endpoint}${id}/`);
+  get = async (
+    id: number,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResponse>> => {
+    return axiosInstance.get<TResponse>(`${this.endpoint}${id}/`, config);
   };
 
-  create = async (data: TData): Promise<AxiosResponse<TResponse>> => {
+  create = async (
+    data: TData,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.post<TData, AxiosResponse<TResponse>>(
       this.endpoint,
-      data
+      data,
+      config
     );
   };
 
   update = async (
     data: TData,
-    id: number
+    id: number,
+    config?: AxiosRequestConfig
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.put<TData, AxiosResponse<TResponse>>(
       `${this.endpoint}${id}/`,
-      data
+      data,
+      config
     );
   };
 
@@ -85,8 +96,11 @@ class APIClient<TData, TResponse> {
     );
   };
 
-  delete = async (id: number): Promise<AxiosResponse<void>> => {
-    return axiosInstance.delete<void>(`${this.endpoint}${id}/`);
+  delete = async (
+    id: number,
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<void>> => {
+    return axiosInstance.delete<void>(`${this.endpoint}${id}/`, config);
   };
 }
 
