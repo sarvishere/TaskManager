@@ -1,16 +1,29 @@
+import { useState } from "react";
 import APIClient from "../services/api-client";
 import TokenManager from "../services/token-service";
 import useAuthStore from "../stores/useAuthStore";
+import { AxiosError } from "axios";
 
 interface LoginData {
   username: string;
   password: string;
 }
 
-interface RegisterData {
-  username: string;
+interface RegisterData extends LoginData {
   email: string;
+}
+
+interface SendResetLinkData {
+  email: string;
+}
+
+interface ResetLinkResponse {
+  url: string;
+}
+
+interface ResetPasswordData {
   password: string;
+  password1: string;
 }
 
 interface RegisterResponse {
@@ -30,12 +43,21 @@ export interface LoginResponse {
   user_id: string;
   username: string;
 }
+
+interface RegisterErrorResponse {
+  email?: string[];
+  username?: string[];
+}
 export interface User extends Omit<LoginResponse, "access" | "refresh"> {}
 
 const useAuth = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const login = async (data: LoginData) => {
     try {
+      setIsLoading(true);
       const {
+        status,
         data: { access, refresh, ...userData },
       } = await new APIClient<LoginData, LoginResponse>(
         "/accounts/login/"
@@ -44,24 +66,65 @@ const useAuth = () => {
       TokenManager.setAccessToken(access);
       TokenManager.setRefreshToken(refresh);
       useAuthStore.setState({ user: userData });
+
+      return status;
     } catch (error) {
-      throw new Error("Failed to login");
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const register = async (data: RegisterData) => {
+  const signUp = async (data: RegisterData) => {
     try {
+      setIsLoading(true);
       const res = await new APIClient<RegisterData, RegisterResponse>(
         "/accounts/"
       ).create(data);
       if (res.status === 201) {
         return res.data;
-      } else {
-        throw new Error("Registration failed");
       }
     } catch (error) {
-      console.error("Error during registration:", error);
+      const errorMessages = (error as AxiosError).response
+        ?.data as RegisterErrorResponse;
+
+      throw {
+        emailError: errorMessages?.email?.[0] ?? "",
+        usernameError: errorMessages?.username?.[0] ?? "",
+      };
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const sendResetLink = async (data: SendResetLinkData) => {
+    try {
+      setIsLoading(true);
+
+      const response = await new APIClient<
+        SendResetLinkData,
+        ResetLinkResponse
+      >("/accounts/reset-password/").create(data);
+      return response;
+    } catch (error) {
       throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const resetPassword = async (data: ResetPasswordData, token: string) => {
+    try {
+      setIsLoading(true);
+
+      const response = await new APIClient<ResetPasswordData, any>(
+        "/accounts/reset-password/set-password/"
+      ).patch(data, { params: { token } });
+      return response;
+    } catch (error) {
+      throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,7 +134,15 @@ const useAuth = () => {
 
   const user = useAuthStore((s) => s.user);
 
-  return { login, register, logout, user };
+  return {
+    login,
+    isLoading,
+    sendResetLink,
+    resetPassword,
+    signUp,
+    logout,
+    user,
+  };
 };
 
 export default useAuth;

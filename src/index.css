@@ -107,14 +107,14 @@ font-family: "iranyekan";
 border-bottom: 0.5px solid #AAAAAA;
 }
 
-.fc .fc-toolbar-title {
+.fc .fc-toolbar-title{
   font-weight: 400;
   font-size: 12px;
   align-items: center;
   color: #1E1E1E;
 }
  
-.fc-direction-rtl .fc-button-group > .fc-button{
+.fc-direction-rtl .fc-button-group > .fc-button {
   background-color: transparent;
   border: none;
   color: #3D3D3D;
@@ -122,6 +122,7 @@ border-bottom: 0.5px solid #AAAAAA;
   font-weight: 400;
   text-align: right;
 }
+
 
 .fc-direction-rtl .fc-button-group > .fc-button:hover {
   background-color: transparent;
@@ -158,3 +159,14 @@ border-bottom: 0.5px solid #AAAAAA;
   border: 2px solid #208D8E !important;
 
 } 
+
+.active-button {
+  border-bottom: 2px solid #208D8E;
+  color: #208D8E;
+  padding-bottom: 22px;
+}
+
+
+.active-button svg {
+  stroke: #208D8E; /* Apply the color to the icon */
+}
