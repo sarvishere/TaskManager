@@ -8,6 +8,8 @@ import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
 import { BoardPage } from "../pages/BoardPage/BoardPage";
 
+
+
 const router = createBrowserRouter([
   {
     path: "/",
