@@ -6,8 +6,8 @@ import RegisterPage from "../pages/RegisterPage";
 import PasswordResetPage from "../pages/PasswordResetPage";
 import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
+import ResetPage from "../pages/ResetPage/ResetPage";
 import { BoardPage } from "../pages/BoardPage/BoardPage";
-
 
 
 const router = createBrowserRouter([
@@ -18,6 +18,10 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "register", element: <RegisterPage /> },
       { path: "forgot-password", element: <PasswordResetPage /> },
+      {
+        path: "reset-password",
+        element: <ResetPage />,
+      },
     ],
   },
   {
