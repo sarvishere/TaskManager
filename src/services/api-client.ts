@@ -53,7 +53,7 @@ class APIClient<TData, TResponse> {
   };
 
   get = async (id: number): Promise<AxiosResponse<TResponse>> => {
-    return axiosInstance.get<TResponse>(`${this.endpoint}/${id}`);
+    return axiosInstance.get<TResponse>(`${this.endpoint}${id}/`);
   };
 
   create = async (data: TData): Promise<AxiosResponse<TResponse>> => {
@@ -68,7 +68,7 @@ class APIClient<TData, TResponse> {
     id: number
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.put<TData, AxiosResponse<TResponse>>(
-      `${this.endpoint}/${id}`,
+      `${this.endpoint}${id}/`,
       data
     );
   };
@@ -79,14 +79,14 @@ class APIClient<TData, TResponse> {
     id?: number
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.patch<TData, AxiosResponse<TResponse>>(
-      `${this.endpoint}/${id ?? ""}`,
+      `${this.endpoint}${id ?? ""}/`,
       data,
       config
     );
   };
 
   delete = async (id: number): Promise<AxiosResponse<void>> => {
-    return axiosInstance.delete<void>(`${this.endpoint}/${id}`);
+    return axiosInstance.delete<void>(`${this.endpoint}${id}/`);
   };
 }
 
