@@ -111,7 +111,6 @@
   align-items: center;
   color: #1e1e1e;
 }
-
 .fc-direction-rtl .fc-button-group > .fc-button {
   background-color: transparent;
   border: none;
@@ -152,4 +151,14 @@
 .fc-day-today {
   background: #fff !important;
   border: 2px solid #208d8e !important;
+}
+
+.active-button {
+  border-bottom: 2px solid #208d8e;
+  color: #208d8e;
+  padding-bottom: 22px;
+}
+
+.active-button svg {
+  stroke: #208d8e; /* Apply the color to the icon */
 }

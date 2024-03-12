@@ -777,7 +777,7 @@ const iconMap = {
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="#208D8E"
+      stroke="#323232"
       xmlns="http://www.w3.org/2000/svg"
       {...rest}
     >
