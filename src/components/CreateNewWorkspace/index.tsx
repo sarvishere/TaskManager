@@ -1,12 +1,15 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Button from "../ui/Button";
 import { ChangeEvent } from "react";
 import Icon from "../ui/Icon";
+import useAddWorkspace from "../../hooks/useAddWorkspace";
+
 const CreateNewWorkspace = () => {
   const [stage, setStage] = useState(1);
   const [workspaceName, setWorkspaceName] = useState("");
   const [initials, setInitials] = useState("");
   const [selectedColor, setSelectedColor] = useState('gray');
+  const {addWorkspace}=useAddWorkspace();
 
   //The following function will get the initials from the input name and changes the workspaceName and initials states as a result
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,8 +21,9 @@ const CreateNewWorkspace = () => {
     setInitials(initials);
   };
 //Handle clicking on the continue button
-  const handleContinue = () => {
-    stage < 3 && setStage((s) => s + 1);
+  const handleContinue = (e:React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    stage < 3 && setStage((s) => s + 1);    
   };
 
 //Change the selected color state when the color button is clicked 
@@ -30,9 +34,17 @@ const CreateNewWorkspace = () => {
   const handleBackBtn=()=>{
     stage>1 && setStage((s)=>s-1);
   }
+// On Submit, this gets the name and selected color states and calls the addWorkspace method which posts the data to the server
+const handleSubmit=(e:FormEvent)=>{
+  e.preventDefault();
+const data={name:`${workspaceName}`,
+color:`${selectedColor}`
+}
+stage===3 && addWorkspace(data);
+}
   return (
     <div className="w-[500px] p-6 bg-white border rounded-lg flex flex-col justify-center items-center mt-[200px] mr-[400px] font-iranyekan">
-      <div className="w-[452px] flex flex-col justify-between p-2 h-3/4">
+      <form className="w-[452px] flex flex-col justify-between p-2 h-3/4" onSubmit={handleSubmit}>
         
         <div className="flex items-center justify-between">
           <button><Icon iconName="Close" /></button>
@@ -81,6 +93,7 @@ const CreateNewWorkspace = () => {
     ].map((color, index) => (
       <button
       key={index}
+      type="button"
       className={`relative ${color === selectedColor ? "h-7 w-7 rounded-xl" : "h-5 w-5 m-[5px] rounded-lg"} rounded-lg bg-${color}-primary ${
         color === "orange" ? "break-line" : ""
       }`}
@@ -104,11 +117,16 @@ const CreateNewWorkspace = () => {
             </div>
           </div>
         )}
-        <Button color="brand" size="full" onClick={handleContinue}>
-          ادامه
-        </Button>
-      </div>
-    </div>
-  );
+        {/* The button should be of type submit only when it's the last stage */}
+        {stage===3?(<Button color="brand" size="full" type="submit">
+        افزودن ورک اسپیس
+      </Button> ):(
+        <Button color="brand" size="full" type="button" onClick={handleContinue}>
+        ادامه
+      </Button>
+      )
+        }
+      </form>
+    </div>)
 };
 export default CreateNewWorkspace;
