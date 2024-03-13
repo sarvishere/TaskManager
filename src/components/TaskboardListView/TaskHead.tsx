@@ -1,4 +1,4 @@
-import { useAccordionStore } from "../../utils/hooks/useAccordionStore";
+import { useAccordionStore } from "../../hooks/useAccordionStore";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import Text from "../ui/Text";
