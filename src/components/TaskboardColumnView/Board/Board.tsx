@@ -6,12 +6,12 @@ import Text from "../../ui/Text";
 import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
 
-interface Props {
+interface BoardProps {
   className?: string;
   columnTitle: string;
 }
 
-const TaskColumnHeader: React.FC<Props> = ({ className, columnTitle }) => {
+const Board: React.FC<BoardProps> = ({ className, columnTitle }) => {
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -99,4 +99,4 @@ const TaskColumnHeader: React.FC<Props> = ({ className, columnTitle }) => {
   );
 };
 
-export default TaskColumnHeader;
+export default Board;

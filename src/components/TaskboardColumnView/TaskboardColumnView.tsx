@@ -4,7 +4,7 @@ import Icon from "../ui/Icon";
 import Seperator from "../ui/Seperator";
 import TaskBoardToolbar from "./TaskBoardToolbar/TaskBoardToolbar";
 import TaskCard from "./TaskCard/TaskCard";
-import TaskColumnHeader from "./TaskColumnHeader/TaskColumnHeader";
+import Board from "./Board/Board";
 
 const TaskboardColumnView = () => {
   return (
@@ -13,10 +13,7 @@ const TaskboardColumnView = () => {
       <Seperator orientation="vertically" />
       <div className="w-full h-full content-around grid grid-cols-[repeat(4,250px)] gap-4 gap-y-4">
         <Flex direction="col" gap="S">
-          <TaskColumnHeader
-            className="border-yellow-primary"
-            columnTitle={"Open"}
-          />
+          <Board className="border-yellow-primary" columnTitle={"Open"} />
           <Flex direction="col" className="gap-3">
             <TaskCard />
             <TaskCard />
@@ -32,30 +29,21 @@ const TaskboardColumnView = () => {
           </Flex>
         </Flex>
         <Flex direction="col" gap="S">
-          <TaskColumnHeader
-            className="border-brand-primary"
-            columnTitle={"Open"}
-          />
+          <Board className="border-brand-primary" columnTitle={"Open"} />
           <Flex direction="col" className="gap-3">
             <TaskCard />
             <TaskCard />
           </Flex>
         </Flex>
         <Flex direction="col" gap="S">
-          <TaskColumnHeader
-            className="border-blue-primary"
-            columnTitle={"Open"}
-          />
+          <Board className="border-blue-primary" columnTitle={"Open"} />
           <Flex direction="col" className="gap-3">
             <TaskCard />
             <TaskCard />
           </Flex>
         </Flex>
         <Flex direction="col" gap="S">
-          <TaskColumnHeader
-            className="border-pink-primary"
-            columnTitle={"Open"}
-          />
+          <Board className="border-pink-primary" columnTitle={"Open"} />
           <Flex direction="col" className="gap-3">
             <TaskCard />
             <TaskCard />
