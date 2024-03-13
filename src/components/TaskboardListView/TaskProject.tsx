@@ -3,7 +3,7 @@ import Accordion from "../Accordion/Accordion";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import Heading from "../ui/Heading";
-import { useAccordionStore } from "../../utils/hooks/useAccordionStore";
+import { useAccordionStore } from "../../hooks/useAccordionStore";
 
 interface TaskProjectProps {
   id: string;

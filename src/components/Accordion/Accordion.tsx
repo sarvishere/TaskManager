@@ -1,5 +1,5 @@
 import { animated, useSpring } from "react-spring";
-import { useAccordionStore } from "../../utils/hooks/useAccordionStore";
+import { useAccordionStore } from "../../hooks/useAccordionStore";
 import Flex from "../ui/Flex";
 
 interface AccordionProps {
