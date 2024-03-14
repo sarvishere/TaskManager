@@ -1,7 +1,8 @@
 import React from 'react';
 import Icon from '../ui/Icon';
 import useAuth from '../../hooks/useAuth';
-import useWorkspaces from '../../hooks/useWorkspaces';
+import WorkspacesList from './workspaces';
+
 
 const getFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase();
@@ -9,8 +10,7 @@ const getFirstLetter = (str: string): string => {
 
 const TaskSidebar: React.FC = () => {
   const {user , logout} = useAuth();
-  const {isLoading , workspaces , error } = useWorkspaces();
-console.log(workspaces)
+
   return (
   <div dir="rtl" className='flex flex-col w-[340px] h-[999px] border-l-[0.5px] border-[#AAAAAA] pr-12 font-iranyekan'>
 
@@ -43,20 +43,7 @@ console.log(workspaces)
   <h3 className='font-iranyekan font-normal text-[12px] '>  مایا ساختن ورک‌اسپیس جدید</h3>
 </div>
 
-<div>
-  <ul>
-{workspaces && workspaces.map(workspace => (
-          <li key={workspace.id} className="flex items-center">
-          <span className="w-4 h-4 mr-2 rounded ml-2" style={{ backgroundColor: workspace.color }} /> 
-          <span>{workspace.name}</span>
-        </li>
-)
-
-
-  )
-}
-  </ul>
-</div>
+<WorkspacesList />
 
 <button className="relative w-[274px] h-[36px] rounded-lg border-[2px] border-brand-primary text-brand-primary flex justify-center items-center font-normal text-[14px] leading-5 text-center px-4 mt-[14px] ">
 ساختن پروژه جدید
