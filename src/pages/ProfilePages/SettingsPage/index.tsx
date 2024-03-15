@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button from "../../components/ui/Button";
+import Button from "../../../components/ui/Button";
 
 const SettingsPage: React.FC = (): JSX.Element => {
   const [selectedColor, setSelectedColor] = useState("");
