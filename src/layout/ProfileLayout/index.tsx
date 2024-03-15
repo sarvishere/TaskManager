@@ -19,7 +19,7 @@ const ProfileLayout: React.FC = (): JSX.Element => {
         </button>
         <div className="flex flex-col h-[176px] w-[266px] justify-between mt-[43px]">
           <Link
-            to="/profile/personalinfo"
+            to="/profile/"
             className={`flex items-center h-[40px] pt-1 pr-2 pb-1 pl-2 ${
               activeStage === "personalInfo" && "bg-brand-secondary font-black"
             }`}
