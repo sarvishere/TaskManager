@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import TitleForm from '../Modal/Taskmodal.tsx'; 
+import TitleForm from '../Modal/calendarmodal.tsx'; 
 import styles from "./styles.module.css";
 
 

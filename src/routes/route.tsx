@@ -6,6 +6,9 @@ import RegisterPage from "../pages/RegisterPage";
 import PasswordResetPage from "../pages/PasswordResetPage";
 import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
+import ResetPage from "../pages/ResetPage/ResetPage";
+import { BoardPage } from "../pages/BoardPage/BoardPage";
+
 import ProfileLayout from "../layout/ProfileLayout";
 import PersonalInfoPage from "../pages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/AccountInfoPage";
@@ -19,12 +22,17 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "register", element: <RegisterPage /> },
       { path: "forgot-password", element: <PasswordResetPage /> },
+      {
+        path: "reset-password",
+        element: <ResetPage />,
+      },
     ],
   },
   {
     element: <PrivateRoutes />,
-    children: [
+    children: [  
       { path: "users", element: <UsersPage /> },
+      { path: "board", element: <BoardPage /> },
       {
         path: "profile",
         element: <ProfileLayout />,
@@ -35,6 +43,7 @@ const router = createBrowserRouter([
         ],
       },
     ],
+    
   },
   {
     path: "/test",

@@ -1,7 +1,7 @@
-import { PasswordResetForm } from "../../components/PasswordResetForm.tsx/index.ts";
+import { SendResetLinkForm } from "../../components/AuthForms/SendResetLinkForm";
 
 const PasswordResetPage = () => {
-  return <PasswordResetForm />;
+  return <SendResetLinkForm />;
 };
 
 export default PasswordResetPage;
