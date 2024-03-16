@@ -7,7 +7,7 @@ import boardService, {
 const useUpdateBoard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [updatedBoard, setUpdatedBoard] = useState<BoardResponse>();
-  const [error, setError] = useState<Error>();
+  const [boardUpdateError, setError] = useState<Error>();
 
   const updateBoard = async (
     workspaceId: number,
@@ -25,7 +25,7 @@ const useUpdateBoard = () => {
       .finally(() => setIsLoading(false));
   };
 
-  return { updateBoard, updatedBoard, isLoading, error };
+  return { updateBoard, updatedBoard, isLoading, boardUpdateError };
 };
 
 export default useUpdateBoard;
