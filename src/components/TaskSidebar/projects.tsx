@@ -18,6 +18,7 @@ const [selectedProjectForTask, setSelectedProjectForTask] = useState<{ id: numbe
 null
 );
 const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+const [isHovering, setIsHovering] = useState<number | null>(null);
 
   useEffect(() => {
     getProjects(workspaceId);
@@ -33,12 +34,12 @@ const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
     updateProjectNameState(name);
   };
 
-  const handleButtonClick = (id: number, name: string) => {
+  const handleButtonClick = (id: number, name: string  ) => {
     const prevSelectedButton = document.querySelector('.active');
     if (prevSelectedButton) {
       prevSelectedButton.classList.remove('active');
     }
-
+  
     setSelectedProject(name);
     setSelectedProjectId(id);
     updateProjectNameState(name);
@@ -49,10 +50,10 @@ const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
     }
   };
 
-  const handleInnerButtonClick = (id: number, name: string) => {
-setSelectedProjectForTask({ id, name });
-setIsCreateTaskModalOpen(true);
-    console.log("Inner button clicked! Show modal for project:", id, name);
+  const handleInnerButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number, name: string) => {
+    setSelectedProjectForTask({ id, name });
+    setIsCreateTaskModalOpen(true);
+    console.log( id, name);
   };
 
   const handleCloseModal = () => {
@@ -68,7 +69,11 @@ setSelectedProjectForTask(null);
         <ul>
   {projects.map((project) => (
     <li key={project.id} className={projects.length > 0 ? "mr-5 pt-2" : ""}>
-      <div className=" group flex justify-between">
+      <div
+                className="group flex justify-between"
+                onMouseEnter={() => setIsHovering(project.id)}
+                onMouseLeave={() => setIsHovering(null)}
+              >
         <button
           id={`project-${project.id}`}
           onClick={() => handleButtonClick(project.id, project.name)}
@@ -78,13 +83,15 @@ setSelectedProjectForTask(null);
         >
           {project.name}
         </button>
-          <button
-            onClick={() => handleInnerButtonClick(project.id, project.name)}
-            //when became hover show this 
-            // show CreateTaskModal when click on this component
-          >
-            ...
-          </button>
+
+{isHovering === project.id && (
+                  <button
+                    onClick={() => handleInnerButtonClick(project.id, project.name)}
+                    className={selectedProjectId === project.id ? "bg-[#E9F9FF]" : ""}
+                  >
+                    ...
+                  </button>
+                )}
       </div>
     </li>
   ))}
