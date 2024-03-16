@@ -6,7 +6,7 @@ export interface BoardResponse {
   name: string;
   order: number;
   tasks: Task[];
-  tasks_count: string;
+  tasks_count: number;
   is_archive: boolean;
   color: string;
 }
@@ -17,6 +17,7 @@ export interface AddBoardData {
   is_archive: boolean;
   color: string;
 }
+export interface UpdateBoardData extends Partial<AddBoardData> {}
 
 const boardService = <TData = any, TResponse = BoardResponse>(
   workspaceId: number,
