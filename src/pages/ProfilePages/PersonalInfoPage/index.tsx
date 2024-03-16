@@ -18,9 +18,7 @@ const PersonalInfoPage: React.FC = (): JSX.Element => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(personalInfoSchema) });
 
   useEffect(()=>{
-    getProfile(userId)
-    console.log(profileData);
-    
+    getProfile(userId);
   },[])
 
   const onSubmit = (formData: FormData) => {
