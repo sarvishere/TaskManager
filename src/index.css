@@ -168,40 +168,16 @@ border-bottom: 0.5px solid #AAAAAA;
 
 
 .active-button svg {
-  stroke: #208D8E; /* Apply the color to the icon */
+  stroke: #208D8E; 
 }
 
-.project :hover{
-  display: flex;
-height: 31px;
- width: 246px;
-  border-radius: 4px;
-  background-color: #FAFAFA ;
-  text-align: right;
-}
 
 .active
 {
   text-align: right;
-  width: 246px;
+  width: 100%;
   padding: 4px 6px;
   border-radius: 4px;
   background-color: #E9F9FF;
 }
-
-.inner-button {
-  display: none;
-}
-
-
-
-
-
-
-.outer-button:hover .inner-button {
-  display: inline;
-  margin-left: 10px;
-
-}
-
 

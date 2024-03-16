@@ -45,9 +45,6 @@ const TaskSidebar: React.FC = () => {
 
 <WorkspacesList />
 
-<button className="relative w-[274px] h-[36px] rounded-lg border-[2px] border-brand-primary text-brand-primary flex justify-center items-center font-normal text-[14px] leading-5 text-center px-4 mt-[14px] ">
-ساختن پروژه جدید
-</button>
     </div>
     </div>
 
