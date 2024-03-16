@@ -4,7 +4,8 @@ export const personalInfoSchema=z.object(
 {
     first_name:z.string().min(3,{message:"نام باید حداقل سه کاراکتر داشته باشد"}),
     last_name:z.string().min(3,{message:"نام خانوادگی باید حداقل سه کاراکتر داشته باشد"}),
-    phone_number:z.string().regex(/^0\d{10}$/, { message: "لطفا یک شماره تلفن معتبر وارد کنید" })
+    phone_number:z.string().regex(/^0\d{10}$/, { message: "لطفا یک شماره تلفن معتبر وارد کنید" }),
+    thumbnail:z.instanceof(FileList,{message:"فرمت فایل وارد شده معتبر نیست"})
 }
 )
 
