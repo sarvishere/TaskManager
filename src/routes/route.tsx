@@ -7,7 +7,11 @@ import PasswordResetPage from "../pages/PasswordResetPage";
 import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
 import ResetPage from "../pages/ResetPage/ResetPage";
-
+import { BoardPage } from "../pages/BoardPage/BoardPage";
+import ProfileLayout from "../layout/ProfileLayout";
+import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
+import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
+import SettingsPage from "../pages/ProfilePages/SettingsPage";
 
 
 const router = createBrowserRouter([
@@ -29,6 +33,15 @@ const router = createBrowserRouter([
     children: [
       { path: "users", element: <UsersPage /> },
       { path: "board", element: <BoardPage /> },
+      {
+        path: "profile",
+        element: <ProfileLayout />,
+        children: [
+          { index:true, element: <PersonalInfoPage /> },
+          { path: "accountinfo", element: <AccountsInfoPage /> },
+          { path: "settings", element: <SettingsPage /> },
+        ],
+      },
     ],
   },
   {
