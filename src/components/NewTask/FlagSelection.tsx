@@ -16,11 +16,11 @@ const FlagSelection: React.FC<FlagSelectionProps> = ({ onClose, visible }) => {
   ]);
 
   const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedValue(event.target.value);
+    setSelectedValue(+event.target.value);
     onClose();
   };
   const handleRemovePriority = () => {
-    setSelectedValue("");
+    setSelectedValue(0);
     onClose();
   };
   return (
@@ -29,13 +29,14 @@ const FlagSelection: React.FC<FlagSelectionProps> = ({ onClose, visible }) => {
         {priorities.map((item) => {
           return (
             <label
-              for={item.id}
+              key={item.id}
+              htmlFor={`${item.id}`}
               className="cursor-pointer w-full p-1 flex items-center gap-2 hover:bg-gray-secondary"
             >
               <Icon iconName="Flag" stroke={item.color} />
               <span>{item.name}</span>
               <input
-                id={item.id}
+                id={`${item.id}`}
                 value={item.id}
                 name="priority"
                 type="radio"
