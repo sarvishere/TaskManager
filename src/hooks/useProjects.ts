@@ -17,8 +17,16 @@ const useProjects = () => {
       .finally(() => setIsLoading(false));
 
 }
+const addProject=(workspaceId: number,data)=>{
+  setIsLoading(true);
+  projectService(workspaceId)
+    .create(workspaceId,data)
+    .then((res) => setProjects(res.data))
+    .catch((error) => setError(error))
+    .finally(() => setIsLoading(false));
 
-  return { projects, error, isLoading , getProjects};
+}
+  return { projects, error, isLoading , getProjects,addProject};
 };
 
 export default useProjects;
