@@ -28,7 +28,7 @@ const AuthenticationLayout: React.FC<IAuthenticationLayoutProps> = () => {
           </Link>
         </div>
       </header>
-      <section className="flex justify-center items-center z-50">
+      <section className="flex justify-center items-center z-50 -m-4">
         <Outlet />
       </section>
       <div className="authentication_bg absolute h-3/4 w-full bottom-0"></div>
