@@ -50,10 +50,10 @@ const [isHovering, setIsHovering] = useState<number | null>(null);
     }
   };
 
-  const handleInnerButtonClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: number, name: string) => {
+  const handleInnerButtonClick = (e: { stopPropagation: () => void; }, id: number, name: string) => {
     setSelectedProjectForTask({ id, name });
     setIsCreateTaskModalOpen(true);
-    console.log( id, name);
+    e.stopPropagation();
   };
 
   const handleCloseModal = () => {

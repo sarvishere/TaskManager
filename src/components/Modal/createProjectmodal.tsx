@@ -2,11 +2,11 @@ import React from 'react';
 import Icon from '../ui/Icon';
 import Button from '../ui/Button';
 
-interface CreateTaskModalProps {
+interface CreateProjectModalProps {
   onClose: () => void;
 }
 
-const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ onClose }) => {
+const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ onClose }) => {
   const handleClose = () => {
     onClose();
   };
@@ -57,4 +57,4 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({ onClose }) => {
   );
 };
 
-export default CreateTaskModal;
+export default CreateProjectModal;

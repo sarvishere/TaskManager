@@ -2,6 +2,7 @@ import React from 'react';
 import Icon from '../ui/Icon';
 import useAuth from '../../hooks/useAuth';
 import WorkspacesList from './workspaces';
+import { useNavigate } from "react-router-dom";
 
 
 const getFirstLetter = (str: string): string => {
@@ -10,6 +11,9 @@ const getFirstLetter = (str: string): string => {
 
 const TaskSidebar: React.FC = () => {
   const {user , logout} = useAuth();
+ 
+  const navigate = useNavigate();
+
 
   return (
   <div dir="rtl" className='flex flex-col w-[340px] h-[999px] border-l-[0.5px] border-[#AAAAAA] pr-12 font-iranyekan'>
@@ -63,7 +67,11 @@ const TaskSidebar: React.FC = () => {
     )}
     <div className='flex  text-[#818181] mt-4'>
     <Icon iconName='Logout'/>
-      <button onClick={() => logout()}> خروج </button>
+    <button onClick={() => {
+            logout(); 
+             navigate("/")
+          }}> خروج </button>
+
       
     </div>
     </div>
