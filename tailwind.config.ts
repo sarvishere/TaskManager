@@ -98,6 +98,9 @@ export default {
        * 8 => 32px
        * 10 => 40px
        */
+      boxShadow: {
+        modal: "0px 12px 32px 0px #00000040",
+      },
     },
   },
   plugins: [],
