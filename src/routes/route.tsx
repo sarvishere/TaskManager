@@ -8,11 +8,11 @@ import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
 import ResetPage from "../pages/ResetPage/ResetPage";
 import { BoardPage } from "../pages/BoardPage/BoardPage";
-
 import ProfileLayout from "../layout/ProfileLayout";
 import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
 import SettingsPage from "../pages/ProfilePages/SettingsPage";
+
 
 const router = createBrowserRouter([
   {

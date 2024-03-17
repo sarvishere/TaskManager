@@ -1,13 +1,13 @@
 import create from "zustand";
 
 interface RadioStore {
-  selectedValue: string;
-  setSelectedValue: (value: string) => void;
+  selectedValue: number;
+  setSelectedValue: (value: number) => void;
 }
 
 const useRadioStore = create<RadioStore>((set) => ({
-  selectedValue: "",
-  setSelectedValue: (value: string) => set({ selectedValue: value }),
+  selectedValue: 0,
+  setSelectedValue: (value: number) => set({ selectedValue: value }),
 }));
 
 export default useRadioStore;

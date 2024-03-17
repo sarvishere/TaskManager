@@ -1,27 +1,27 @@
 interface Priority {
-  id: string;
+  id: number;
   name: string;
   color: string;
 }
 
 export const priorities: Priority[] = [
   {
-    id: "immediate",
+    id: 1,
     name: "فوری",
     color: "#FA5252",
   },
   {
-    id: "top",
+    id: 2,
     name: "بالا",
     color: "#FD7E14",
   },
   {
-    id: "medium",
+    id: 3,
     name: "متوسط",
     color: "#15AABF",
   },
   {
-    id: "low",
+    id: 4,
     name: "پائین",
     color: "#40C057",
   },

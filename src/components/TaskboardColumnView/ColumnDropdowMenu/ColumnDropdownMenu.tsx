@@ -5,9 +5,13 @@ import Icon from "../../ui/Icon";
 import Text from "../../ui/Text";
 
 interface Props {
+  boardId: number;
   visible: boolean;
   onClickOutside?: () => void;
   onEdit?: () => void;
+  onDelete?: () => void;
+  onArchive?: () => void;
+  onAddTask?: () => void;
 }
 
 const useClickOutside = (handler: () => void) => {
@@ -28,7 +32,14 @@ const useClickOutside = (handler: () => void) => {
   return ref;
 };
 
-const ColumnDropdownMenu: FC<Props> = ({ visible, onClickOutside, onEdit }) => {
+const ColumnDropdownMenu: FC<Props> = ({
+  visible,
+  onClickOutside,
+  onEdit,
+  onAddTask,
+  onDelete,
+  onArchive,
+}) => {
   const dropdownRef = useClickOutside(() => {
     onClickOutside?.();
   });
@@ -46,19 +57,19 @@ const ColumnDropdownMenu: FC<Props> = ({ visible, onClickOutside, onEdit }) => {
               <Text size="S">ویرایش نام ستون</Text>
             </Flex>
           </Button>
-          <Button asChild className="text-sm">
+          <Button onClick={onAddTask} asChild className="text-sm">
             <Flex alignItems="center">
               <Icon iconName="Add" />
               <Text size="S">افزودن تسک</Text>
             </Flex>
           </Button>
-          <Button asChild className="text-sm">
+          <Button onClick={onArchive} asChild className="text-sm">
             <Flex alignItems="center">
               <Icon iconName="Archive" />
               <Text size="S">آرشیو تمام تسک‌ها</Text>
             </Flex>
           </Button>
-          <Button asChild className="text-sm">
+          <Button onClick={onDelete} asChild className="text-sm">
             <Flex alignItems="center">
               <Icon iconName="Remove" />
               <Text size="S">حذف ستون</Text>

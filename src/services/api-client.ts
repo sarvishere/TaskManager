@@ -5,7 +5,9 @@ import axios, {
 } from "axios";
 import TokenManager from "./token-service";
 
-const baseURL = "http://185.8.174.74:8000";
+
+export const baseURL = "http://185.8.174.74:8000";
+
 const axiosInstance = axios.create({
   baseURL,
 });

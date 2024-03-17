@@ -94,3 +94,71 @@
   font-weight: 800;
   font-size: 32px;
 }
+
+.fc .fc-toolbar.fc-header-toolbar {
+  padding-top: 17px;
+  padding-bottom: 17px;
+  width: 1034px;
+  display: flex;
+  justify-content: flex-end;
+  font-family: "iranyekan";
+  border-bottom: 0.5px solid #aaaaaa;
+}
+
+.fc .fc-toolbar-title {
+  font-weight: 400;
+  font-size: 12px;
+  align-items: center;
+  color: #1e1e1e;
+}
+.fc-direction-rtl .fc-button-group > .fc-button {
+  background-color: transparent;
+  border: none;
+  color: #3d3d3d;
+  font-size: 12px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.fc-direction-rtl .fc-button-group > .fc-button:hover {
+  background-color: transparent;
+  border: none;
+}
+
+.fc .fc-view-harness {
+  width: 1034px;
+}
+
+.fc .fc-scrollgrid-section,
+.fc .fc-scrollgrid-section table,
+.fc .fc-scrollgrid-section > td {
+  font-family: "iranyekan";
+}
+
+.fc th {
+  border-bottom: none;
+  text-align: right;
+}
+
+.fc .fc-daygrid-day-number {
+  margin-left: 18px;
+}
+
+.fc .fc-daygrid-day-frame {
+  text-align: right;
+}
+
+.fc-day-today {
+  background: #fff !important;
+  border: 2px solid #208d8e !important;
+}
+
+.active-button {
+  border-bottom: 2px solid #208d8e;
+  color: #208d8e;
+  padding-bottom: 22px;
+}
+
+.active-button svg {
+  stroke: #208d8e; /* Apply the color to the icon */
+}
