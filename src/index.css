@@ -160,5 +160,18 @@
 }
 
 .active-button svg {
+
   stroke: #208d8e; /* Apply the color to the icon */
 }
+
+
+
+.active
+{
+  text-align: right;
+  width: 100%;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background-color: #E9F9FF;
+}
+

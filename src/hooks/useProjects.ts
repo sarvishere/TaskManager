@@ -8,14 +8,21 @@ const useProjects = () => {
   const [isLoading, setIsLoading] = useState(false);
 
  const getProjects = (workspaceId: number) => {
-
     setIsLoading(true);
     projectService(workspaceId)
       .getAll()
       .then((res) => setProjects(res.data))
       .catch((error) => setError(error))
       .finally(() => setIsLoading(false));
+}
 
+const addProject = (workspaceId: number , data) => {
+  setIsLoading(true);
+  projectService(workspaceId)
+    .create(workspaceId, data)
+    .then((res) => setProjects(res.data))
+    .catch((error) => setError(error))
+    .finally(() => setIsLoading(false));
 }
 const addProject=(workspaceId: number,data)=>{
   setIsLoading(true);

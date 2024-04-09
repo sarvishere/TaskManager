@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import Icon from '../ui/Icon';
+import { BoardContext } from '../../layout/Board';
 
 interface TaskNavProps {
   onButtonClick: (buttonType: string) => void;
   activeButton: string;
+  projectName: string;
 }
 
-const TaskNav: React.FC<TaskNavProps> = ({ onButtonClick, activeButton }) => {
+const TaskNav: React.FC<TaskNavProps> = ({ onButtonClick, activeButton  }) => {
+
+  const {projectNameState} = useContext(BoardContext);
+
   const handleButtonClick = (buttonType: string) => {
     onButtonClick(buttonType);
   };
@@ -19,7 +24,7 @@ const TaskNav: React.FC<TaskNavProps> = ({ onButtonClick, activeButton }) => {
     <div dir="rtl" className="font-iranyekan flex border-b-[0.5px] border-[#AAAAAA] justify-between w-[1033px] h-[64px] pt-[16px] pb-[16px] mt-[41px] mr-[16px]">
       <div className="flex">
         <div className="border-l-[0.5px] border-[#AAAAAA] pr-[16px] pl-[16px]">
-          <h1 className="font-black text-[20px] "> پروژه اول </h1>
+          <h1 className="font-black text-[20px] "> {projectNameState} </h1>
         </div>
 
         <div className="border-l-[0.5px] border-[#AAAAAA] pr-[16px] pl-[16px] ">
