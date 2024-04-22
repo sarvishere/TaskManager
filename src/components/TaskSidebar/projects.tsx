@@ -3,27 +3,23 @@ import useProjects from "../../hooks/useProjects";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
 import styles from "./styles.module.css";
-// import { Project } from "../../services/project-service";
+import { Project } from "../../services/project-service";
 
 interface ProjectProps {
   workspaceId: number;
-  newProjectName: string;
-  projectId: number;
-  // projects: Project[];
+  // newProjectName: string;
+  // projectId: number;
+  projects: Project[];
 }
 
 const Projects: React.FC<ProjectProps> = ({
   workspaceId,
-}: // projects,
+  projects,
+}: // projectId,
+// newProjectName,
 ProjectProps) => {
-  const {
-    projects,
-    error,
-    isLoading,
-    getProjects,
-    deleteProject,
-    updateProjectName,
-  } = useProjects(workspaceId);
+  const { error, isLoading, deleteProject, updateProjectName } =
+    useProjects(workspaceId);
 
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     null
@@ -40,10 +36,6 @@ ProjectProps) => {
       id: number;
     }>({ id: 0 });
   const [isHovering, setIsHovering] = useState<number | null>(null);
-
-  useEffect(() => {
-    getProjects();
-  }, [workspaceId]);
 
   const handleButtonClick = (id: number, name: string) => {
     const prevSelectedButton = document.querySelector(".active");
@@ -83,10 +75,6 @@ ProjectProps) => {
   const handleProjectName = (projectId: number, newProjectName: string) => {
     updateProjectName(workspaceId, projectId, newProjectName);
   };
-
-  // const handleAddProject = (workspaceId:number){
-  //   addProject({ name: newProject }, workspaceId)
-  // }
 
   return (
     <div>

@@ -4,19 +4,20 @@ import Icon from "../ui/Icon";
 interface CreateProjectModalProps {
   onClose: () => void;
   workspaceId: number;
-  onAddProject: (data: any, workspaceId: number) => Promise<void>;
+  onAddProject: (data: any, workspaceId: number) => void;
 }
 
 const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   onClose,
   workspaceId,
   onAddProject,
-}) => {
+}: CreateProjectModalProps) => {
   const [newProject, setNewProject] = useState("");
 
   const handleAddProject = () => {
     onAddProject({ name: newProject }, workspaceId);
     onClose();
+
     console.log("modal");
     console.log(workspaceId);
   };

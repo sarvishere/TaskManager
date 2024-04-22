@@ -13,7 +13,6 @@ import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
 import SettingsPage from "../pages/ProfilePages/SettingsPage";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -37,7 +36,7 @@ const router = createBrowserRouter([
         path: "profile",
         element: <ProfileLayout />,
         children: [
-          { index:true, element: <PersonalInfoPage /> },
+          { index: true, element: <PersonalInfoPage /> },
           { path: "accountinfo", element: <AccountsInfoPage /> },
           { path: "settings", element: <SettingsPage /> },
         ],
@@ -45,8 +44,8 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/test",
-    element: <Test />,
+    // path: "/test",
+    // element: <Test />,
   },
 ]);
 

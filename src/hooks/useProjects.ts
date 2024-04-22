@@ -25,18 +25,25 @@ const useProjects = (workspaceId: number) => {
     } finally {
     }
   };
-  
+
+  // setProjects(getProjects());
 
 
   const addProject = async (data: any, workspaceId: number) => {
     setIsLoading(true);
     try {
+      console.log("useproject",workspaceId,data)
       const response = await projectService<Project, Project>(workspaceId).create(data);
+
+      console.log("useproject",workspaceId,data)
       const newProject = response.data;
+
       setProjects([...projects, newProject]);
-      const updatedProjects = await getProjects(); 
-      console.log(workspaceId)
-      setProjects(updatedProjects);
+      console.log(projects);
+      console.log("h")
+      // const updatedProjects = await getProjects(); 
+
+      // setProjects(updatedProjects);
 
       
     } catch (error) {
