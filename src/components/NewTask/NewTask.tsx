@@ -57,6 +57,7 @@ const NewTask: React.FC<NewTaskProps> = () => {
   const handleTaskDesc = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTaskDesc(e.target.value);
   };
+
   const task = {
     name: taskName,
     description: taskDesc,
@@ -76,7 +77,7 @@ const NewTask: React.FC<NewTaskProps> = () => {
       <Flex
         justifyContent="center"
         alignItems="center"
-        className="fixed inset-0 w-screen h-screen backdrop-blur-sm"
+        className="inset-0 w-screen h-screen backdrop-blur-sm"
       >
         <Flex
           direction="col"
@@ -95,7 +96,10 @@ const NewTask: React.FC<NewTaskProps> = () => {
                 onChange={handleTaskName}
               />
             </Flex>
-            <Icon iconName="Close" />
+            <button>
+              {" "}
+              <Icon iconName="Close" />{" "}
+            </button>
           </Flex>
           <Flex alignItems="center">
             در

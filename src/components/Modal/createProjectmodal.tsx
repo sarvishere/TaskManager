@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import Icon from "../ui/Icon";
 
 interface CreateProjectModalProps {
   onClose: () => void;
+  workspaceId: number;
+  onAddProject: (data: any, workspaceId: number) => Promise<void>;
 }
 
-const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ onClose }) => {
+const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
+  onClose,
+  workspaceId,
+  onAddProject,
+}) => {
+  const [newProject, setNewProject] = useState("");
+
+  const handleAddProject = () => {
+    onAddProject({ name: newProject }, workspaceId);
+    onClose();
+    console.log("modal");
+    console.log(workspaceId);
+  };
+
   const handleClose = () => {
     onClose();
   };
-
   return (
     <div className="w-[184px] h-[204px] rounded-lg bg-white justify-center flex flex-col items-center">
       <button onClick={handleClose}>
@@ -18,8 +32,15 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ onClose }) => {
 
       <div>
         <div className="flex ">
-          <Icon iconName="Add" />
-          <p> ساخت پروژه جدید </p>
+          <button onClick={handleAddProject}>
+            <Icon iconName="Add" />
+          </button>
+          <input
+            type="text"
+            placeholder=" ایجاد پروژه جدید"
+            value={newProject}
+            onChange={(e) => setNewProject(e.target.value)}
+          />
         </div>
 
         <div className="flex mt-2">

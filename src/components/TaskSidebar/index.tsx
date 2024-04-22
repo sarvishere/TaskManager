@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import Icon from "../ui/Icon";
 import useAuth from "../../hooks/useAuth";
 import WorkspacesList from "./workspaces";
 import { useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
+import useWorkspaces from "../../hooks/useWorkspaces";
+import workspace from "./workspace";
 
 const getFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase();
@@ -12,7 +14,7 @@ const getFirstLetter = (str: string): string => {
 const TaskSidebar: React.FC = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
+  const { workspaces } = useWorkspaces();
   return (
     <div
       dir="rtl"
@@ -56,10 +58,10 @@ const TaskSidebar: React.FC = () => {
             <Icon iconName="SquarePlus" />
             <h3 className="font-iranyekan font-normal text-[12px] ">
               {" "}
-              مایا ساختن ورک‌اسپیس جدید
+              ساختن ورک‌اسپیس جدید
             </h3>
           </div>
-          <WorkspacesList />
+          <WorkspacesList data={""} workspaceId={workspace.id} />
         </Accordion>
       </div>
       <div className=" flex flex-col p-12  mt-auto">

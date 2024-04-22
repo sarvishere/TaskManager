@@ -87,12 +87,13 @@ class APIClient<TData, TResponse> {
   };
 
   patch = async (
-    data: TData,
+        id: number,
+    data?: TData,
     config?: AxiosRequestConfig,
-    id?: number
+
   ): Promise<AxiosResponse<TResponse>> => {
     return axiosInstance.patch<TData, AxiosResponse<TResponse>>(
-      `${this.endpoint}${id ?? ""}/`,
+      `${this.endpoint}${id}/`,
       data,
       config
     );

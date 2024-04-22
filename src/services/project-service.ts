@@ -6,10 +6,8 @@ export interface Project {
   name: string;
 }
 
-
-
 const projectService = <TData = any, TResponse = Project>(
-  workspaceId: number
+  workspaceId: number,
 ) => new APIClient<TData, TResponse>(`/workspaces/${workspaceId}/projects/`);
 
 export default projectService;
