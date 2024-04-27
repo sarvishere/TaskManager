@@ -27,8 +27,6 @@ const Workspace: React.FC<WorkspaceProps> = ({
   useEffect(() => {
     getProjects();
   }, [workspaceId]);
-  console.log("workspace.tsx");
-  console.log(projects);
 
   const handleCloseModal = () => {
     setIsWorkspaceModal(false);

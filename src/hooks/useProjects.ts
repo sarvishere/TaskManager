@@ -6,12 +6,11 @@ const useProjects = (workspaceId: number) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [error, setError] = useState<Error>();
   const [isLoading, setIsLoading] = useState(false);
-  const [updatedProject, setUpdatedProject] = useState<Project>();
+
 
   interface UpdateProjectData {
     name: string;
   }
-  
 
   const getProjects = async () => {
     try {
@@ -26,26 +25,14 @@ const useProjects = (workspaceId: number) => {
     }
   };
 
-  // setProjects(getProjects());
-
 
   const addProject = async (data: any, workspaceId: number) => {
     setIsLoading(true);
     try {
-      console.log("useproject",workspaceId,data)
       const response = await projectService<Project, Project>(workspaceId).create(data);
-
-      console.log("useproject",workspaceId,data)
       const newProject = response.data;
-
       setProjects([...projects, newProject]);
-      console.log(projects);
-      console.log("h")
-      // const updatedProjects = await getProjects(); 
 
-      // setProjects(updatedProjects);
-
-      
     } catch (error) {
       setError(error  as Error);
       throw error;
@@ -67,10 +54,6 @@ const useProjects = (workspaceId: number) => {
     }
   };
   
-
-
-
-
   const updateProjectName = async (
     workspaceId: number,
     projectId: number,
@@ -80,9 +63,10 @@ const useProjects = (workspaceId: number) => {
       const data: UpdateProjectData = { name: newProjectName }; 
       const res = await projectService(workspaceId)
         .patch(projectId, data);
-      setUpdatedProject(res.data);
-      await getProjects(); 
-
+      const updatedProjectObj = res.data;
+      const i = projects.findIndex(x => x.id === updatedProjectObj.id)
+      projects[i] = updatedProjectObj
+      setProjects(projects)
     } finally {
       setIsLoading(false);
     }

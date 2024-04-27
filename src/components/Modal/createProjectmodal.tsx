@@ -17,9 +17,6 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   const handleAddProject = () => {
     onAddProject({ name: newProject }, workspaceId);
     onClose();
-
-    console.log("modal");
-    console.log(workspaceId);
   };
 
   const handleClose = () => {

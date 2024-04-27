@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import useProjects from "../../hooks/useProjects";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
@@ -7,20 +7,13 @@ import { Project } from "../../services/project-service";
 
 interface ProjectProps {
   workspaceId: number;
-  // newProjectName: string;
-  // projectId: number;
   projects: Project[];
 }
 
 const Projects: React.FC<ProjectProps> = ({
   workspaceId,
   projects,
-}: // projectId,
-// newProjectName,
-ProjectProps) => {
-  const { error, isLoading, deleteProject, updateProjectName } =
-    useProjects(workspaceId);
-
+}: ProjectProps) => {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     null
   );
@@ -36,6 +29,9 @@ ProjectProps) => {
       id: number;
     }>({ id: 0 });
   const [isHovering, setIsHovering] = useState<number | null>(null);
+
+  const { isLoading, error, updateProjectName, deleteProject, getProjects } =
+    useProjects(workspaceId);
 
   const handleButtonClick = (id: number, name: string) => {
     const prevSelectedButton = document.querySelector(".active");
@@ -66,14 +62,6 @@ ProjectProps) => {
   const handleCloseModal = () => {
     setIsTaskModalOpen(false);
     setSelectedProjectForTask(null);
-  };
-
-  const handleDeleteProject = (projectId: number) => {
-    deleteProject(workspaceId, projectId);
-  };
-
-  const handleProjectName = (projectId: number, newProjectName: string) => {
-    updateProjectName(workspaceId, projectId, newProjectName);
   };
 
   return (
@@ -129,8 +117,9 @@ ProjectProps) => {
             projectName={selectedProjectForTask.name}
             onClose={handleCloseModal}
             workspaceId={selectedProjectWorkspaceForEdit.id}
-            onDeleteProject={handleDeleteProject}
-            onUpdateProjectName={handleProjectName}
+            onDeleteProject={deleteProject}
+            onUpdateProjectName={updateProjectName}
+            projects={[]}
           />
         </div>
       )}

@@ -1,25 +1,36 @@
 import React, { useState } from "react";
 import Icon from "../ui/Icon";
 import NewTask from "../NewTask/NewTask";
+
 interface CreateTaskModalProps {
   onClose: () => void;
   projectId: number;
   projectName: string;
+  projects: Project[];
   workspaceId: number;
-  onDeleteProject: (projectId: number) => void;
-  onUpdateProjectName: (projectId: number, newProjectName: string) => void;
+  onDeleteProject: (workspaceId: number, projectId: number) => void;
+  onUpdateProjectName: (
+    workspaceId: number,
+    projectId: number,
+    newProjectName: string
+  ) => void;
+  // getProjectsAgain: () => void;
 }
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   onClose,
   projectId,
   projectName,
+  // projectsو
+  workspaceId,
   onDeleteProject,
   onUpdateProjectName,
+  // getProjectsAgain,
 }) => {
   const [newProjectName, setNewProjectName] = useState(projectName);
   const [showNewTask, setShowNewTask] = useState(false);
-
+  //
+  // const { getProjects } = useProjects(workspaceId);
   const handleClose = () => {
     onClose();
   };
@@ -29,13 +40,19 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   };
 
   const handleUpdateProjectName = () => {
-    onUpdateProjectName(projectId, newProjectName);
+    console.log("yoo");
+    console.log(workspaceId, projectId, newProjectName);
+    onUpdateProjectName(workspaceId, projectId, newProjectName);
+    // getProjectsAgain();
+
     onClose();
   };
 
   const handleDeleteProject = () => {
-    onDeleteProject(projectId);
+    onDeleteProject(workspaceId, projectId);
     handleClose();
+    // getProjects();
+    // console.log(getProjects());
   };
 
   return (
