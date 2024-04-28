@@ -6,7 +6,6 @@ interface CreateTaskModalProps {
   onClose: () => void;
   projectId: number;
   projectName: string;
-  projects: Project[];
   workspaceId: number;
   onDeleteProject: (workspaceId: number, projectId: number) => void;
   onUpdateProjectName: (
@@ -14,23 +13,19 @@ interface CreateTaskModalProps {
     projectId: number,
     newProjectName: string
   ) => void;
-  // getProjectsAgain: () => void;
 }
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   onClose,
   projectId,
   projectName,
-  // projectsو
   workspaceId,
   onDeleteProject,
   onUpdateProjectName,
-  // getProjectsAgain,
 }) => {
   const [newProjectName, setNewProjectName] = useState(projectName);
   const [showNewTask, setShowNewTask] = useState(false);
-  //
-  // const { getProjects } = useProjects(workspaceId);
+
   const handleClose = () => {
     onClose();
   };
@@ -43,16 +38,12 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
     console.log("yoo");
     console.log(workspaceId, projectId, newProjectName);
     onUpdateProjectName(workspaceId, projectId, newProjectName);
-    // getProjectsAgain();
-
     onClose();
   };
 
   const handleDeleteProject = () => {
     onDeleteProject(workspaceId, projectId);
     handleClose();
-    // getProjects();
-    // console.log(getProjects());
   };
 
   return (

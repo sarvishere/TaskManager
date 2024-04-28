@@ -1,18 +1,21 @@
 import React, { useState, useContext } from "react";
-import useProjects from "../../hooks/useProjects";
+// import useProjects from "../../hooks/useProjects";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
 import styles from "./styles.module.css";
-import { Project } from "../../services/project-service";
+import useProjects from "../../hooks/useProjects";
+// import { Project } from "../../services/project-service";
 
 interface ProjectProps {
   workspaceId: number;
-  projects: Project[];
+  projectId: number;
+  projectName: string;
 }
 
-const Projects: React.FC<ProjectProps> = ({
+const EachProject: React.FC<ProjectProps> = ({
   workspaceId,
-  projects,
+  projectId,
+  projectName,
 }: ProjectProps) => {
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     null
@@ -66,60 +69,46 @@ const Projects: React.FC<ProjectProps> = ({
 
   return (
     <div>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Error: {error.message}</p>}
-      {projects && (
-        <ul>
-          {projects.map((project) => (
-            <li
-              key={project.id}
-              className={projects.length > 0 ? "mr-5 pt-2" : ""}
-            >
-              <div
-                className="group flex justify-between"
-                onMouseEnter={() => setIsHovering(project.id)}
-                onMouseLeave={() => setIsHovering(null)}
-              >
-                <button
-                  id={`project-${project.id}`}
-                  onClick={() => handleButtonClick(project.id, project.name)}
-                  className={`px-4 py-2 transition-colors duration-300 ease-in-out ${
-                    selectedProjectId === project.id ? "active" : ""
-                  }`}
-                >
-                  {project.name}
-                </button>
+      <li key={projectId} className={projectName.length > 0 ? "mr-5 pt-2" : ""}>
+        <div
+          className="group flex justify-between"
+          onMouseEnter={() => setIsHovering(projectId)}
+          onMouseLeave={() => setIsHovering(null)}
+        >
+          <button
+            id={`project-${projectId}`}
+            onClick={() => handleButtonClick(projectId, projectName)}
+            className={`px-4 py-2 transition-colors duration-300 ease-in-out ${
+              selectedProjectId === projectId ? "active" : ""
+            }`}
+          >
+            {projectName}
+          </button>
 
-                {isHovering === project.id && (
-                  <button
-                    onClick={(e) =>
-                      handleInnerButtonClick(e, project.id, project.name)
-                    }
-                    className={`${
-                      selectedProjectId === project.id && selected
-                        ? "bg-[#E9F9FF]"
-                        : ""
-                    }`}
-                  >
-                    ...
-                  </button>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
-      )}
+          {isHovering === projectId && (
+            <button
+              onClick={(e) => handleInnerButtonClick(e, projectId, projectName)}
+              className={`${
+                selectedProjectId === projectId && selected
+                  ? "bg-[#E9F9FF]"
+                  : ""
+              }`}
+            >
+              ...
+            </button>
+          )}
+        </div>
+      </li>
 
       {isTaskModalOpen && selectedProjectForTask && (
         <div className={styles["modal"]}>
           <CreateTaskModal
-            projectId={selectedProjectForTask.id}
-            projectName={selectedProjectForTask.name}
+            projectId={projectId}
+            projectName={projectName}
             onClose={handleCloseModal}
-            workspaceId={selectedProjectWorkspaceForEdit.id}
+            workspaceId={workspaceId}
             onDeleteProject={deleteProject}
             onUpdateProjectName={updateProjectName}
-            projects={[]}
           />
         </div>
       )}
@@ -127,4 +116,4 @@ const Projects: React.FC<ProjectProps> = ({
   );
 };
 
-export default Projects;
+export default EachProject;

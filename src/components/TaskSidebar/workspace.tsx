@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import CreateProjectModal from "../Modal/createProjectmodal";
-import Projects from "./projects";
+import ProjectList from "./projectlist";
 import useProjects from "../../hooks/useProjects";
 
 export interface WorkspaceProps {
@@ -70,7 +70,10 @@ const Workspace: React.FC<WorkspaceProps> = ({
         </div>
 
         <div>
-          <Projects workspaceId={workspaceId} projects={projects} />
+          <ProjectList
+            workspaceId={workspaceId}
+            // Newprojects={projects}
+          />
         </div>
       </li>
 
