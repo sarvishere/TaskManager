@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useProjects from "../../hooks/useProjects";
 import EachProject from "./project";
 import { Project } from "../../services/project-service";
@@ -8,13 +7,9 @@ interface ProjecListProps {
   projects: Project[];
 }
 
-const ProjectList = ({ workspaceId }: ProjecListProps) => {
+const ProjectList = ({ workspaceId, projects }: ProjecListProps) => {
   console.log("here");
-  const { isLoading, projects, getProjects, error } = useProjects(workspaceId);
-  // const { projects, getProjects, addProject } = useProjects(workspaceId);
-  useEffect(() => {
-    getProjects();
-  }, [workspaceId]);
+  const { isLoading, error } = useProjects(workspaceId);
 
   console.log(projects);
   return (

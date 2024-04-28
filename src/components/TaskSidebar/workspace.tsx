@@ -14,19 +14,13 @@ const Workspace: React.FC<WorkspaceProps> = ({
   workspaceColor,
   WorkspaceName,
 }: WorkspaceProps) => {
-  const [selectedWorkspace, setSelectedWorkspace] = useState<{
-    id: number;
-  }>({ id: 0 });
-  const [hoveredWorkspaceId, setHoveredWorkspaceId] = useState<number | null>(
-    null
-  );
-  const handleWorkspaceHover = (id: number | null) => {
-    setHoveredWorkspaceId(id);
-  };
   const { projects, getProjects, addProject } = useProjects(workspaceId);
   useEffect(() => {
     getProjects();
   }, [workspaceId]);
+
+  const [isHovered, setIsHovered] = useState(false);
+  const [isWorkspaceModal, setIsWorkspaceModal] = useState(false);
 
   const handleCloseModal = () => {
     setIsWorkspaceModal(false);
@@ -34,46 +28,39 @@ const Workspace: React.FC<WorkspaceProps> = ({
 
   const handleButtonClick = (e: any) => {
     setIsWorkspaceModal(true);
-    setSelectedWorkspace({ id: Number(e.target.value) });
   };
-
-  const [isWorkspaceModal, setIsWorkspaceModal] = useState(false);
 
   return (
     <div>
-      <li key={workspaceId} className="flex flex-col pt-2">
-        <div
-          className="flex justify-between "
-          onMouseEnter={() => handleWorkspaceHover(workspaceId)}
-          onMouseLeave={() => handleWorkspaceHover(null)}
-        >
-          <div className="flex gap-1">
+      <li
+        key={workspaceId}
+        className="relative"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="flex justify-between">
+          <div className="flex  gap-2">
             <span
               className="w-4 h-4 rounded "
               style={{ backgroundColor: workspaceColor }}
             />
             <p>{WorkspaceName}</p>
           </div>
-
-          <div>
-            {hoveredWorkspaceId === workspaceId && (
-              <button
-                onClick={(e) => handleButtonClick(e)}
-                className=" text-black rounded"
-                value={workspaceId}
-              >
-                {" "}
-                ...{" "}
-              </button>
-            )}
-          </div>
+          <button
+            className={` ${
+              isHovered ? "visible" : "invisible"
+            }  text-black rounded  `}
+            onClick={handleButtonClick}
+          >
+            {" "}
+            ...{" "}
+          </button>
         </div>
+      </li>
 
+      <li>
         <div>
-          <ProjectList
-            workspaceId={workspaceId}
-            // Newprojects={projects}
-          />
+          <ProjectList workspaceId={workspaceId} projects={projects} />
         </div>
       </li>
 

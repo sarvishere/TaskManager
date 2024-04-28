@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 // import useProjects from "../../hooks/useProjects";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
@@ -17,6 +17,12 @@ const EachProject: React.FC<ProjectProps> = ({
   projectId,
   projectName,
 }: ProjectProps) => {
+  const { updateProjectName, deleteProject, getProjects } =
+    useProjects(workspaceId);
+  useEffect(() => {
+    getProjects();
+  }, [workspaceId]);
+
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     null
   );
@@ -32,9 +38,6 @@ const EachProject: React.FC<ProjectProps> = ({
       id: number;
     }>({ id: 0 });
   const [isHovering, setIsHovering] = useState<number | null>(null);
-
-  const { isLoading, error, updateProjectName, deleteProject, getProjects } =
-    useProjects(workspaceId);
 
   const handleButtonClick = (id: number, name: string) => {
     const prevSelectedButton = document.querySelector(".active");
@@ -52,19 +55,19 @@ const EachProject: React.FC<ProjectProps> = ({
   };
 
   const handleInnerButtonClick = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    id: number,
-    name: string
+    e: React.MouseEvent<HTMLButtonElement>
+    // id: number,
+    // name: string
   ) => {
-    setSelectedProjectForTask({ id, name });
+    // setSelectedProjectForTask({ id, name });
     setIsTaskModalOpen(true);
-    setSelectedProjectWorkspaceForEdit({ id: workspaceId });
+    // setSelectedProjectWorkspaceForEdit({ id: workspaceId });
     e.stopPropagation();
   };
 
   const handleCloseModal = () => {
     setIsTaskModalOpen(false);
-    setSelectedProjectForTask(null);
+    // setSelectedProjectForTask(null);
   };
 
   return (
@@ -76,18 +79,23 @@ const EachProject: React.FC<ProjectProps> = ({
           onMouseLeave={() => setIsHovering(null)}
         >
           <button
-            id={`project-${projectId}`}
-            onClick={() => handleButtonClick(projectId, projectName)}
-            className={`px-4 py-2 transition-colors duration-300 ease-in-out ${
-              selectedProjectId === projectId ? "active" : ""
-            }`}
+          // id={`project-${projectId}`}
+          // onClick={() => handleButtonClick(projectId, projectName)}
+          // className={`px-4 py-2 transition-colors duration-300 ease-in-out ${
+          //   selectedProjectId === projectId ? "active" : ""
+          // }`}
           >
             {projectName}
           </button>
 
           {isHovering === projectId && (
             <button
-              onClick={(e) => handleInnerButtonClick(e, projectId, projectName)}
+              onClick={(e) =>
+                handleInnerButtonClick(
+                  e
+                  // , projectId, projectName
+                )
+              }
               className={`${
                 selectedProjectId === projectId && selected
                   ? "bg-[#E9F9FF]"
@@ -100,7 +108,8 @@ const EachProject: React.FC<ProjectProps> = ({
         </div>
       </li>
 
-      {isTaskModalOpen && selectedProjectForTask && (
+      {isTaskModalOpen && (
+        //  && selectedProjectForTask
         <div className={styles["modal"]}>
           <CreateTaskModal
             projectId={projectId}
