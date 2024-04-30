@@ -41,6 +41,7 @@ const useProjects = (workspaceId: number) => {
     }
   };
 
+
   const deleteProject = async (workspaceId: number, projectId: number) => {
     try {
       await projectService(workspaceId).delete(projectId);
@@ -53,24 +54,33 @@ const useProjects = (workspaceId: number) => {
       setIsLoading(false);
     }
   };
-  
+
   const updateProjectName = async (
     workspaceId: number,
     projectId: number,
     newProjectName: string
   ) => {
+    setIsLoading(true);
     try {
       const data: UpdateProjectData = { name: newProjectName }; 
-      const res = await projectService(workspaceId)
-        .patch(projectId, data);
-      const updatedProjectObj = res.data;
-      const i = projects.findIndex(x => x.id === updatedProjectObj.id)
-      projects[i] = updatedProjectObj
-      setProjects(projects)
+      await projectService(workspaceId).patch(projectId, data);
+
+      const updatedProjects = projects.map(project => {
+        if (project.id === projectId) {
+          return { ...project, name: newProjectName }; 
+        }
+        return project;
+      });
+      setProjects(updatedProjects);
+    } catch (error) {
+      setError(error as Error);
+      throw error;
     } finally {
       setIsLoading(false);
     }
   };
+  
+
   return { projects, error, isLoading, getProjects, addProject, deleteProject, updateProjectName };
 };
 

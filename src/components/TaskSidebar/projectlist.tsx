@@ -5,13 +5,19 @@ import { Project } from "../../services/project-service";
 interface ProjecListProps {
   workspaceId: number;
   projects: Project[];
+  updateProjectName: any;
+  deleteProject: any;
 }
 
-const ProjectList = ({ workspaceId, projects }: ProjecListProps) => {
-  console.log("here");
+const ProjectList = ({
+  workspaceId,
+  projects,
+  updateProjectName,
+  deleteProject,
+}: ProjecListProps) => {
   const { isLoading, error } = useProjects(workspaceId);
+  // console.log("here in projectlist", projects, workspaceId);
 
-  console.log(projects);
   return (
     <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
       {isLoading ? (
@@ -27,6 +33,8 @@ const ProjectList = ({ workspaceId, projects }: ProjecListProps) => {
                 workspaceId={workspaceId}
                 projectId={project.id}
                 projectName={project.name}
+                updateProjectName={updateProjectName}
+                deleteProject={deleteProject}
               />
             ))}
         </ul>

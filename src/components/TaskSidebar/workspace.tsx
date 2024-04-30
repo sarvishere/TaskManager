@@ -14,7 +14,13 @@ const Workspace: React.FC<WorkspaceProps> = ({
   workspaceColor,
   WorkspaceName,
 }: WorkspaceProps) => {
-  const { projects, getProjects, addProject } = useProjects(workspaceId);
+  const {
+    projects,
+    getProjects,
+    addProject,
+    updateProjectName,
+    deleteProject,
+  } = useProjects(workspaceId);
   useEffect(() => {
     getProjects();
   }, [workspaceId]);
@@ -26,7 +32,7 @@ const Workspace: React.FC<WorkspaceProps> = ({
     setIsWorkspaceModal(false);
   };
 
-  const handleButtonClick = (e: any) => {
+  const handleButtonClick = () => {
     setIsWorkspaceModal(true);
   };
 
@@ -60,7 +66,12 @@ const Workspace: React.FC<WorkspaceProps> = ({
 
       <li>
         <div>
-          <ProjectList workspaceId={workspaceId} projects={projects} />
+          <ProjectList
+            workspaceId={workspaceId}
+            projects={projects}
+            updateProjectName={updateProjectName}
+            deleteProject={deleteProject}
+          />
         </div>
       </li>
 

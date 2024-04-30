@@ -4,6 +4,7 @@ import NewTask from "../NewTask/NewTask";
 
 interface CreateTaskModalProps {
   onClose: () => void;
+  // projects: { id: number; name: string }[];
   projectId: number;
   projectName: string;
   workspaceId: number;
@@ -35,10 +36,9 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   };
 
   const handleUpdateProjectName = () => {
-    console.log("yoo");
-    console.log(workspaceId, projectId, newProjectName);
     onUpdateProjectName(workspaceId, projectId, newProjectName);
     onClose();
+    console.log("here in modal", newProjectName, workspaceId);
   };
 
   const handleDeleteProject = () => {
