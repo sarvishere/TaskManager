@@ -87,7 +87,7 @@ class APIClient<TData, TResponse> {
   };
 
   patch = async (
-        id: number,
+        id?: number,
     data?: TData,
     config?: AxiosRequestConfig,
 

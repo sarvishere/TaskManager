@@ -16,7 +16,6 @@ const ProjectList = ({
   deleteProject,
 }: ProjecListProps) => {
   const { isLoading, error } = useProjects(workspaceId);
-  // console.log("here in projectlist", projects, workspaceId);
 
   return (
     <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>

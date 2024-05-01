@@ -61,6 +61,7 @@ export default {
         blue: {
           primary: "#228BE6",
           secondary: "#D0EBFF",
+          light: "#E9F9FF",
         },
         cyan: {
           primary: "#15AABF",

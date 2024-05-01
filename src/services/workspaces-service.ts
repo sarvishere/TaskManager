@@ -1,4 +1,3 @@
-import React from 'react'
 import APIClient from './api-client'
 
 export interface IWorkspaces {

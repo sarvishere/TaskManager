@@ -21,8 +21,14 @@ const EachProject: React.FC<ProjectProps> = ({
   updateProjectName,
   deleteProject,
 }: ProjectProps) => {
+  const { updateProjectNameState } = useContext(BoardContext);
+
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isHover, setIsHover] = useState<boolean>(false);
+
+  const handleProjectClick = () => {
+    updateProjectNameState(projectName);
+  };
 
   const handleButtonClick = () => {
     setIsTaskModalOpen(true);
@@ -32,18 +38,22 @@ const EachProject: React.FC<ProjectProps> = ({
     setIsTaskModalOpen(false);
   };
 
-  // console.log("here in project", projectName, workspaceId);
-
   return (
     <div>
-      <li
-        key={projectId}
-        className="relative"
-        onMouseEnter={() => setIsHover(true)}
-        onMouseLeave={() => setIsHover(false)}
+      <button
+        onClick={handleProjectClick}
+        className="
+        focus:bg-blue-light rk:text-white w-full"
       >
-        <div className="flex justify-between pr-4">
+        <li
+          key={projectId}
+          className="relative flex justify-between items-center pr-4"
+          onMouseEnter={() => setIsHover(true)}
+          onMouseLeave={() => setIsHover(false)}
+        >
+          {/* <div className=""> */}
           <div>{projectName}</div>
+
           <button
             className={` ${
               isHover ? "visible" : "invisible"
@@ -53,8 +63,10 @@ const EachProject: React.FC<ProjectProps> = ({
             {" "}
             ...{" "}
           </button>
-        </div>
-      </li>
+
+          {/* </div> */}
+        </li>
+      </button>
 
       {isTaskModalOpen && (
         <div className={styles["modal"]}>

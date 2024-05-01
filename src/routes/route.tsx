@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router-dom";
-import Test from "../pages/test";
 import AuthenticationLayout from "../layout/AuthenticationLayout";
 import HomePage from "../pages/HomePage";
 import RegisterPage from "../pages/RegisterPage";
@@ -12,6 +11,7 @@ import ProfileLayout from "../layout/ProfileLayout";
 import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
 import SettingsPage from "../pages/ProfilePages/SettingsPage";
+import Test from "../pages/test";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +32,7 @@ const router = createBrowserRouter([
     children: [
       { path: "users", element: <UsersPage /> },
       { path: "board", element: <BoardPage /> },
+      { path: "test", element: <Test /> },
       {
         path: "profile",
         element: <ProfileLayout />,
@@ -42,10 +43,6 @@ const router = createBrowserRouter([
         ],
       },
     ],
-  },
-  {
-    // path: "/test",
-    // element: <Test />,
   },
 ]);
 

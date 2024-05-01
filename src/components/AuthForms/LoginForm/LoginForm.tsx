@@ -35,7 +35,7 @@ const LoginForm = () => {
             🎉 خوش آمدید
           </Text>
         );
-      navigate("/");
+      navigate("/board");
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         toast.error(
