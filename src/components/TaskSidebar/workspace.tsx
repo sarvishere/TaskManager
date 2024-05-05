@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CreateProjectModal from "../Modal/createProjectmodal";
 import ProjectList from "./projectlist";
 import useProjects from "../../hooks/useProjects";
+import useWorkspaces from "../../hooks/useWorkspaces";
 
 export interface WorkspaceProps {
   workspaceId: number;
@@ -24,6 +25,8 @@ const Workspace: React.FC<WorkspaceProps> = ({
   useEffect(() => {
     getProjects();
   }, [workspaceId]);
+
+  const { deleteWorkspace } = useWorkspaces();
 
   const [isHovered, setIsHovered] = useState(false);
   const [isWorkspaceModal, setIsWorkspaceModal] = useState(false);
@@ -82,6 +85,7 @@ const Workspace: React.FC<WorkspaceProps> = ({
               onClose={handleCloseModal}
               workspaceId={workspaceId}
               onAddProject={addProject}
+              onDelete={deleteWorkspace}
             />
           </div>
         </div>

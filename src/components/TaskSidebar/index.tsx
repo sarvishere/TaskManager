@@ -59,7 +59,10 @@ const TaskSidebar: React.FC = () => {
               ساختن ورک‌اسپیس جدید
             </h3>
           </div>
-          <WorkspacesList />
+          <WorkspacesList
+          // workspaceId={workspaceId}
+          // deleteProject={deleteProject}
+          />
         </Accordion>
       </div>
       <div className=" flex flex-col p-12  mt-auto">

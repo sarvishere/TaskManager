@@ -5,17 +5,24 @@ interface CreateProjectModalProps {
   onClose: () => void;
   workspaceId: number;
   onAddProject: (data: any, workspaceId: number) => void;
+  onDelete: (workspaceId: number) => void;
 }
 
 const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   onClose,
   workspaceId,
   onAddProject,
+  onDelete,
 }: CreateProjectModalProps) => {
   const [newProject, setNewProject] = useState("");
 
   const handleAddProject = () => {
     onAddProject({ name: newProject }, workspaceId);
+    onClose();
+  };
+
+  const handleDeleteWorkspace = () => {
+    onDelete(workspaceId);
     onClose();
   };
 
@@ -57,7 +64,10 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         </div>
 
         <div className="flex mt-2">
-          <Icon iconName="Remove" />
+          <button onClick={handleDeleteWorkspace}>
+            <Icon iconName="Remove" />
+          </button>
+
           <p> حذف</p>
         </div>
       </div>

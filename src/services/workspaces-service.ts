@@ -1,20 +1,20 @@
-import APIClient from './api-client'
+// import APIClient from './api-client'
 
-export interface IWorkspaces {
-  projects: any
-  id: number,
-  name: string,
-  color: string
-}
+// export interface IWorkspaces {
+//   projects?: any
+//   id: number,
+//   name: string,
+//   color: string
+// }
 
-const workspacesService= <TData = any , TResponse = IWorkspaces > () => {
-  return (
-    new APIClient <TData , TResponse> (
-      `/workspaces/` 
-      )
-  )
-    }
+// const workspacesService= <TData = any , TResponse = IWorkspaces > () => {
+//   return (
+//     new APIClient <TData , TResponse> (
+//       `/workspaces/` 
+//       )
+//   )
+//     }
  
 
 
-export default workspacesService;
+// export default workspacesService;

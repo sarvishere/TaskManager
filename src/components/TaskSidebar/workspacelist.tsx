@@ -1,8 +1,12 @@
 import Workspace from "./workspace";
 import useWorkspaces from "../../hooks/useWorkspaces";
+import { useEffect } from "react";
 
 const WorkspaceList: React.FC = () => {
-  const { isLoading, workspaces, error } = useWorkspaces();
+  const { isLoading, workspaces, error, getWorkspaces } = useWorkspaces();
+  useEffect(() => {
+    getWorkspaces();
+  }, []);
 
   return (
     <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
