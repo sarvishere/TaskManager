@@ -2,7 +2,7 @@ import React from "react";
 import Icon from "../ui/Icon";
 import useAuth from "../../hooks/useAuth";
 import WorkspacesList from "./workspacelist";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
 
 const getFirstLetter = (str: string): string => {
@@ -71,7 +71,7 @@ const TaskSidebar: React.FC = () => {
                 {user.last_name && getFirstLetter(user.last_name)}
               </span>
             </div>
-            <h1>{user.username}</h1>
+            <Link to="/profile">{user.username}</Link>
           </div>
         )}
         <div className="flex  text-[#818181] mt-4">
