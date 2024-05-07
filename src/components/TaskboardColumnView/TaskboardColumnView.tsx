@@ -16,6 +16,7 @@ import Seperator from "../ui/Seperator";
 import Text from "../ui/Text";
 import Board from "./Board/Board";
 import TaskBoardToolbar from "./TaskBoardToolbar/TaskBoardToolbar";
+import NewTask from "../NewTask/NewTask";
 
 const TaskboardColumnView = () => {
   const [showArchive, setShowArchive] = useState(false);
@@ -27,6 +28,7 @@ const TaskboardColumnView = () => {
   const { updateBoard, boardUpdateError, updatedBoard } = useUpdateBoard();
   const workspaceId = 2;
   const projectId = 2;
+  const [taskModal,setTaskModal]=useState(false);
 
   useEffect(() => {
     getBoards(2, 2);
@@ -216,6 +218,12 @@ const TaskboardColumnView = () => {
     showArchive ? b : b.is_archive === false
   );
 
+  const newTaskModalHandler=()=>{
+    setTaskModal(!taskModal)
+  }
+  const handleCloseModal=()=>{
+    setTaskModal(false)
+  }
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="h-full">
@@ -245,10 +253,12 @@ const TaskboardColumnView = () => {
         <Button
           color="brand"
           className="fixed bottom-6 left-6 flex gap-1 items-center"
+          onClick={newTaskModalHandler}
         >
           <Icon iconName="SquarePlus" stroke="#FFF" />
           تسک جدید
         </Button>
+        {taskModal&&<NewTask onClose={handleCloseModal}></NewTask>}
       </div>
     </DragDropContext>
   );
