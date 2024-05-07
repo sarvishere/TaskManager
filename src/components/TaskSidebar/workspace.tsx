@@ -7,12 +7,17 @@ export interface WorkspaceProps {
   workspaceId: number;
   workspaceColor?: string;
   WorkspaceName: string;
+  deleteWorkspace: any;
+  updateWorkspaceName: any;
+  workspaceName: string;
 }
 
 const Workspace: React.FC<WorkspaceProps> = ({
   workspaceId,
   workspaceColor,
   WorkspaceName,
+  updateWorkspaceName,
+  deleteWorkspace,
 }: WorkspaceProps) => {
   const {
     projects,
@@ -82,6 +87,9 @@ const Workspace: React.FC<WorkspaceProps> = ({
               onClose={handleCloseModal}
               workspaceId={workspaceId}
               onAddProject={addProject}
+              onDeleteWorkspace={deleteWorkspace}
+              workspaceName={WorkspaceName}
+              onUpdateWorkspaceName={updateWorkspaceName}
             />
           </div>
         </div>

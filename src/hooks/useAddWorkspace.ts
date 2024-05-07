@@ -1,5 +1,5 @@
 import { useState } from "react"
-import addWorkspaceService, { IWorkspace } from "../services/addWorkspaceService";
+import WorkspaceService, { IWorkspace } from "../services/WorkspaceService";
 
 const useAddWorkspace=()=>{
 
@@ -8,7 +8,7 @@ const useAddWorkspace=()=>{
 
     const addWorkspace=(data:IWorkspace)=>{
      setIsLoading(true);
-     addWorkspaceService().create(data).catch((err:Error)=>setError(err)).finally(()=>setIsLoading(false));
+     WorkspaceService().create(data).catch((err:Error)=>setError(err)).finally(()=>setIsLoading(false));
     }
     return {error,isLoading,addWorkspace}
 }

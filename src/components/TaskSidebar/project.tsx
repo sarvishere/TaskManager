@@ -1,10 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
-// import useProjects from "../../hooks/useProjects";
+import React, { useState, useContext } from "react";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
 import styles from "./styles.module.css";
-// import useProjects from "../../hooks/useProjects";
-// import { Project } from "../../services/project-service";
 
 interface ProjectProps {
   workspaceId: number;
@@ -22,7 +19,6 @@ const EachProject: React.FC<ProjectProps> = ({
   deleteProject,
 }: ProjectProps) => {
   const { updateProjectNameState } = useContext(BoardContext);
-
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isHover, setIsHover] = useState<boolean>(false);
 
@@ -51,7 +47,6 @@ const EachProject: React.FC<ProjectProps> = ({
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
         >
-          {/* <div className=""> */}
           <div>{projectName}</div>
 
           <button

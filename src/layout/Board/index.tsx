@@ -3,6 +3,7 @@ import TaskNav from "../../components/TaskNav";
 import Calendar from "../../components/calendar";
 import TaskSidebar from "../../components/TaskSidebar";
 import TaskboardListView from "../../components/TaskboardListView/TaskboardListView";
+import TaskboardColumnView from "../../components/TaskboardColumnView/TaskboardColumnView";
 
 interface ContextValue {
   projectNameState: string;
@@ -49,7 +50,7 @@ const BoardPage: React.FC = () => {
       case "calendar":
         return <Calendar />;
       default:
-        return; //  <ColumnView />
+        return <TaskboardColumnView />;
     }
   }
 };

@@ -2,12 +2,14 @@ import APIClient from "./api-client";
 
 
 export interface IWorkspace{
+    //delete ? for optional id
     id?:number,
     name:string,
-    color:string
+    color?:string
 }
 
-const addWorkspaceService=<TData=IWorkspace,TResponse=IWorkspace>()=>{
+const WorkspaceService=<TData=IWorkspace,TResponse=IWorkspace>()=>{
 return new APIClient<TData,TResponse>('/workspaces/');
 }
-export default addWorkspaceService;
+export default WorkspaceService;
+

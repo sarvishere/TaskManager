@@ -12,7 +12,7 @@ import PriorityFlag from "./PriorityFlag";
 import AvatarGroup from "../../ui/AvatarGroup";
 import useTaskMembers from "../../../hooks/useTaskMembers";
 import { useEffect } from "react";
-import getImageUrl from "../../../utils/getImageUrl";
+// import getImageUrl from "../../../utils/getImageUrl";
 
 export interface TaskProps {
   task: Task;
