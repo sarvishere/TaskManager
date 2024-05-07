@@ -13,7 +13,6 @@ interface NewTaskProps {
 }
 const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
   const { addTask } = useAddTask();
-  const {projects}
 
   const [calenderVisibility, setCalenderVisibility] = useState(false);
   const [priorityVisibility, setPriorityVisibility] = useState(false);

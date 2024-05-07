@@ -11,6 +11,7 @@ import {
   UpdateBoardData,
 } from "../../../services/board-service";
 import { Droppable } from "react-beautiful-dnd";
+import NewTask from "../../NewTask/NewTask";
 
 interface BoardProps {
   board: BoardResponse;
@@ -32,7 +33,7 @@ const Board: React.FC<BoardProps> = ({
     currentTitle: "",
     title: board.name,
   });
-
+  const [taskModal,setTaskModal]=useState(false);
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
@@ -70,6 +71,10 @@ const Board: React.FC<BoardProps> = ({
   const handleDiscardChanges = () => {
     setIsEditing(false);
   };
+
+  const handleTaskModal=()=>{
+    setTaskModal(true);
+  }
   return (
     <div>
       <div
@@ -118,9 +123,10 @@ const Board: React.FC<BoardProps> = ({
             <Button asChild onClick={toggleDropdown}>
               <Icon iconName="More" />
             </Button>
-            <Button asChild>
+            <Button asChild onClick={handleTaskModal}>
               <Icon iconName="Add" />
             </Button>
+            {taskModal&&<NewTask onClose={()=>setTaskModal(false)}></NewTask>}
           </div>
         )}
       </div>
