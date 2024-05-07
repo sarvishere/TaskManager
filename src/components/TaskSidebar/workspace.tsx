@@ -2,18 +2,22 @@ import { useEffect, useState } from "react";
 import CreateProjectModal from "../Modal/createProjectmodal";
 import ProjectList from "./projectlist";
 import useProjects from "../../hooks/useProjects";
-import useWorkspaces from "../../hooks/useWorkspaces";
 
 export interface WorkspaceProps {
   workspaceId: number;
   workspaceColor?: string;
   WorkspaceName: string;
+  deleteWorkspace: any;
+  updateWorkspaceName: any;
+  workspaceName: string;
 }
 
 const Workspace: React.FC<WorkspaceProps> = ({
   workspaceId,
   workspaceColor,
   WorkspaceName,
+  updateWorkspaceName,
+  deleteWorkspace,
 }: WorkspaceProps) => {
   const {
     projects,
@@ -25,8 +29,6 @@ const Workspace: React.FC<WorkspaceProps> = ({
   useEffect(() => {
     getProjects();
   }, [workspaceId]);
-
-  const { deleteWorkspace } = useWorkspaces();
 
   const [isHovered, setIsHovered] = useState(false);
   const [isWorkspaceModal, setIsWorkspaceModal] = useState(false);
@@ -85,7 +87,9 @@ const Workspace: React.FC<WorkspaceProps> = ({
               onClose={handleCloseModal}
               workspaceId={workspaceId}
               onAddProject={addProject}
-              onDelete={deleteWorkspace}
+              onDeleteWorkspace={deleteWorkspace}
+              workspaceName={WorkspaceName}
+              onUpdateWorkspaceName={updateWorkspaceName}
             />
           </div>
         </div>

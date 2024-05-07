@@ -4,16 +4,24 @@ import Icon from "../ui/Icon";
 interface CreateProjectModalProps {
   onClose: () => void;
   workspaceId: number;
+  workspaceName: string;
   onAddProject: (data: any, workspaceId: number) => void;
-  onDelete: (workspaceId: number) => void;
+  onDeleteWorkspace: (workspaceId: number) => void;
+  onUpdateWorkspaceName: (
+    workspaceId: number,
+    newWorkspaceName: string
+  ) => void;
 }
 
 const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   onClose,
   workspaceId,
+  workspaceName,
   onAddProject,
-  onDelete,
+  onDeleteWorkspace,
+  onUpdateWorkspaceName,
 }: CreateProjectModalProps) => {
+  const [newWorkspaceName, setNewWorkspaceName] = useState(workspaceName);
   const [newProject, setNewProject] = useState("");
 
   const handleAddProject = () => {
@@ -22,8 +30,14 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   };
 
   const handleDeleteWorkspace = () => {
-    onDelete(workspaceId);
+    onDeleteWorkspace(workspaceId);
     onClose();
+  };
+
+  const handleUpdateWorkspaceName = () => {
+    onUpdateWorkspaceName(workspaceId, newWorkspaceName);
+    onClose();
+    console.log("here in modal", newWorkspaceName, workspaceId);
   };
 
   const handleClose = () => {
@@ -49,8 +63,15 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         </div>
 
         <div className="flex mt-2">
-          <Icon iconName="Edit" />
-          <p> ویرایش نام ورک اسپیس</p>
+          <button onClick={handleUpdateWorkspaceName}>
+            <Icon iconName="Edit" />
+          </button>
+          <input
+            type="text"
+            placeholder=" ویرایش نام ورک اسپیس "
+            value={newWorkspaceName}
+            onChange={(e) => setNewWorkspaceName(e.target.value)}
+          />
         </div>
 
         <div className="flex mt-2">

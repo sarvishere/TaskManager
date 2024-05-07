@@ -1,12 +1,19 @@
 import Workspace from "./workspace";
 import useWorkspaces from "../../hooks/useWorkspaces";
-import { useEffect } from "react";
+import { IWorkspace } from "../../services/WorkspaceService";
 
-const WorkspaceList: React.FC = () => {
-  const { isLoading, workspaces, error, getWorkspaces } = useWorkspaces();
-  useEffect(() => {
-    getWorkspaces();
-  }, []);
+interface WorkspaceListProps {
+  workspaces: IWorkspace[];
+  deleteWorkspace: any;
+  updateWorkspaceName: any;
+}
+
+const WorkspaceList = ({
+  updateWorkspaceName,
+  workspaces,
+  deleteWorkspace,
+}: WorkspaceListProps) => {
+  const { isLoading, error } = useWorkspaces();
 
   return (
     <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
@@ -23,6 +30,8 @@ const WorkspaceList: React.FC = () => {
                 workspaceId={workspace.id}
                 workspaceColor={workspace.color}
                 WorkspaceName={workspace.name}
+                deleteWorkspace={deleteWorkspace}
+                updateWorkspaceName={updateWorkspaceName}
               />
             ))}
         </ul>

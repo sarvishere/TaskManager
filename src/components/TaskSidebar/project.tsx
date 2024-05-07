@@ -19,7 +19,6 @@ const EachProject: React.FC<ProjectProps> = ({
   deleteProject,
 }: ProjectProps) => {
   const { updateProjectNameState } = useContext(BoardContext);
-
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isHover, setIsHover] = useState<boolean>(false);
 

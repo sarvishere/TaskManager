@@ -8,6 +8,11 @@ const [workspaces , setWorkspaces] = useState<IWorkspace[]>();
 const [error , setError] = useState<Error>();
 const [isLoading , setIsLoading] = useState(false);
 
+interface UpdateWorkspaceData {
+  name: string;
+}
+
+
   const getWorkspaces = async () => {
     try {
       const response = await WorkspaceService<IWorkspace[]>().getAll();
@@ -41,51 +46,35 @@ const [isLoading , setIsLoading] = useState(false);
     } finally {
       setIsLoading(false);
     }
+
   };
 
+  const updateWorkspaceName = async (
+    WorkspaceId: number,
+    newWorkspaceName: string
+  ) => {
+    setIsLoading(true);
+    try {
+      const data: UpdateWorkspaceData = { name: newWorkspaceName };
+      await WorkspaceService().patch(WorkspaceId, data);
 
-    return{isLoading , workspaces , error , getWorkspaces, AddWorkspace , deleteWorkspace}
+      const updatedWorkspace = workspaces.map((workspace) => {
+        if (workspace.id === WorkspaceId) {
+          return { ...workspace, name: newWorkspaceName };
+        }
+        return workspace;
+      });
+      setWorkspaces(updatedWorkspace);
+    } catch (error) {
+      setError(error as Error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+    return{isLoading , workspaces , error , getWorkspaces, AddWorkspace , deleteWorkspace , updateWorkspaceName}
 };
 
 export default useWorkspaces
 
-
-
-
-//   const updateProjectName = async (
-//     workspaceId: number,
-//     projectId: number,
-//     newProjectName: string
-//   ) => {
-//     setIsLoading(true);
-//     try {
-//       const data: UpdateProjectData = { name: newProjectName };
-//       await projectService(workspaceId).patch(projectId, data);
-
-//       const updatedProjects = projects.map((project) => {
-//         if (project.id === projectId) {
-//           return { ...project, name: newProjectName };
-//         }
-//         return project;
-//       });
-//       setProjects(updatedProjects);
-//     } catch (error) {
-//       setError(error as Error);
-//       throw error;
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   return {
-//     projects,
-//     error,
-//     isLoading,
-//     getProjects,
-//     addProject,
-//     deleteProject,
-//     updateProjectName,
-//   };
-// };
-
-// export default useProjects;
