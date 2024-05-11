@@ -2,7 +2,6 @@ import APIClient from "./api-client";
 
 
 export interface IWorkspace{
-    //delete ? for optional id
     id?:number,
     name:string,
     color?:string
