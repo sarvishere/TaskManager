@@ -4,19 +4,40 @@ import Icon from "../ui/Icon";
 interface CreateProjectModalProps {
   onClose: () => void;
   workspaceId: number;
+  workspaceName: string;
   onAddProject: (data: any, workspaceId: number) => void;
+  onDeleteWorkspace: (workspaceId: number) => void;
+  onUpdateWorkspaceName: (
+    workspaceId: number,
+    newWorkspaceName: string
+  ) => void;
 }
 
 const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   onClose,
   workspaceId,
+  workspaceName,
   onAddProject,
+  onDeleteWorkspace,
+  onUpdateWorkspaceName,
 }: CreateProjectModalProps) => {
+  const [newWorkspaceName, setNewWorkspaceName] = useState(workspaceName);
   const [newProject, setNewProject] = useState("");
 
   const handleAddProject = () => {
     onAddProject({ name: newProject }, workspaceId);
     onClose();
+  };
+
+  const handleDeleteWorkspace = () => {
+    onDeleteWorkspace(workspaceId);
+    onClose();
+  };
+
+  const handleUpdateWorkspaceName = () => {
+    onUpdateWorkspaceName(workspaceId, newWorkspaceName);
+    onClose();
+    console.log("here in modal", newWorkspaceName, workspaceId);
   };
 
   const handleClose = () => {
@@ -42,8 +63,15 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         </div>
 
         <div className="flex mt-2">
-          <Icon iconName="Edit" />
-          <p> ویرایش نام ورک اسپیس</p>
+          <button onClick={handleUpdateWorkspaceName}>
+            <Icon iconName="Edit" />
+          </button>
+          <input
+            type="text"
+            placeholder=" ویرایش نام ورک اسپیس "
+            value={newWorkspaceName}
+            onChange={(e) => setNewWorkspaceName(e.target.value)}
+          />
         </div>
 
         <div className="flex mt-2">
@@ -57,7 +85,10 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
         </div>
 
         <div className="flex mt-2">
-          <Icon iconName="Remove" />
+          <button onClick={handleDeleteWorkspace}>
+            <Icon iconName="Remove" />
+          </button>
+
           <p> حذف</p>
         </div>
       </div>
