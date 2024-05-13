@@ -1,9 +1,10 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import TaskNav from "../../components/TaskNav";
 import Calendar from "../../components/calendar";
 import TaskSidebar from "../../components/TaskSidebar";
 import TaskboardListView from "../../components/TaskboardListView/TaskboardListView";
 import TaskboardColumnView from "../../components/TaskboardColumnView/TaskboardColumnView";
+import useWorkspaces from "../../hooks/useWorkspaces";
 
 interface ContextValue {
   projectNameState: string;
@@ -19,6 +20,17 @@ const BoardPage: React.FC = () => {
   const [activeButton, setActiveButton] = useState("columnview");
   const [projectNameState, setProjectNameState] = useState<string>("");
 
+  const {
+    deleteWorkspace,
+    getWorkspaces,
+    workspaces,
+    updateWorkspaceName,
+    AddWorkspace,
+  } = useWorkspaces();
+  useEffect(() => {
+    getWorkspaces();
+  }, []);
+
   const updateProjectNameState = (newState: string) => {
     setProjectNameState(newState);
   };
@@ -30,7 +42,13 @@ const BoardPage: React.FC = () => {
   return (
     <BoardContext.Provider value={{ projectNameState, updateProjectNameState }}>
       <div className="flex">
-        <TaskSidebar />
+        <TaskSidebar
+          workspaces={workspaces}
+          deleteWorkspace={deleteWorkspace}
+          updateWorkspaceName={updateWorkspaceName}
+          AddWorkspace={AddWorkspace}
+          getWorkspaces={getWorkspaces}
+        />
         <div>
           <TaskNav
             onButtonClick={handleButtonClick}

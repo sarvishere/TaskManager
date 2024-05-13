@@ -6,31 +6,34 @@ import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
 import useWorkspaces from "../../hooks/useWorkspaces";
 import WorkspaceButton from "../Modal/WS/workspaceButton";
+import { IWorkspace } from "../../services/WorkspaceService";
+
+interface TaskSidebarProps {
+  workspaces: IWorkspace[];
+  deleteWorkspace: any;
+  updateWorkspaceName: any;
+  AddWorkspace: any;
+  getWorkspaces: any;
+}
 
 const getFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase();
 };
 
-const TaskSidebar: React.FC = () => {
+const TaskSidebar = ({
+  deleteWorkspace,
+  workspaces,
+  AddWorkspace,
+  updateWorkspaceName,
+  getWorkspaces,
+}: TaskSidebarProps) => {
   const { user, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const toggleModal = () => {
-    // e.stopPropagation();
     setShowModal(!showModal);
   };
-
-  const {
-    deleteWorkspace,
-    getWorkspaces,
-    workspaces,
-    updateWorkspaceName,
-    AddWorkspace,
-  } = useWorkspaces();
-  useEffect(() => {
-    getWorkspaces();
-  }, []);
 
   const handleCreateWorkspace = (name: string, color: string) => {
     AddWorkspace({ name, color });
