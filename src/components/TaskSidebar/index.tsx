@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Icon from "../ui/Icon";
 import useAuth from "../../hooks/useAuth";
 import WorkspacesList from "./workspacelist";
 import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
-import useWorkspaces from "../../hooks/useWorkspaces";
 import WorkspaceButton from "../Modal/WS/workspaceButton";
 import { IWorkspace } from "../../services/WorkspaceService";
 

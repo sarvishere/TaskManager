@@ -7,6 +7,7 @@ interface ProjecListProps {
   projects: Project[];
   updateProjectName: any;
   deleteProject: any;
+  // onProjectSelect: (projectId: number) => void;
 }
 
 const ProjectList = ({
@@ -14,7 +15,8 @@ const ProjectList = ({
   projects,
   updateProjectName,
   deleteProject,
-}: ProjecListProps) => {
+}: // onProjectSelect,
+ProjecListProps) => {
   const { isLoading, error } = useProjects(workspaceId);
 
   return (
@@ -34,6 +36,7 @@ const ProjectList = ({
                 projectName={project.name}
                 updateProjectName={updateProjectName}
                 deleteProject={deleteProject}
+                // onSelect={() => onProjectSelect(project.id)}
               />
             ))}
         </ul>
