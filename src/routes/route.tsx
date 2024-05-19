@@ -33,11 +33,15 @@ const router = createBrowserRouter([
     children: [
       { path: "users", element: <UsersPage /> },
       {
-        path: "project",
+        path: "/:workspaceId/:projectId",
         element: <Board />,
         children: [
-          { index: true, path: ":projectId", element: <TaskboardColumnView /> },
-          { path: ":projectId", element: <TaskboardListView /> },
+          {
+            index: true,
+            path: "columnview",
+            element: <TaskboardColumnView />,
+          },
+          { path: "listview", element: <TaskboardListView /> },
         ],
       },
       {

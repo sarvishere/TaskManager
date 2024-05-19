@@ -11,23 +11,32 @@ interface ContextValue {
   projectNameState: string;
   updateProjectNameState: (newState: string) => void;
   projectIdState: number | null;
+  workspaceIdState: number;
   UpdateProjectIdState: (newState: number) => void;
+  UpdateWorkspaceIdState: (newState: number) => void;
 }
 
 export const BoardContext = createContext<ContextValue>({
   projectNameState: "پروژه‌های من",
   updateProjectNameState: () => {},
   projectIdState: null,
+  workspaceIdState: 0,
   UpdateProjectIdState: () => {},
+  UpdateWorkspaceIdState: () => {},
 });
 
 const BoardPage: React.FC = () => {
   const [activeButton, setActiveButton] = useState("columnview");
   const [projectNameState, setProjectNameState] = useState<string>("");
-  const [projectIdState, SetProjectIdState] = useState<number | null>(null);
+  const [projectIdState, setProjectIdState] = useState<number | null>(null);
+  const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
   const params = useParams();
   const navigate = useNavigate();
-  const projectId = params.projectId;
+  const { workspaceId, projectId } = params as {
+    workspaceId?: string;
+    projectId?: string;
+  };
+
   const {
     deleteWorkspace,
     getWorkspaces,
@@ -35,18 +44,32 @@ const BoardPage: React.FC = () => {
     updateWorkspaceName,
     AddWorkspace,
   } = useWorkspaces();
+
   useEffect(() => {
     getWorkspaces();
-    navigate(`/project/${projectIdState}`);
-  }, [projectIdState]);
+    if (workspaceId && projectId) {
+      setWorkspaceIdState(Number(workspaceId));
+      setProjectIdState(Number(projectId));
+    }
+  }, [workspaceId, projectId]);
+
+  useEffect(() => {
+    if (projectIdState !== null && workspaceIdState !== null) {
+      navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
+      // console.log(workspaceId, projectId);
+    }
+  }, [projectIdState, workspaceIdState, activeButton]);
 
   const updateProjectNameState = (newState: string) => {
     setProjectNameState(newState);
-    console.log(projectNameState);
   };
 
   const UpdateProjectIdState = (newState: number) => {
-    SetProjectIdState(newState);
+    setProjectIdState(newState);
+  };
+
+  const UpdateWorkspaceIdState = (newState: number) => {
+    setWorkspaceIdState(newState);
   };
 
   const handleButtonClick = (buttonType: string) => {
@@ -59,7 +82,9 @@ const BoardPage: React.FC = () => {
         projectNameState,
         updateProjectNameState,
         projectIdState,
+        workspaceIdState,
         UpdateProjectIdState,
+        UpdateWorkspaceIdState,
       }}
     >
       <div className="flex">
@@ -71,19 +96,18 @@ const BoardPage: React.FC = () => {
           getWorkspaces={getWorkspaces}
         />
         <div>
-          <h1> hey {projectId}</h1>
-          <h1> </h1>
           <TaskNav
             onButtonClick={handleButtonClick}
             activeButton={activeButton}
             projectName={projectNameState}
           />
-          <div className="mr-[16px]">{renderActiveComponent()}</div>
+          <div className="mr-[16px]">
+            <div className="mr-[16px]">{renderActiveComponent()}</div>
+          </div>
         </div>
       </div>
     </BoardContext.Provider>
   );
-
   function renderActiveComponent() {
     switch (activeButton) {
       case "listview":

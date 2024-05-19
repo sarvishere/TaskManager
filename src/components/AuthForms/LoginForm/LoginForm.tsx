@@ -36,7 +36,7 @@ const LoginForm = () => {
           </Text>
         );
 
-      navigate("project");
+      navigate("/:workspaceId/:projectId");
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
         toast.error(

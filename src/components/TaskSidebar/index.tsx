@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
 import WorkspaceButton from "../Modal/WS/workspaceButton";
 import { IWorkspace } from "../../services/WorkspaceService";
+import useWorkspaces from "../../hooks/useWorkspaces";
 
 interface TaskSidebarProps {
   workspaces: IWorkspace[];
