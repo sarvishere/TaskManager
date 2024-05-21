@@ -4,22 +4,21 @@ import Icon from "../ui/Icon";
 import Text from "../ui/Text";
 import { FC } from "react";
 
-interface TaskHeadProps {
-  id: string;
-  taskState: string;
+interface BoardListViewProps {
+  BoardName: string;
+  BoardId: number;
+  BoardColor: string;
+  BoardTask: string;
 }
 
-const TaskHead: FC<TaskHeadProps> = ({ id, taskState }) => {
+const BoardListView: FC<BoardListViewProps> = ({
+  BoardName,
+  BoardId,
+  BoardColor,
+  BoardTask,
+}: BoardListViewProps) => {
   const { openAccordions } = useAccordionStore();
-  const isOpen = openAccordions.includes(id);
-  const stateColor =
-    taskState === "Done"
-      ? "green"
-      : taskState === "Pending"
-      ? "pink"
-      : taskState === "In progress"
-      ? "orange"
-      : "pink";
+  const isOpen = openAccordions.includes(BoardId.toString());
 
   return (
     <Flex className="w-full text-center pr-8">
@@ -31,14 +30,14 @@ const TaskHead: FC<TaskHeadProps> = ({ id, taskState }) => {
           }`}
         />
         <span
-          className={` bg-${stateColor}-primary text-white py-1 px-[6px] rounded`}
+          className={`bg-${BoardColor}-primary text-white py-1 px-[6px] rounded`}
         >
           <Text size="L" weight="500">
-            {taskState}
+            {BoardName}
           </Text>
         </span>
         <Text size="M" weight="500">
-          ۲ تسک
+          تسک: {BoardTask}
         </Text>
       </Flex>
       <Text
@@ -75,4 +74,4 @@ const TaskHead: FC<TaskHeadProps> = ({ id, taskState }) => {
     </Flex>
   );
 };
-export default TaskHead;
+export default BoardListView;

@@ -1,11 +1,12 @@
+import Calendar from "../../components/calendar";
 import React, { createContext, useEffect, useState } from "react";
 import TaskNav from "../../components/TaskNav";
-import Calendar from "../../components/calendar";
 import TaskSidebar from "../../components/TaskSidebar";
 import TaskboardListView from "../../components/TaskboardListView/TaskboardListView";
 import TaskboardColumnView from "../../components/TaskboardColumnView/TaskboardColumnView";
 import useWorkspaces from "../../hooks/useWorkspaces";
 import { useNavigate, useParams } from "react-router-dom";
+import useBoards from "../../hooks/useBoards";
 
 interface ContextValue {
   projectNameState: string;
@@ -17,7 +18,7 @@ interface ContextValue {
 }
 
 export const BoardContext = createContext<ContextValue>({
-  projectNameState: "پروژه‌های من",
+  projectNameState: "",
   updateProjectNameState: () => {},
   projectIdState: null,
   workspaceIdState: 0,
@@ -45,6 +46,8 @@ const BoardPage: React.FC = () => {
     AddWorkspace,
   } = useWorkspaces();
 
+  const { getBoards, boards } = useBoards();
+
   useEffect(() => {
     getWorkspaces();
     if (workspaceId && projectId) {
@@ -56,24 +59,35 @@ const BoardPage: React.FC = () => {
   useEffect(() => {
     if (projectIdState !== null && workspaceIdState !== null) {
       navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
-      // console.log(workspaceId, projectId);
     }
-  }, [projectIdState, workspaceIdState, activeButton]);
+  }, [projectIdState, workspaceIdState, activeButton, navigate]);
 
-  const updateProjectNameState = (newState: string) => {
+  const updateProjectNameState = (newState: string) =>
     setProjectNameState(newState);
-  };
-
-  const UpdateProjectIdState = (newState: number) => {
+  const UpdateProjectIdState = (newState: number) =>
     setProjectIdState(newState);
-  };
-
-  const UpdateWorkspaceIdState = (newState: number) => {
+  const UpdateWorkspaceIdState = (newState: number) =>
     setWorkspaceIdState(newState);
-  };
 
-  const handleButtonClick = (buttonType: string) => {
-    setActiveButton(buttonType);
+  const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
+
+  const renderActiveComponent = () => {
+    switch (activeButton) {
+      case "listview":
+        return (
+          <TaskboardListView
+            projectId={projectIdState as number}
+            projectName={projectNameState}
+            workspaceId={workspaceIdState}
+            boards={boards}
+            getBoards={getBoards}
+          />
+        );
+      case "calendar":
+        return <Calendar />;
+      default:
+        return <TaskboardColumnView />;
+    }
   };
 
   return (
@@ -108,16 +122,6 @@ const BoardPage: React.FC = () => {
       </div>
     </BoardContext.Provider>
   );
-  function renderActiveComponent() {
-    switch (activeButton) {
-      case "listview":
-        return <TaskboardListView />;
-      case "calendar":
-        return <Calendar />;
-      default:
-        return <TaskboardColumnView />;
-    }
-  }
 };
 
 export default BoardPage;
