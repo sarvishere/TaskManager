@@ -2,21 +2,23 @@ import useProjects from "../../hooks/useProjects";
 import EachProject from "./project";
 import { Project } from "../../services/project-service";
 
-interface ProjecListProps {
+interface ProjectListProps {
   workspaceId: number;
   projects: Project[];
-  updateProjectName: any;
-  deleteProject: any;
-  // onProjectSelect: (projectId: number) => void;
+  updateProjectName: (
+    workspaceId: number,
+    projectId: number,
+    name: string
+  ) => void;
+  deleteProject: (workspaceId: number, projectId: number) => void;
 }
 
-const ProjectList = ({
+const ProjectList: React.FC<ProjectListProps> = ({
   workspaceId,
   projects,
   updateProjectName,
   deleteProject,
-}: // onProjectSelect,
-ProjecListProps) => {
+}) => {
   const { isLoading, error } = useProjects(workspaceId);
 
   return (
@@ -27,18 +29,16 @@ ProjecListProps) => {
         <div>Error: {error.message}</div>
       ) : (
         <ul>
-          {projects &&
-            projects.map((project) => (
-              <EachProject
-                key={project.id}
-                workspaceId={workspaceId}
-                projectId={project.id}
-                projectName={project.name}
-                updateProjectName={updateProjectName}
-                deleteProject={deleteProject}
-                // onSelect={() => onProjectSelect(project.id)}
-              />
-            ))}
+          {projects.map((project) => (
+            <EachProject
+              key={project.id}
+              workspaceId={workspaceId}
+              projectId={project.id}
+              projectName={project.name}
+              updateProjectName={updateProjectName}
+              deleteProject={deleteProject}
+            />
+          ))}
         </ul>
       )}
     </div>
