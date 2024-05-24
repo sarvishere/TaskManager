@@ -1,5 +1,5 @@
 import Calendar from "../../components/calendar";
-import React, { createContext, useEffect, useState, useCallback } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import TaskNav from "../../components/TaskNav";
 import TaskSidebar from "../../components/TaskSidebar";
 import TaskboardListView from "../../components/TaskboardListView/TaskboardListView";
@@ -15,7 +15,6 @@ interface ContextValue {
   workspaceIdState: number;
   UpdateProjectIdState: (newState: number) => void;
   UpdateWorkspaceIdState: (newState: number) => void;
-  InitializePage: () => void;
 }
 
 export const BoardContext = createContext<ContextValue>({
@@ -25,14 +24,13 @@ export const BoardContext = createContext<ContextValue>({
   workspaceIdState: 0,
   UpdateProjectIdState: () => {},
   UpdateWorkspaceIdState: () => {},
-  InitializePage: () => {},
 });
 
 const BoardPage: React.FC = () => {
   const [activeButton, setActiveButton] = useState("columnview");
   const [projectNameState, setProjectNameState] = useState<string>("");
   const [projectIdState, setProjectIdState] = useState<number | null>(null);
-  const [workspaceIdState, setWorkspaceIdState] = useState<number | null>(null);
+  const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
   const params = useParams();
   const navigate = useNavigate();
   const { workspaceId, projectId } = params as {
@@ -50,57 +48,23 @@ const BoardPage: React.FC = () => {
 
   const { getBoards, boards } = useBoards();
 
-  const getLastWorkspaceId = () => {
-    if (workspaces.length > 0) {
-      return workspaces[workspaces.length - 1].id;
-    } else {
-      return null;
-    }
-  };
-
-  const getLastProject = (workspaceId: number) => {
-    const workspace = workspaces.find((ws) => ws.id === workspaceId);
-    if (workspace && workspace.projects.length > 0) {
-      return workspace.projects[workspace.projects.length - 1];
-    } else {
-      return null;
-    }
-  };
-
-  const initializePage = useCallback(async () => {
-    await getWorkspaces();
-
-    let workspaceIdNum = Number(workspaceId);
-    let projectIdNum = Number(projectId);
-
-    if (isNaN(workspaceIdNum) || isNaN(projectIdNum)) {
-      workspaceIdNum = getLastWorkspaceId();
-      const lastProject = getLastProject(workspaceIdNum);
-      if (lastProject) {
-        projectIdNum = lastProject.id;
-        setProjectNameState(lastProject.name);
-      } else {
-        projectIdNum = 0;
-        setProjectNameState("");
-      }
-    } else {
-      const workspace = workspaces.find((ws) => ws.id === workspaceIdNum);
-      const project = workspace?.projects.find((p) => p.id === projectIdNum);
-      if (project) {
-        setProjectNameState(project.name);
-      }
-    }
-
-    setWorkspaceIdState(workspaceIdNum);
-    setProjectIdState(projectIdNum);
-  }, [workspaceId, projectId, getWorkspaces, workspaces]);
-
   useEffect(() => {
-    initializePage();
+    getWorkspaces();
   }, []);
 
   useEffect(() => {
-    if (projectIdState !== null && workspaceIdState !== null) {
+    if (
+      workspaceId &&
+      projectId &&
+      !isNaN(Number(workspaceId)) &&
+      !isNaN(Number(projectId))
+    )
+      setWorkspaceIdState(Number(workspaceId));
+    setProjectIdState(Number(projectId));
+  }, [workspaceId, projectId, workspaces]);
+
+  useEffect(() => {
+    if (projectIdState !== null && workspaceIdState !== 0) {
       navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
     }
   }, [projectIdState, workspaceIdState, activeButton, navigate]);
@@ -121,7 +85,7 @@ const BoardPage: React.FC = () => {
           <TaskboardListView
             projectId={projectIdState as number}
             projectName={projectNameState}
-            workspaceId={workspaceIdState as number}
+            workspaceId={workspaceIdState}
             boards={boards}
             getBoards={getBoards}
           />
@@ -139,10 +103,9 @@ const BoardPage: React.FC = () => {
         projectNameState,
         updateProjectNameState,
         projectIdState,
-        workspaceIdState: workspaceIdState as number,
+        workspaceIdState,
         UpdateProjectIdState,
         UpdateWorkspaceIdState,
-        InitializePage: initializePage,
       }}
     >
       <div className="flex">

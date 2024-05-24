@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
 import styles from "./styles.module.css";
@@ -9,6 +9,7 @@ interface ProjectProps {
   projectName: string;
   updateProjectName: any;
   deleteProject: any;
+  isInitiallySelected: boolean;
 }
 
 const EachProject: React.FC<ProjectProps> = ({
@@ -17,6 +18,7 @@ const EachProject: React.FC<ProjectProps> = ({
   projectName,
   updateProjectName,
   deleteProject,
+  isInitiallySelected,
 }: ProjectProps) => {
   const {
     updateProjectNameState,
@@ -35,6 +37,12 @@ const EachProject: React.FC<ProjectProps> = ({
   const handleButtonClick = () => {
     setIsTaskModalOpen(true);
   };
+
+  useEffect(() => {
+    if (isInitiallySelected) {
+      handleProjectClick();
+    }
+  }, [isInitiallySelected]);
 
   const handleCloseModal = () => {
     setIsTaskModalOpen(false);
