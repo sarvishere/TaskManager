@@ -37,6 +37,7 @@ export default {
           primary: "#868E96",
           secondary: "#F1F3F5",
           darker: "#343A40",
+          light:"#FFFFFF"
         },
         red: {
           primary: "#FA5252",
@@ -78,6 +79,7 @@ export default {
         green: {
           primary: "#40C057",
           secondary: "#D3F9D8",
+          tertiary:"#208D8E",
         },
         lime: {
           primary: "#82C91E",
@@ -92,13 +94,6 @@ export default {
           secondary: "#FFE8CC",
         },
       },
-      /* Spacing:
-       * 2 => 8px
-       * 4 => 16px
-       * 6 => 24px
-       * 8 => 32px
-       * 10 => 40px
-       */
       boxShadow: {
         modal: "0px 12px 32px 0px #00000040",
       },

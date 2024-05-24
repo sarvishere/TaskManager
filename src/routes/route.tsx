@@ -6,12 +6,13 @@ import PasswordResetPage from "../pages/PasswordResetPage";
 import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
 import ResetPage from "../pages/ResetPage/ResetPage";
-import { BoardPage } from "../pages/BoardPage/BoardPage";
 import ProfileLayout from "../layout/ProfileLayout";
 import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
 import SettingsPage from "../pages/ProfilePages/SettingsPage";
-import Test from "../pages/test";
+import Board from "../layout/Board";
+import TaskboardListView from "../components/TaskboardListView/TaskboardListView";
+import TaskboardColumnView from "../components/TaskboardColumnView/TaskboardColumnView";
 
 const router = createBrowserRouter([
   {
@@ -31,8 +32,18 @@ const router = createBrowserRouter([
     element: <PrivateRoutes />,
     children: [
       { path: "users", element: <UsersPage /> },
-      { path: "board", element: <BoardPage /> },
-      { path: "test", element: <Test /> },
+      {
+        path: "/:workspaceId/:projectId",
+        element: <Board />,
+        children: [
+          {
+            index: true,
+            path: "columnview",
+            element: <TaskboardColumnView />,
+          },
+          { path: "listview", element: <TaskboardListView /> },
+        ],
+      },
       {
         path: "profile",
         element: <ProfileLayout />,

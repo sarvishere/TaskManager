@@ -1,25 +1,45 @@
-import React, { useEffect } from "react";
+import { useState } from "react";
 import Icon from "../ui/Icon";
 import useAuth from "../../hooks/useAuth";
 import WorkspacesList from "./workspacelist";
 import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
+import WorkspaceButton from "../Modal/WS/workspaceButton";
+import { IWorkspace } from "../../services/WorkspaceService";
 import useWorkspaces from "../../hooks/useWorkspaces";
+
+interface TaskSidebarProps {
+  workspaces: IWorkspace[];
+  deleteWorkspace: any;
+  updateWorkspaceName: any;
+  AddWorkspace: any;
+  getWorkspaces: any;
+}
 
 const getFirstLetter = (str: string): string => {
   return str.charAt(0).toUpperCase();
 };
 
-const TaskSidebar: React.FC = () => {
+const TaskSidebar = ({
+  deleteWorkspace,
+  workspaces,
+  AddWorkspace,
+  updateWorkspaceName,
+  getWorkspaces,
+}: TaskSidebarProps) => {
   const { user, logout } = useAuth();
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  const { deleteWorkspace, getWorkspaces, workspaces, updateWorkspaceName } =
-    useWorkspaces();
-  useEffect(() => {
-    getWorkspaces();
-  }, []);
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
 
+  const handleCreateWorkspace = (name: string, color: string) => {
+    AddWorkspace({ name, color });
+    setShowModal(!showModal);
+    getWorkspaces();
+  };
   return (
     <div
       dir="rtl"
@@ -59,12 +79,17 @@ const TaskSidebar: React.FC = () => {
               <Icon iconName="Search" />
             </button>
           </div>
-          <div className="flex bg-[#D3D3D3] h-[32px] rounded-[6px] justify-center items-center mt-[16px] w-[274px]">
-            <Icon iconName="SquarePlus" />
-            <h3 className="font-iranyekan font-normal text-[12px] ">
-              {" "}
-              ساختن ورک‌اسپیس جدید
-            </h3>
+          <div>
+            <button
+              onClick={toggleModal}
+              className="flex bg-[#D3D3D3] h-[32px] rounded-[6px] justify-center items-center mt-[16px] w-[274px]"
+            >
+              <Icon iconName="SquarePlus" />
+              <h3 className="font-iranyekan font-normal text-[12px] ">
+                {" "}
+                ساختن ورک‌اسپیس جدید
+              </h3>
+            </button>
           </div>
           <WorkspacesList
             workspaces={workspaces}
@@ -97,6 +122,14 @@ const TaskSidebar: React.FC = () => {
             خروج{" "}
           </button>
         </div>
+      </div>
+      <div>
+        {showModal && (
+          <WorkspaceButton
+            onClose={toggleModal}
+            addWorkspace={handleCreateWorkspace}
+          />
+        )}
       </div>
     </div>
   );

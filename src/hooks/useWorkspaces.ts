@@ -27,13 +27,20 @@ interface UpdateWorkspaceData {
   };
 
 
-    const AddWorkspace=()=>{
-        const addWorkspace=(data:IWorkspace)=>{
-         setIsLoading(true);
-         WorkspaceService().create(data).catch((err:Error)=>setError(err)).finally(()=>setIsLoading(false));
-        }
-        return {error,isLoading,addWorkspace}
-    }
+
+        const AddWorkspace = async (data:IWorkspace) => {
+          try {
+            WorkspaceService().create(data)
+            const updatedWorkspace = await getWorkspaces();
+            setWorkspaces(updatedWorkspace);
+          } catch (error) {
+            setError(error as Error);
+            throw error;
+          } finally {
+            setIsLoading(false);
+          }
+      
+        };
 
       const deleteWorkspace = async (workspaceId: number) => {
     try {
