@@ -18,12 +18,18 @@ const EachProject: React.FC<ProjectProps> = ({
   updateProjectName,
   deleteProject,
 }: ProjectProps) => {
-  const { updateProjectNameState } = useContext(BoardContext);
+  const {
+    updateProjectNameState,
+    UpdateProjectIdState,
+    UpdateWorkspaceIdState,
+  } = useContext(BoardContext);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isHover, setIsHover] = useState<boolean>(false);
 
   const handleProjectClick = () => {
     updateProjectNameState(projectName);
+    UpdateWorkspaceIdState(workspaceId);
+    UpdateProjectIdState(projectId);
   };
 
   const handleButtonClick = () => {
