@@ -29,10 +29,7 @@ const Board: React.FC<BoardProps> = ({
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState({
-    currentTitle: "",
-    title: board.name,
-  });
+  const [title, setTitle] = useState(board.name);
   const [taskModal,setTaskModal]=useState(false);
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -52,7 +49,7 @@ const Board: React.FC<BoardProps> = ({
     setShowDropdown(false);
   };
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle({ ...title, currentTitle: e.target.value });
+    setTitle(e.target.value);
   };
 
   const handleKeyboardEvents = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -61,13 +58,11 @@ const Board: React.FC<BoardProps> = ({
     } else if (e.key === "Escape") handleDiscardChanges();
   };
 
-  const handleSaveChanges = async () => {
-    if (title.currentTitle.length >= 1) {
-      setTitle((prev) => ({ ...prev, title: prev.currentTitle }));
-      onUpdateBoard(title.currentTitle, board.id);
-    }
+  const handleSaveChanges = () => {
+    onUpdateBoard(title, board.id);
     setIsEditing(false);
   };
+
   const handleDiscardChanges = () => {
     setIsEditing(false);
   };
@@ -93,7 +88,7 @@ const Board: React.FC<BoardProps> = ({
           {!isEditing && (
             <Flex alignItems="center">
               <Text className=" max-w-28 truncate" size="M" weight="500">
-                {title.title}
+                {title}
               </Text>
               <TaskCountBadge count={board.tasks_count} />
             </Flex>
@@ -102,7 +97,7 @@ const Board: React.FC<BoardProps> = ({
             <Flex alignItems="center">
               <input
                 ref={EditBoxRef}
-                defaultValue={title.title}
+                defaultValue={title}
                 onChange={handleOnChange}
                 onBlur={() => setIsEditing(false)}
                 onKeyDown={handleKeyboardEvents}

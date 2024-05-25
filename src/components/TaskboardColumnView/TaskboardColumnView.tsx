@@ -17,6 +17,7 @@ import Text from "../ui/Text";
 import Board from "./Board/Board";
 import TaskBoardToolbar from "./TaskBoardToolbar/TaskBoardToolbar";
 import NewTask from "../NewTask/NewTask";
+import { useParams } from "react-router-dom";
 
 const TaskboardColumnView = () => {
   const [showArchive, setShowArchive] = useState(false);
@@ -26,13 +27,15 @@ const TaskboardColumnView = () => {
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
   const { updateBoard, boardUpdateError, updatedBoard } = useUpdateBoard();
-  const workspaceId = 2;
-  const projectId = 2;
   const [taskModal,setTaskModal]=useState(false);
+  
+  // To get the workspaceId and projectId from the params of the page
+  const {workspaceId,projectId}=useParams()
 
   useEffect(() => {
-    getBoards(2, 2);
-  }, []);
+    getBoards(workspaceId, projectId);
+  }, [workspaceId, projectId]);
+  
 
   const tempId = new Date().getTime();
   const handleAddBoard = async () => {
@@ -45,7 +48,7 @@ const TaskboardColumnView = () => {
     };
 
     setBoards([...boards, { ...data, id: tempId, tasks: [], tasks_count: 0 }]);
-    await addBoard(2, 2, data);
+    await addBoard(workspaceId, projectId, data);
 
     if (addedBoard)
       setBoards((prevBoards) =>
@@ -61,13 +64,16 @@ const TaskboardColumnView = () => {
     }
   };
 
-  const handleUpdateBoard = async (title: string, boardId: number) => {
-    await updateBoard(workspaceId, projectId, boardId, {
-      name: title,
-    });
+  const handleUpdateBoard =(title: string, boardId: number) => {
+    updateBoard(workspaceId, projectId, boardId, {
+      name: title
+    })
+    console.log(updatedBoard);
+    
+    
     if (updatedBoard)
       setBoards((prevBoards) =>
-        prevBoards.map((b) => (b.id === boardId ? { ...b, name: title } : b))
+        prevBoards.map((b) => (b.id === boardId ? updatedBoard : b))
       );
   };
 

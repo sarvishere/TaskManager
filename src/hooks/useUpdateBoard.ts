@@ -17,7 +17,7 @@ const useUpdateBoard = () => {
   ) => {
     setIsLoading(true);
     boardService<UpdateBoardData, BoardResponse>(workspaceId, projectId)
-      .patch(data, undefined, id)
+      .patch(id,data)
       .then((res) => setUpdatedBoard(res.data))
       .catch((error) => {
         setError(error);
