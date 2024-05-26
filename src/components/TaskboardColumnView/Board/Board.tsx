@@ -37,7 +37,7 @@ const Board: React.FC<BoardProps> = ({
 
   useEffect(() => {
     if (!isEditing) return;
-
+    
     EditBoxRef.current?.focus();
   }, [isEditing]);
 
@@ -121,7 +121,7 @@ const Board: React.FC<BoardProps> = ({
             <Button asChild onClick={handleTaskModal}>
               <Icon iconName="Add" />
             </Button>
-            {taskModal&&<NewTask onClose={()=>setTaskModal(false)}></NewTask>}
+            {taskModal&&<NewTask location="board" boardId={board.id} boardName={board.name} onClose={()=>setTaskModal(false)}></NewTask>}
           </div>
         )}
       </div>

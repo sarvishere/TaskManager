@@ -7,11 +7,23 @@ import FlagSelection from "./FlagSelection";
 import useRadioStore from "../../hooks/useRadioStore";
 import { priorities } from "./priorities";
 import useAddTask from "../../hooks/useAddTask";
+import { useParams } from "react-router-dom";
+import { BoardResponse } from "../../services/board-service";
 
 interface NewTaskProps {
-  onClose:()=>void
+  onClose: () => void,
+  location?:string,
+  boardId?:number,
+  boardName?:string,
+  boards?:BoardResponse[]
 }
-const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
+const NewTask: React.FC<NewTaskProps> = ({
+  onClose,
+  location,
+  boardId,
+  boardName,
+  boards,
+}) => {
   const { addTask } = useAddTask();
 
   const [calenderVisibility, setCalenderVisibility] = useState(false);
@@ -26,10 +38,6 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
     return selectedPriority ? selectedPriority.color : "#C1C1C1";
   };
 
-  const workspaceId = 1;
-  const projectId = 1;
-  const boardId = 1;
-
   const [startTask, setStartTask] = useState("");
   const [endTask, setEndTask] = useState("");
 
@@ -38,6 +46,10 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
 
   const [attachment, setAttachment] = useState<Blob | string>("");
   const [thumbnail, setThumbnail] = useState<Blob | string>("");
+
+  // To get the current workspaceId from the params
+  const { workspaceId, projectId } = useParams();
+
 
   const handleAttachment = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -71,9 +83,10 @@ const NewTask: React.FC<NewTaskProps> = ({onClose}) => {
 
     addTask(workspaceId, projectId, boardId, task);
   };
-const handleCloseModal=()=>{
-  onClose();
-}
+  const handleCloseModal = () => {
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
       <form onSubmit={handleSubmitNewTask}>
@@ -102,18 +115,26 @@ const handleCloseModal=()=>{
                 <Icon iconName="Close" />{" "}
               </button>
             </Flex>
-            <Flex alignItems="center">
-              در
-              <select
-                className="border-2 border-gray-secondary rounded-md basis-1/6 p-1 focus:outline-gray-primary"
-              >
-                <option value="1">پروژه اول</option>
-                <option value="2">پروژه دوم</option>
-                <option value="3">پروژه سوم</option>
-              </select>
-              برای
-              <Icon iconName="DashedAddMember" />
-            </Flex>
+            {/* When the NewTask button is clicked on the board itself, the board name will be displayed
+            otherwise the list of boards the user can choose from */}
+            {location === "columnView" ? (
+              <Flex alignItems="center">
+                در
+                <select className="border-2 border-gray-secondary rounded-md basis-1/6 p-1 focus:outline-gray-primary">
+                  {boards &&
+                    boards.map((board, index) => (
+                      <option key={index} value={board.name}>
+                        {board.name}
+                      </option>
+                    ))}
+                </select>
+                برای
+                <Icon iconName="DashedAddMember" />
+              </Flex>
+            ) : (
+              <p className="text-lg text-gray-800">{`عنوان برد: ${boardName}`}</p>
+            )}
+
             <Flex>
               <textarea
                 placeholder="توضیحاتی برای این تسک بنویسید"

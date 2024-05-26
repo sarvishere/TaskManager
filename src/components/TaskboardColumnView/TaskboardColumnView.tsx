@@ -264,7 +264,7 @@ const TaskboardColumnView = () => {
           <Icon iconName="SquarePlus" stroke="#FFF" />
           تسک جدید
         </Button>
-        {taskModal&&<NewTask onClose={handleCloseModal}></NewTask>}
+        {taskModal&&<NewTask location="columnView" boards={boards} onClose={handleCloseModal}></NewTask>}
       </div>
     </DragDropContext>
   );
