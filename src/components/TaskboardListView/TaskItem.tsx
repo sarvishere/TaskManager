@@ -20,7 +20,10 @@ const TaskItem: FC<TaskItemProps> = ({ taskState, taskDeadline }) => {
   return (
     <Flex className="w-full py-4">
       <Flex alignItems="center" className="basis-4/12 pr-16">
-        <span className={` bg-${stateColor}-primary w-5 h-5 rounded`}></span>
+        <span
+          className={` bg-
+        ${stateColor}-primary w-5 h-5 rounded`}
+        ></span>
         <Text size="M">این یک تیتر برای این تسک است.</Text>
       </Flex>
 

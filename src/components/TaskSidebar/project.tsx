@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { BoardContext } from "../../layout/Board";
 import CreateTaskModal from "../Modal/createTaskmodal";
 import styles from "./styles.module.css";
@@ -22,9 +22,11 @@ const EachProject: React.FC<ProjectProps> = ({
     updateProjectNameState,
     UpdateProjectIdState,
     UpdateWorkspaceIdState,
+    projectIdState,
   } = useContext(BoardContext);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isHover, setIsHover] = useState<boolean>(false);
+  const buttonRef = useRef(null);
 
   const handleProjectClick = () => {
     updateProjectNameState(projectName);
@@ -40,12 +42,16 @@ const EachProject: React.FC<ProjectProps> = ({
     setIsTaskModalOpen(false);
   };
 
+  const isActiveProject = projectIdState === projectId;
+
   return (
     <div>
       <button
         onClick={handleProjectClick}
-        className="
-        focus:bg-blue-light rk:text-white w-full"
+        ref={buttonRef}
+        className={`rk:text-white w-full ${
+          isActiveProject ? "bg-blue-light" : ""
+        }`}
       >
         <li
           key={projectId}
@@ -58,14 +64,12 @@ const EachProject: React.FC<ProjectProps> = ({
           <button
             className={` ${
               isHover ? "visible" : "invisible"
-            }  text-black rounded  `}
+            } text-black rounded`}
             onClick={handleButtonClick}
           >
             {" "}
             ...{" "}
           </button>
-
-          {/* </div> */}
         </li>
       </button>
 

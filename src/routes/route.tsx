@@ -41,7 +41,18 @@ const router = createBrowserRouter([
             path: "columnview",
             element: <TaskboardColumnView />,
           },
-          { path: "listview", element: <TaskboardListView /> },
+          {
+            path: "listview",
+            element: (
+              <TaskboardListView
+                projectId={0}
+                projectName={""}
+                workspaceId={0}
+                boards={[]}
+                getBoards={undefined}
+              />
+            ),
+          },
         ],
       },
       {

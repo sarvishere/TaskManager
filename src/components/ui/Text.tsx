@@ -4,7 +4,7 @@ import {
   fontWeight,
 } from "../SharedComponentStyles/sharedStyles";
 interface Props {
-  children?: string | string[];
+  children?: string | string[] | number;
   color?: keyof typeof colors;
   colorVariant?: "primary" | "secondary";
   size?: keyof typeof BodySize;
