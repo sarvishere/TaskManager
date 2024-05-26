@@ -29,7 +29,7 @@ const ProjectList: React.FC<ProjectListProps> = ({
         <div>Error: {error.message}</div>
       ) : (
         <ul>
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <EachProject
               key={project.id}
               workspaceId={workspaceId}
@@ -37,7 +37,6 @@ const ProjectList: React.FC<ProjectListProps> = ({
               projectName={project.name}
               updateProjectName={updateProjectName}
               deleteProject={deleteProject}
-              isInitiallySelected={index === 0}
             />
           ))}
         </ul>

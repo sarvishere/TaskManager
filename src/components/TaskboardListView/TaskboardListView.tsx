@@ -9,7 +9,7 @@ import { BoardResponse } from "../../services/board-service";
 export interface TaskboardListViewProps {
   projectId: number;
   projectName: string;
-  workspaceId: number;
+  workspaceId: number | undefined;
   boards: BoardResponse[];
   getBoards: any;
 }

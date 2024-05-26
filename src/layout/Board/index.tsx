@@ -7,12 +7,13 @@ import TaskboardColumnView from "../../components/TaskboardColumnView/TaskboardC
 import useWorkspaces from "../../hooks/useWorkspaces";
 import { useNavigate, useParams } from "react-router-dom";
 import useBoards from "../../hooks/useBoards";
+import useProjects from "../../hooks/useProjects";
 
 interface ContextValue {
   projectNameState: string;
   updateProjectNameState: (newState: string) => void;
   projectIdState: number | null;
-  workspaceIdState: number;
+  workspaceIdState: number | null;
   UpdateProjectIdState: (newState: number) => void;
   UpdateWorkspaceIdState: (newState: number) => void;
 }
@@ -27,17 +28,6 @@ export const BoardContext = createContext<ContextValue>({
 });
 
 const BoardPage: React.FC = () => {
-  const [activeButton, setActiveButton] = useState("columnview");
-  const [projectNameState, setProjectNameState] = useState<string>("");
-  const [projectIdState, setProjectIdState] = useState<number | null>(null);
-  const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
-  const params = useParams();
-  const navigate = useNavigate();
-  const { workspaceId, projectId } = params as {
-    workspaceId?: string;
-    projectId?: string;
-  };
-
   const {
     deleteWorkspace,
     getWorkspaces,
@@ -45,12 +35,43 @@ const BoardPage: React.FC = () => {
     updateWorkspaceName,
     AddWorkspace,
   } = useWorkspaces();
-
+  const [activeButton, setActiveButton] = useState("columnview");
+  const [projectNameState, setProjectNameState] = useState<string>("");
+  const [projectIdState, setProjectIdState] = useState<number | null>(null);
+  const [workspaceIdState, setWorkspaceIdState] = useState<number | undefined>(
+    0
+  );
+  const params = useParams();
+  const navigate = useNavigate();
+  const { workspaceId, projectId } = params as {
+    workspaceId?: string;
+    projectId?: string;
+  };
   const { getBoards, boards } = useBoards();
+  const { getProjects } = useProjects(workspaceIdState);
 
   useEffect(() => {
     getWorkspaces();
   }, []);
+
+  useEffect(() => {
+    if (workspaces) {
+      const initWorkspaceId = workspaces[0].id;
+      setWorkspaceIdState(initWorkspaceId);
+    }
+  }, [workspaces]);
+
+  useEffect(() => {
+    if (workspaceIdState) {
+      getProjects().then((projects) => {
+        if (projects && projects.length > 0) {
+          const initProject = projects[0];
+          setProjectIdState(initProject.id);
+          setProjectNameState(initProject.name);
+        }
+      });
+    }
+  }, [workspaces]);
 
   useEffect(() => {
     if (
@@ -58,10 +79,11 @@ const BoardPage: React.FC = () => {
       projectId &&
       !isNaN(Number(workspaceId)) &&
       !isNaN(Number(projectId))
-    )
+    ) {
       setWorkspaceIdState(Number(workspaceId));
-    setProjectIdState(Number(projectId));
-  }, [workspaceId, projectId, workspaces]);
+      setProjectIdState(Number(projectId));
+    }
+  }, [workspaceId, projectId]);
 
   useEffect(() => {
     if (projectIdState !== null && workspaceIdState !== 0) {
