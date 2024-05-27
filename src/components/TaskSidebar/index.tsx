@@ -5,14 +5,15 @@ import WorkspacesList from "./workspacelist";
 import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
 import WorkspaceButton from "../Modal/WS/workspaceButton";
+import { IWorkspaces } from "../../services/workspaces-service";
 import { IWorkspace } from "../../services/WorkspaceService";
 
 interface TaskSidebarProps {
-  workspaces: IWorkspace[];
+  workspaces: IWorkspaces[] | IWorkspace[];
   deleteWorkspace: any;
   updateWorkspaceName: any;
   AddWorkspace: any;
-  getWorkspaces: any;
+  setWorkspaces: any;
 }
 
 const getFirstLetter = (str: string): string => {
@@ -20,14 +21,15 @@ const getFirstLetter = (str: string): string => {
 };
 
 const TaskSidebar = ({
-  deleteWorkspace,
   workspaces,
-  AddWorkspace,
+  deleteWorkspace,
   updateWorkspaceName,
-  getWorkspaces,
+  AddWorkspace,
+  setWorkspaces,
 }: TaskSidebarProps) => {
   const { user, logout } = useAuth();
   const [showModal, setShowModal] = useState(false);
+
   const navigate = useNavigate();
 
   const toggleModal = () => {
@@ -37,8 +39,15 @@ const TaskSidebar = ({
   const handleCreateWorkspace = (name: string, color: string) => {
     AddWorkspace({ name, color });
     setShowModal(!showModal);
-    getWorkspaces();
+    const newWorkspace: IWorkspaces = {
+      id: workspaces.length + 1,
+      name,
+      color,
+    };
+    const updatedWorkspaces = [...workspaces, newWorkspace];
+    setWorkspaces(updatedWorkspaces);
   };
+
   return (
     <div
       dir="rtl"
