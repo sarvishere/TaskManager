@@ -48,6 +48,8 @@ const BoardPage: React.FC = () => {
     projectId?: string;
   };
   const { getBoards, boards } = useBoards();
+  // const { getAllTasks, tasks } = useTask();
+
   const { getProjects } = useProjects(workspaceIdState);
 
   useEffect(() => {
@@ -91,6 +93,12 @@ const BoardPage: React.FC = () => {
     }
   }, [projectIdState, workspaceIdState, activeButton, navigate]);
 
+  useEffect(() => {
+    if (workspaceIdState && projectIdState) {
+      getBoards(workspaceIdState, projectIdState);
+    }
+  }, [workspaceId, projectId, getBoards]);
+
   const updateProjectNameState = (newState: string) =>
     setProjectNameState(newState);
   const UpdateProjectIdState = (newState: number) =>
@@ -109,7 +117,6 @@ const BoardPage: React.FC = () => {
             projectName={projectNameState}
             workspaceId={workspaceIdState}
             boards={boards}
-            getBoards={getBoards}
           />
         );
       case "calendar":

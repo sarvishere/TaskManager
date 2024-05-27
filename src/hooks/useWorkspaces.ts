@@ -1,7 +1,7 @@
 
 import {useState} from 'react'
 import WorkspaceService, { IWorkspace } from '../services/WorkspaceService';
-
+import {IWorkspaces} from "../services/workspaces-service";
 
 const useWorkspaces = () => {
 const [workspaces , setWorkspaces] = useState<IWorkspace[]>();
@@ -15,7 +15,7 @@ interface UpdateWorkspaceData {
 
   const getWorkspaces = async () => {
     try {
-      const response = await WorkspaceService<IWorkspace[]>().getAll();
+      const response = await WorkspaceService<IWorkspaces[]>().getAll();
       const fetchedworkspaces = response.data;
       setWorkspaces(fetchedworkspaces);
       return fetchedworkspaces;
