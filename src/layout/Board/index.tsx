@@ -8,6 +8,7 @@ import useWorkspaces from "../../hooks/useWorkspaces";
 import { useNavigate, useParams } from "react-router-dom";
 import useBoards from "../../hooks/useBoards";
 import useProjects from "../../hooks/useProjects";
+import useAddWorkspace from "../../hooks/useAddWorkspace";
 
 interface ContextValue {
   projectNameState: string;
@@ -32,15 +33,14 @@ const BoardPage: React.FC = () => {
     deleteWorkspace,
     getWorkspaces,
     workspaces,
+    setWorkspaces,
     updateWorkspaceName,
-    AddWorkspace,
   } = useWorkspaces();
+
   const [activeButton, setActiveButton] = useState("columnview");
   const [projectNameState, setProjectNameState] = useState<string>("");
-  const [projectIdState, setProjectIdState] = useState<number | null>(null);
-  const [workspaceIdState, setWorkspaceIdState] = useState<number | undefined>(
-    0
-  );
+  const [projectIdState, setProjectIdState] = useState<number>(0);
+  const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
   const params = useParams();
   const navigate = useNavigate();
   const { workspaceId, projectId } = params as {
@@ -48,6 +48,9 @@ const BoardPage: React.FC = () => {
     projectId?: string;
   };
   const { getBoards, boards } = useBoards();
+  // const { getAllTasks, tasks } = useTask();
+
+  const { addWorkspace } = useAddWorkspace();
   const { getProjects } = useProjects(workspaceIdState);
 
   useEffect(() => {
@@ -59,9 +62,6 @@ const BoardPage: React.FC = () => {
       const initWorkspaceId = workspaces[0].id;
       setWorkspaceIdState(initWorkspaceId);
     }
-  }, [workspaces]);
-
-  useEffect(() => {
     if (workspaceIdState) {
       getProjects().then((projects) => {
         if (projects && projects.length > 0) {
@@ -91,13 +91,18 @@ const BoardPage: React.FC = () => {
     }
   }, [projectIdState, workspaceIdState, activeButton, navigate]);
 
+  useEffect(() => {
+    if (workspaceIdState && projectIdState) {
+      getBoards(workspaceIdState, projectIdState);
+    }
+  }, [workspaceId, projectId, getBoards]);
+
   const updateProjectNameState = (newState: string) =>
     setProjectNameState(newState);
   const UpdateProjectIdState = (newState: number) =>
     setProjectIdState(newState);
   const UpdateWorkspaceIdState = (newState: number) =>
     setWorkspaceIdState(newState);
-
   const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
 
   const renderActiveComponent = () => {
@@ -109,11 +114,16 @@ const BoardPage: React.FC = () => {
             projectName={projectNameState}
             workspaceId={workspaceIdState}
             boards={boards}
-            getBoards={getBoards}
           />
         );
       case "calendar":
-        return <Calendar />;
+        return (
+          <Calendar
+          // projectId={projectIdState as number}
+          // workspaceId={workspaceIdState}
+          // boards={boards}
+          />
+        );
       default:
         return <TaskboardColumnView />;
     }
@@ -135,8 +145,8 @@ const BoardPage: React.FC = () => {
           workspaces={workspaces}
           deleteWorkspace={deleteWorkspace}
           updateWorkspaceName={updateWorkspaceName}
-          AddWorkspace={AddWorkspace}
-          getWorkspaces={getWorkspaces}
+          AddWorkspace={addWorkspace}
+          setWorkspaces={setWorkspaces}
         />
         <div>
           <TaskNav

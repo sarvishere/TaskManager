@@ -1,17 +1,16 @@
-import { useEffect } from "react";
 import useBoards from "../../hooks/useBoards";
 import Accordion from "../Accordion/Accordion";
 import TaskProject from "./TaskProject";
 import BoardListView from "./BoardTitle";
-import TaskItem from "./TaskItem";
 import { BoardResponse } from "../../services/board-service";
+import TaskList from "./TaskList";
 
 export interface TaskboardListViewProps {
   projectId: number;
   projectName: string;
-  workspaceId: number | undefined;
+  workspaceId: number;
   boards: BoardResponse[];
-  getBoards: any;
+  // getBoards: any;
 }
 
 const TaskboardListView: React.FC<TaskboardListViewProps> = ({
@@ -19,15 +18,8 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
   workspaceId,
   projectName,
   boards,
-  getBoards,
 }: TaskboardListViewProps) => {
   const { isLoading, error } = useBoards();
-
-  useEffect(() => {
-    if (workspaceId && projectId) {
-      getBoards(workspaceId, projectId);
-    }
-  }, [workspaceId, projectId, getBoards]);
 
   return (
     <>
@@ -54,7 +46,12 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
                   />
                 }
               >
-                <TaskItem taskState="Pending" taskDeadline="۶ آبان" />
+                <TaskList
+                  workspaceId={workspaceId}
+                  projectId={projectId}
+                  boardId={board.id}
+                  boardColor={board.color}
+                />
               </Accordion>
             ))
           )}
