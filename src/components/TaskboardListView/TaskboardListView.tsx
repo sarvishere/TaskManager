@@ -2,14 +2,13 @@ import useBoards from "../../hooks/useBoards";
 import Accordion from "../Accordion/Accordion";
 import TaskProject from "./TaskProject";
 import BoardListView from "./BoardTitle";
-import TaskItem from "./TaskItem";
 import { BoardResponse } from "../../services/board-service";
 import TaskList from "./TaskList";
 
 export interface TaskboardListViewProps {
   projectId: number;
   projectName: string;
-  workspaceId: number | undefined;
+  workspaceId: number;
   boards: BoardResponse[];
   // getBoards: any;
 }

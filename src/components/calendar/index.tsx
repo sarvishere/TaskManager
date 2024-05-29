@@ -1,17 +1,22 @@
-import React, { useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import TitleForm from '../Modal/calendarmodal.tsx'; 
+import React, { useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import TitleForm from "../Modal/calendarmodal.tsx";
 import styles from "./styles.module.css";
+import { BoardResponse } from "../../services/board-service.ts";
 
+export interface CalendarProps {
+  projectId: number;
+  workspaceId: number;
+  boards: BoardResponse[];
+  // getBoards: any;
+}
 
-const Calendar: React.FC = () => {
+const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null); 
-
-
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDateClick = (selected: React.SetStateAction<null>) => {
     setSelectedDate(selected);
@@ -23,7 +28,7 @@ const Calendar: React.FC = () => {
       const { dateStr, startStr, endStr, allDay } = selectedDate;
       const calendarApi = selectedDate.view.calendar;
       calendarApi.unselect();
-      
+
       if (title) {
         calendarApi.addEvent({
           id: `${dateStr}-${title}`,
@@ -44,10 +49,9 @@ const Calendar: React.FC = () => {
     setModalOpen(false);
   };
 
-
   const customButtons = {
     customTodayButton: {
-      text: 'امروز',
+      text: "امروز",
       click: function () {
         if (calendarRef.current) {
           const calendarApi = calendarRef.current.getApi();
@@ -56,23 +60,22 @@ const Calendar: React.FC = () => {
           }
         }
       },
-      
     },
   };
 
   const calendarRef = React.useRef<FullCalendar>(null);
 
   return (
-    <div className='h-[779px] w-[1033]'>
+    <div className="h-[779px] w-[1033]">
       <FullCalendar
         ref={calendarRef}
         locale="fa"
         direction="rtl"
         plugins={[dayGridPlugin, interactionPlugin]}
         headerToolbar={{
-          left: 'title',
-          center: 'customTodayButton,prev,next',
-          right: '',
+          left: "title",
+          center: "customTodayButton,prev,next",
+          right: "",
         }}
         customButtons={customButtons}
         firstDay={6}
@@ -86,7 +89,10 @@ const Calendar: React.FC = () => {
 
       {isModalOpen && (
         <div className={styles["modal"]}>
-          <TitleForm onTitleSubmit={handleTitleSubmit} onClose={handleCloseModal} />
+          <TitleForm
+            onTitleSubmit={handleTitleSubmit}
+            onClose={handleCloseModal}
+          />
         </div>
       )}
     </div>

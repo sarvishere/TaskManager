@@ -13,6 +13,7 @@ import SettingsPage from "../pages/ProfilePages/SettingsPage";
 import Board from "../layout/Board";
 import TaskboardListView from "../components/TaskboardListView/TaskboardListView";
 import TaskboardColumnView from "../components/TaskboardColumnView/TaskboardColumnView";
+import Calendar from "../components/calendar";
 
 const router = createBrowserRouter([
   {
@@ -33,26 +34,22 @@ const router = createBrowserRouter([
     children: [
       { path: "users", element: <UsersPage /> },
       {
-        path: "/:workspaceId/:projectId",
-        element: <Board />,
+        path: ":workspaceId/:projectId",
+        element: <Board />, // Ensure this matches your BoardPage component
         children: [
-          {
-            index: true,
-            path: "columnview",
-            element: <TaskboardColumnView />,
-          },
+          { path: "columnview", element: <TaskboardColumnView /> },
           {
             path: "listview",
             element: (
               <TaskboardListView
                 projectId={0}
-                projectName={""}
+                projectName=""
                 workspaceId={0}
                 boards={[]}
-                getBoards={undefined}
               />
             ),
           },
+          { path: "calendar", element: <Calendar /> },
         ],
       },
       {

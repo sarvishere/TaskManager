@@ -117,7 +117,13 @@ const BoardPage: React.FC = () => {
           />
         );
       case "calendar":
-        return <Calendar />;
+        return (
+          <Calendar
+          // projectId={projectIdState as number}
+          // workspaceId={workspaceIdState}
+          // boards={boards}
+          />
+        );
       default:
         return <TaskboardColumnView />;
     }
