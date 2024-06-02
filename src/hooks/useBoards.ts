@@ -8,10 +8,16 @@ const useBoards = () => {
 
   const getBoards = useCallback((workspaceId: number, projectId: number) => {
     setIsLoading(true);
-    boardService(workspaceId, projectId)
+    return boardService(workspaceId, projectId)
       .getAll()
-      .then((res) => setBoards(res.data))
-      .catch((error) => setError(error))
+      .then((res) => {
+        setBoards(res.data);
+        return res.data; // Return the data so it can be chained
+      })
+      .catch((error) => {
+        setError(error);
+        throw error; 
+      })
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -24,5 +30,3 @@ const useBoards = () => {
 };
 
 export default useBoards;
-
-

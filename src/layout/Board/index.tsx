@@ -41,6 +41,8 @@ const BoardPage: React.FC = () => {
   const [projectNameState, setProjectNameState] = useState<string>("");
   const [projectIdState, setProjectIdState] = useState<number>(0);
   const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
+  const [boardId, setBoardId] = useState<number>(0);
+
   const params = useParams();
   const navigate = useNavigate();
   const { workspaceId, projectId } = params as {
@@ -48,8 +50,6 @@ const BoardPage: React.FC = () => {
     projectId?: string;
   };
   const { getBoards, boards } = useBoards();
-  // const { getAllTasks, tasks } = useTask();
-
   const { addWorkspace } = useAddWorkspace();
   const { getProjects } = useProjects(workspaceIdState);
 
@@ -57,17 +57,40 @@ const BoardPage: React.FC = () => {
     getWorkspaces();
   }, []);
 
+  // useEffect(() => {
+  //   if (workspaces) {
+  //     const initWorkspaceId = workspaces[workspaces.length - 1].id;
+  //     setWorkspaceIdState(initWorkspaceId);
+  //   }
+  //   if (workspaceIdState) {
+  //     getProjects().then((projects) => {
+  //       if (projects && projects.length > 0) {
+  //         const initProject = projects[projects.length-1];
+  //         setProjectIdState(initProject.id);
+  //         setProjectNameState(initProject.name);
+  //       }
+  //     });
+  //   }
+  // }, [workspaces]);
+
   useEffect(() => {
     if (workspaces) {
-      const initWorkspaceId = workspaces[0].id;
+      const initWorkspaceId = workspaces[workspaces.length - 1].id;
       setWorkspaceIdState(initWorkspaceId);
     }
     if (workspaceIdState) {
       getProjects().then((projects) => {
         if (projects && projects.length > 0) {
-          const initProject = projects[0];
+          const initProject = projects[projects.length - 1];
           setProjectIdState(initProject.id);
           setProjectNameState(initProject.name);
+
+          getBoards(initProject.id, workspaceIdState).then((boards) => {
+            if (boards && boards.length > 0) {
+              const initBoard = boards[boards.length - 1];
+              setBoardId(initBoard.id);
+            }
+          });
         }
       });
     }
@@ -119,9 +142,9 @@ const BoardPage: React.FC = () => {
       case "calendar":
         return (
           <Calendar
-          // projectId={projectIdState as number}
-          // workspaceId={workspaceIdState}
-          // boards={boards}
+            projectId={projectIdState as number}
+            workspaceId={workspaceIdState}
+            boards={boards}
           />
         );
       default:
@@ -155,7 +178,7 @@ const BoardPage: React.FC = () => {
             projectName={projectNameState}
           />
           <div className="mr-[16px]">
-            <div className="mr-[16px]">{renderActiveComponent()}</div>
+            <div>{renderActiveComponent()}</div>
           </div>
         </div>
       </div>

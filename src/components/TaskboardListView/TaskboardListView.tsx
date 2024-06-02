@@ -10,7 +10,6 @@ export interface TaskboardListViewProps {
   projectName: string;
   workspaceId: number;
   boards: BoardResponse[];
-  // getBoards: any;
 }
 
 const TaskboardListView: React.FC<TaskboardListViewProps> = ({
