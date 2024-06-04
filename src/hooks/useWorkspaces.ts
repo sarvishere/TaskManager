@@ -1,10 +1,17 @@
 
 import {useState} from 'react'
-import WorkspaceService, { IWorkspace } from '../services/WorkspaceService';
+
+import workspacesService,{ IWorkspaces } from "../services/workspaces-service";
 
 
 const useWorkspaces = () => {
-const [workspaces , setWorkspaces] = useState<IWorkspace[]>();
+const [workspaces , setWorkspaces] = useState<IWorkspaces[]>([
+  {
+    "id": 0,
+    "name": "string",
+    "color": "string"
+  }
+]);
 const [error , setError] = useState<Error>();
 const [isLoading , setIsLoading] = useState(false);
 
@@ -15,7 +22,7 @@ interface UpdateWorkspaceData {
 
   const getWorkspaces = async () => {
     try {
-      const response = await WorkspaceService<IWorkspace[]>().getAll();
+      const response = await workspacesService<IWorkspaces[]>().getAll();
       const fetchedworkspaces = response.data;
       setWorkspaces(fetchedworkspaces);
       return fetchedworkspaces;
@@ -28,23 +35,10 @@ interface UpdateWorkspaceData {
 
 
 
-        const AddWorkspace = async (data:IWorkspace) => {
-          try {
-            WorkspaceService().create(data)
-            const updatedWorkspace = await getWorkspaces();
-            setWorkspaces(updatedWorkspace);
-          } catch (error) {
-            setError(error as Error);
-            throw error;
-          } finally {
-            setIsLoading(false);
-          }
-      
-        };
 
       const deleteWorkspace = async (workspaceId: number) => {
     try {
-      await WorkspaceService().delete(workspaceId);
+      await workspacesService().delete(workspaceId);
       const updatedWorkspace = await getWorkspaces();
       setWorkspaces(updatedWorkspace);
     } catch (error) {
@@ -56,22 +50,24 @@ interface UpdateWorkspaceData {
 
   };
 
-  const updateWorkspaceName = async (
-    WorkspaceId: number,
-    newWorkspaceName: string
-  ) => {
+
+  const updateWorkspaceName = async (WorkspaceId: number, newWorkspaceName: string) => {
     setIsLoading(true);
     try {
       const data: UpdateWorkspaceData = { name: newWorkspaceName };
-      await WorkspaceService().patch(WorkspaceId, data);
+      await workspacesService().patch(WorkspaceId, data);
 
-      const updatedWorkspace = workspaces.map((workspace) => {
-        if (workspace.id === WorkspaceId) {
-          return { ...workspace, name: newWorkspaceName };
-        }
-        return workspace;
-      });
-      setWorkspaces(updatedWorkspace);
+      if (workspaces) {
+        const updatedWorkspace = workspaces.map((workspace) => {
+          if (workspace.id === WorkspaceId) {
+            return { ...workspace, name: newWorkspaceName };
+          }
+          return workspace;
+        });
+        setWorkspaces(updatedWorkspace);
+      } else {
+        console.warn("Workspaces are undefined");
+      }
     } catch (error) {
       setError(error as Error);
       throw error;
@@ -80,7 +76,8 @@ interface UpdateWorkspaceData {
     }
   };
 
-    return{isLoading , workspaces , error , getWorkspaces, AddWorkspace , deleteWorkspace , updateWorkspaceName}
+
+    return{isLoading ,setWorkspaces, workspaces , error , getWorkspaces , deleteWorkspace , updateWorkspaceName}
 };
 
 export default useWorkspaces

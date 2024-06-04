@@ -2,7 +2,6 @@ import APIClient from "./api-client";
 
 
 export interface IWorkspace{
-    id?:number,
     name:string,
     color?:string
 }

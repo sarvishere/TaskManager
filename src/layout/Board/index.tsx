@@ -1,23 +1,26 @@
+import Calendar from "../../components/calendar";
 import React, { createContext, useEffect, useState } from "react";
 import TaskNav from "../../components/TaskNav";
-import Calendar from "../../components/calendar";
 import TaskSidebar from "../../components/TaskSidebar";
 import TaskboardListView from "../../components/TaskboardListView/TaskboardListView";
 import TaskboardColumnView from "../../components/TaskboardColumnView/TaskboardColumnView";
 import useWorkspaces from "../../hooks/useWorkspaces";
 import { useNavigate, useParams } from "react-router-dom";
+import useBoards from "../../hooks/useBoards";
+import useProjects from "../../hooks/useProjects";
+import useAddWorkspace from "../../hooks/useAddWorkspace";
 
 interface ContextValue {
   projectNameState: string;
   updateProjectNameState: (newState: string) => void;
   projectIdState: number | null;
-  workspaceIdState: number;
+  workspaceIdState: number | null;
   UpdateProjectIdState: (newState: number) => void;
   UpdateWorkspaceIdState: (newState: number) => void;
 }
 
 export const BoardContext = createContext<ContextValue>({
-  projectNameState: "پروژه‌های من",
+  projectNameState: "",
   updateProjectNameState: () => {},
   projectIdState: null,
   workspaceIdState: 0,
@@ -26,54 +29,127 @@ export const BoardContext = createContext<ContextValue>({
 });
 
 const BoardPage: React.FC = () => {
+  const {
+    deleteWorkspace,
+    getWorkspaces,
+    workspaces,
+    setWorkspaces,
+    updateWorkspaceName,
+  } = useWorkspaces();
+
   const [activeButton, setActiveButton] = useState("columnview");
   const [projectNameState, setProjectNameState] = useState<string>("");
-  const [projectIdState, setProjectIdState] = useState<number | null>(null);
+  const [projectIdState, setProjectIdState] = useState<number>(0);
   const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
+  const [boardId, setBoardId] = useState<number>(0);
+
   const params = useParams();
   const navigate = useNavigate();
   const { workspaceId, projectId } = params as {
     workspaceId?: string;
     projectId?: string;
   };
-
-  const {
-    deleteWorkspace,
-    getWorkspaces,
-    workspaces,
-    updateWorkspaceName,
-    AddWorkspace,
-  } = useWorkspaces();
+  const { getBoards, boards } = useBoards();
+  const { addWorkspace } = useAddWorkspace();
+  const { getProjects } = useProjects(workspaceIdState);
 
   useEffect(() => {
     getWorkspaces();
-    if (workspaceId && projectId) {
+  }, []);
+
+  // useEffect(() => {
+  //   if (workspaces) {
+  //     const initWorkspaceId = workspaces[workspaces.length - 1].id;
+  //     setWorkspaceIdState(initWorkspaceId);
+  //   }
+  //   if (workspaceIdState) {
+  //     getProjects().then((projects) => {
+  //       if (projects && projects.length > 0) {
+  //         const initProject = projects[projects.length-1];
+  //         setProjectIdState(initProject.id);
+  //         setProjectNameState(initProject.name);
+  //       }
+  //     });
+  //   }
+  // }, [workspaces]);
+
+  useEffect(() => {
+    if (workspaces) {
+      const initWorkspaceId = workspaces[workspaces.length - 1].id;
+      setWorkspaceIdState(initWorkspaceId);
+    }
+    if (workspaceIdState) {
+      getProjects().then((projects) => {
+        if (projects && projects.length > 0) {
+          const initProject = projects[projects.length - 1];
+          setProjectIdState(initProject.id);
+          setProjectNameState(initProject.name);
+
+          getBoards(initProject.id, workspaceIdState).then((boards) => {
+            if (boards && boards.length > 0) {
+              const initBoard = boards[boards.length - 1];
+              setBoardId(initBoard.id);
+            }
+          });
+        }
+      });
+    }
+  }, [workspaces]);
+
+  useEffect(() => {
+    if (
+      workspaceId &&
+      projectId &&
+      !isNaN(Number(workspaceId)) &&
+      !isNaN(Number(projectId))
+    ) {
       setWorkspaceIdState(Number(workspaceId));
       setProjectIdState(Number(projectId));
     }
   }, [workspaceId, projectId]);
 
   useEffect(() => {
-    if (projectIdState !== null && workspaceIdState !== null) {
+    if (projectIdState !== null && workspaceIdState !== 0) {
       navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
-      // console.log(workspaceId, projectId);
     }
-  }, [projectIdState, workspaceIdState, activeButton]);
+  }, [projectIdState, workspaceIdState, activeButton, navigate]);
 
-  const updateProjectNameState = (newState: string) => {
+  useEffect(() => {
+    if (workspaceIdState && projectIdState) {
+      getBoards(workspaceIdState, projectIdState);
+    }
+  }, [workspaceId, projectId, getBoards]);
+
+  const updateProjectNameState = (newState: string) =>
     setProjectNameState(newState);
-  };
-
-  const UpdateProjectIdState = (newState: number) => {
+  const UpdateProjectIdState = (newState: number) =>
     setProjectIdState(newState);
-  };
-
-  const UpdateWorkspaceIdState = (newState: number) => {
+  const UpdateWorkspaceIdState = (newState: number) =>
     setWorkspaceIdState(newState);
-  };
+  const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
 
-  const handleButtonClick = (buttonType: string) => {
-    setActiveButton(buttonType);
+  const renderActiveComponent = () => {
+    switch (activeButton) {
+      case "listview":
+        return (
+          <TaskboardListView
+            projectId={projectIdState as number}
+            projectName={projectNameState}
+            workspaceId={workspaceIdState}
+            boards={boards}
+          />
+        );
+      case "calendar":
+        return (
+          <Calendar
+            projectId={projectIdState as number}
+            workspaceId={workspaceIdState}
+            boards={boards}
+          />
+        );
+      default:
+        return <TaskboardColumnView />;
+    }
   };
 
   return (
@@ -92,8 +168,8 @@ const BoardPage: React.FC = () => {
           workspaces={workspaces}
           deleteWorkspace={deleteWorkspace}
           updateWorkspaceName={updateWorkspaceName}
-          AddWorkspace={AddWorkspace}
-          getWorkspaces={getWorkspaces}
+          AddWorkspace={addWorkspace}
+          setWorkspaces={setWorkspaces}
         />
         <div>
           <TaskNav
@@ -102,22 +178,12 @@ const BoardPage: React.FC = () => {
             projectName={projectNameState}
           />
           <div className="mr-[16px]">
-            <div className="mr-[16px]">{renderActiveComponent()}</div>
+            <div>{renderActiveComponent()}</div>
           </div>
         </div>
       </div>
     </BoardContext.Provider>
   );
-  function renderActiveComponent() {
-    switch (activeButton) {
-      case "listview":
-        return <TaskboardListView />;
-      case "calendar":
-        return <Calendar />;
-      default:
-        return <TaskboardColumnView  />
-    }
-  }
 };
 
 export default BoardPage;
