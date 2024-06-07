@@ -38,7 +38,9 @@ const TaskboardColumnView = () => {
   
 
   const tempId = new Date().getTime();
+  
   const handleAddBoard = async () => {
+    
     const originalBoards = [...boards];
     const data = {
       color: "border-red-primary",
@@ -46,10 +48,10 @@ const TaskboardColumnView = () => {
       order: boards.length + 1,
       is_archive: false,
     };
-
     setBoards([...boards, { ...data, id: tempId, tasks: [], tasks_count: 0 }]);
+    
     await addBoard(workspaceId, projectId, data);
-
+  
     if (addedBoard)
       setBoards((prevBoards) =>
         prevBoards.map((b) => (b.id === tempId ? addedBoard : b))
@@ -240,6 +242,8 @@ const TaskboardColumnView = () => {
             <Board
               key={board.id}
               board={board}
+              workspace={workspaceId}
+              project={projectId}
               onUpdateBoard={handleUpdateBoard}
               onDeleteBoard={handleDeleteBoard}
               onArchiveBoard={handleArchiveBoard}

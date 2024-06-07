@@ -9,7 +9,7 @@ const useAddBoard = () => {
   const [addedBoard, setAddedBoard] = useState<BoardResponse>();
   const [addError, setAddError] = useState<Error>();
 
-  const addBoard = async (
+  const addBoard =(
     workspaceId: number,
     projectId: number,
     data: AddBoardData

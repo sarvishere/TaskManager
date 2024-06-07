@@ -12,9 +12,12 @@ import {
 } from "../../../services/board-service";
 import { Droppable } from "react-beautiful-dnd";
 import NewTask from "../../NewTask/NewTask";
+import useTasks from "../../../hooks/useTasks";
 
 interface BoardProps {
   board: BoardResponse;
+  workspace:number,
+  project:number,
   onDeleteBoard: (id: number) => void;
   onUpdateBoard: (title: string, id: number) => void;
   onArchiveBoard: (id: number, board: UpdateBoardData) => void;
@@ -22,6 +25,8 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({
   board,
+  workspace,
+  project,
   onDeleteBoard,
   onUpdateBoard,
   onArchiveBoard,
@@ -31,15 +36,23 @@ const Board: React.FC<BoardProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(board.name);
   const [taskModal,setTaskModal]=useState(false);
+  
+  // To get all tasks
+  const {getAllTasks,tasks}=useTasks()
+
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
 
   useEffect(() => {
-    if (!isEditing) return;
-    
-    EditBoxRef.current?.focus();
+    if (isEditing) {
+      EditBoxRef.current?.focus();
+    }
   }, [isEditing]);
+
+  useEffect(() => {
+getAllTasks(workspace, project, board.id)
+  }, [workspace, project, board.id]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -132,7 +145,7 @@ const Board: React.FC<BoardProps> = ({
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {board.tasks.map((task, index) => (
+            {tasks && tasks.map((task, index) => (
               <TaskCard key={task.id} index={index} task={task} />
             ))}
             {provided.placeholder}

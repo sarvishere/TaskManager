@@ -25,6 +25,7 @@ const useBoards = () => {
     boards,
     isLoading,
     error,
+    setBoards,
     getBoards,
   };
 };
