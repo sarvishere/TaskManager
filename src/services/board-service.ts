@@ -19,7 +19,7 @@ export interface AddBoardData {
 }
 export interface UpdateBoardData extends Partial<AddBoardData> {}
 
-const boardService = <TData = any, TResponse = BoardResponse>(
+const boardService = <TData = BoardResponse, TResponse = BoardResponse>(
   workspaceId: number,
   projectId: number
 ) =>

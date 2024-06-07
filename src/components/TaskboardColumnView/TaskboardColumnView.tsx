@@ -16,6 +16,8 @@ import Seperator from "../ui/Seperator";
 import Text from "../ui/Text";
 import Board from "./Board/Board";
 import TaskBoardToolbar from "./TaskBoardToolbar/TaskBoardToolbar";
+import NewTask from "../NewTask/NewTask";
+import { useParams } from "react-router-dom";
 
 const TaskboardColumnView = () => {
   const [showArchive, setShowArchive] = useState(false);
@@ -25,15 +27,20 @@ const TaskboardColumnView = () => {
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
   const { updateBoard, boardUpdateError, updatedBoard } = useUpdateBoard();
-  const workspaceId = 2;
-  const projectId = 2;
+  const [taskModal,setTaskModal]=useState(false);
+  
+  // To get the workspaceId and projectId from the params of the page
+  const {workspaceId,projectId}=useParams()
 
   useEffect(() => {
-    getBoards(2, 2);
-  }, []);
+    getBoards(workspaceId, projectId);
+  }, [workspaceId, projectId]);
+  
 
   const tempId = new Date().getTime();
+  
   const handleAddBoard = async () => {
+    
     const originalBoards = [...boards];
     const data = {
       color: "border-red-primary",
@@ -41,10 +48,10 @@ const TaskboardColumnView = () => {
       order: boards.length + 1,
       is_archive: false,
     };
-
     setBoards([...boards, { ...data, id: tempId, tasks: [], tasks_count: 0 }]);
-    await addBoard(2, 2, data);
-
+    
+    await addBoard(workspaceId, projectId, data);
+  
     if (addedBoard)
       setBoards((prevBoards) =>
         prevBoards.map((b) => (b.id === tempId ? addedBoard : b))
@@ -59,13 +66,16 @@ const TaskboardColumnView = () => {
     }
   };
 
-  const handleUpdateBoard = async (title: string, boardId: number) => {
-    await updateBoard(workspaceId, projectId, boardId, {
-      name: title,
-    });
+  const handleUpdateBoard =(title: string, boardId: number) => {
+    updateBoard(workspaceId, projectId, boardId, {
+      name: title
+    })
+    console.log(updatedBoard);
+    
+    
     if (updatedBoard)
       setBoards((prevBoards) =>
-        prevBoards.map((b) => (b.id === boardId ? { ...b, name: title } : b))
+        prevBoards.map((b) => (b.id === boardId ? updatedBoard : b))
       );
   };
 
@@ -216,6 +226,12 @@ const TaskboardColumnView = () => {
     showArchive ? b : b.is_archive === false
   );
 
+  const newTaskModalHandler=()=>{
+    setTaskModal(!taskModal)
+  }
+  const handleCloseModal=()=>{
+    setTaskModal(false)
+  }
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="h-full">
@@ -226,6 +242,8 @@ const TaskboardColumnView = () => {
             <Board
               key={board.id}
               board={board}
+              workspace={workspaceId}
+              project={projectId}
               onUpdateBoard={handleUpdateBoard}
               onDeleteBoard={handleDeleteBoard}
               onArchiveBoard={handleArchiveBoard}
@@ -245,10 +263,12 @@ const TaskboardColumnView = () => {
         <Button
           color="brand"
           className="fixed bottom-6 left-6 flex gap-1 items-center"
+          onClick={newTaskModalHandler}
         >
           <Icon iconName="SquarePlus" stroke="#FFF" />
           تسک جدید
         </Button>
+        {taskModal&&<NewTask location="columnView" boards={boards} onClose={handleCloseModal}></NewTask>}
       </div>
     </DragDropContext>
   );

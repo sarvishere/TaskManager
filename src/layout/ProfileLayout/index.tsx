@@ -15,7 +15,7 @@ const ProfileLayout: React.FC = (): JSX.Element => {
 
         <button className="w-[113px] h-[36px] flex items-center justify-between pt-1 pr-2 pb-1 pl-2 rounded-lg mt-[85px] font-medium text-xl bg-brand-primary text-white">
           <Icon iconName="RightArrow" />
-          بازگشت
+          <Link to="/board">بازگشت</Link>
         </button>
         <div className="flex flex-col h-[176px] w-[266px] justify-between mt-[43px]">
           <Link

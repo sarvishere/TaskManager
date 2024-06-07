@@ -8,10 +8,6 @@ const useProjects = (workspaceId: number) => {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  interface UpdateProjectData {
-    name: string;
-  }
-
   const getProjects = async () => {
     try {
       const response = await projectService<Project[]>(workspaceId).getAll();
@@ -22,11 +18,12 @@ const useProjects = (workspaceId: number) => {
       setError(error as Error);
       throw error; 
     } finally {
+      setIsLoading(false);
     }
   };
 
 
-  const addProject = async (data: any, workspaceId: number) => {
+  const addProject = async (data: Project, workspaceId: number) => {
     setIsLoading(true);
     try {
       const response = await projectService<Project, Project>(workspaceId).create(data);
@@ -62,7 +59,7 @@ const useProjects = (workspaceId: number) => {
   ) => {
     setIsLoading(true);
     try {
-      const data: UpdateProjectData = { name: newProjectName }; 
+      const data: Project = { name: newProjectName }; 
       await projectService(workspaceId).patch(projectId, data);
 
       const updatedProjects = projects.map(project => {

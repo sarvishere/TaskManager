@@ -11,9 +11,13 @@ import {
   UpdateBoardData,
 } from "../../../services/board-service";
 import { Droppable } from "react-beautiful-dnd";
+import NewTask from "../../NewTask/NewTask";
+import useTasks from "../../../hooks/useTasks";
 
 interface BoardProps {
   board: BoardResponse;
+  workspace:number,
+  project:number,
   onDeleteBoard: (id: number) => void;
   onUpdateBoard: (title: string, id: number) => void;
   onArchiveBoard: (id: number, board: UpdateBoardData) => void;
@@ -21,6 +25,8 @@ interface BoardProps {
 
 const Board: React.FC<BoardProps> = ({
   board,
+  workspace,
+  project,
   onDeleteBoard,
   onUpdateBoard,
   onArchiveBoard,
@@ -28,20 +34,25 @@ const Board: React.FC<BoardProps> = ({
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState({
-    currentTitle: "",
-    title: board.name,
-  });
+  const [title, setTitle] = useState(board.name);
+  const [taskModal,setTaskModal]=useState(false);
+  
+  // To get all tasks
+  const {getAllTasks,tasks}=useTasks()
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
 
   useEffect(() => {
-    if (!isEditing) return;
-
-    EditBoxRef.current?.focus();
+    if (isEditing) {
+      EditBoxRef.current?.focus();
+    }
   }, [isEditing]);
+
+  useEffect(() => {
+getAllTasks(workspace, project, board.id)
+  }, [workspace, project, board.id]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -51,7 +62,7 @@ const Board: React.FC<BoardProps> = ({
     setShowDropdown(false);
   };
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTitle({ ...title, currentTitle: e.target.value });
+    setTitle(e.target.value);
   };
 
   const handleKeyboardEvents = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -60,16 +71,18 @@ const Board: React.FC<BoardProps> = ({
     } else if (e.key === "Escape") handleDiscardChanges();
   };
 
-  const handleSaveChanges = async () => {
-    if (title.currentTitle.length >= 1) {
-      setTitle((prev) => ({ ...prev, title: prev.currentTitle }));
-      onUpdateBoard(title.currentTitle, board.id);
-    }
+  const handleSaveChanges = () => {
+    onUpdateBoard(title, board.id);
     setIsEditing(false);
   };
+
   const handleDiscardChanges = () => {
     setIsEditing(false);
   };
+
+  const handleTaskModal=()=>{
+    setTaskModal(true);
+  }
   return (
     <div>
       <div
@@ -88,7 +101,7 @@ const Board: React.FC<BoardProps> = ({
           {!isEditing && (
             <Flex alignItems="center">
               <Text className=" max-w-28 truncate" size="M" weight="500">
-                {title.title}
+                {title}
               </Text>
               <TaskCountBadge count={board.tasks_count} />
             </Flex>
@@ -97,7 +110,7 @@ const Board: React.FC<BoardProps> = ({
             <Flex alignItems="center">
               <input
                 ref={EditBoxRef}
-                defaultValue={title.title}
+                defaultValue={title}
                 onChange={handleOnChange}
                 onBlur={() => setIsEditing(false)}
                 onKeyDown={handleKeyboardEvents}
@@ -118,9 +131,10 @@ const Board: React.FC<BoardProps> = ({
             <Button asChild onClick={toggleDropdown}>
               <Icon iconName="More" />
             </Button>
-            <Button asChild>
+            <Button asChild onClick={handleTaskModal}>
               <Icon iconName="Add" />
             </Button>
+            {taskModal&&<NewTask location="board" boardId={board.id} boardName={board.name} onClose={()=>setTaskModal(false)}></NewTask>}
           </div>
         )}
       </div>
@@ -131,7 +145,7 @@ const Board: React.FC<BoardProps> = ({
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {board.tasks.map((task, index) => (
+            {tasks && tasks.map((task, index) => (
               <TaskCard key={task.id} index={index} task={task} />
             ))}
             {provided.placeholder}

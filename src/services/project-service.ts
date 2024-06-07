@@ -2,11 +2,11 @@
 import APIClient from "./api-client";
 
 export interface Project {
-  id: number;
+  id?: number;
   name: string;
 }
 
-const projectService = <TData = any, TResponse = Project>(
+const projectService = <TData = Project, TResponse = Project>(
   workspaceId: number,
 ) => new APIClient<TData, TResponse>(`/workspaces/${workspaceId}/projects/`);
 
