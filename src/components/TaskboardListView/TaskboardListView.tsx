@@ -1,30 +1,34 @@
 import useBoards from "../../hooks/useBoards";
 import Accordion from "../Accordion/Accordion";
-import TaskProject from "./TaskProject";
 import BoardListView from "./BoardTitle";
-import { BoardResponse } from "../../services/board-service";
 import TaskList from "./TaskList";
+import { useEffect } from "react";
+import Head from "./TaskProject";
 
 export interface TaskboardListViewProps {
   projectId: number;
   projectName: string;
   workspaceId: number;
-  boards: BoardResponse[];
 }
 
 const TaskboardListView: React.FC<TaskboardListViewProps> = ({
   projectId,
   workspaceId,
   projectName,
-  boards,
 }: TaskboardListViewProps) => {
-  const { isLoading, error } = useBoards();
+  const { isLoading, error, getBoards, boards } = useBoards();
+
+  useEffect(() => {
+    if (workspaceId && projectId) {
+      getBoards(workspaceId, projectId);
+    }
+  }, []);
 
   return (
     <>
       <Accordion
         id={projectId.toString()}
-        head={<TaskProject id={projectId.toString()} title={projectName} />}
+        head={<Head id={projectId.toString()} title={projectName} />}
       >
         <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
           {isLoading ? (

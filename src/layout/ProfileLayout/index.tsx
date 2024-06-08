@@ -4,10 +4,10 @@ import { useState } from "react";
 
 const ProfileLayout: React.FC = (): JSX.Element => {
   const [activeStage, setActiveStage] = useState("personalInfo");
-  const handleChangeStage = (stage:string) => {
+  const handleChangeStage = (stage: string) => {
     setActiveStage(stage);
   };
-  
+
   return (
     <div className="flex font-iranyekan">
       <nav className="w-[340px] h-screen pr-[50px] pt-[40px] border-l-[0.5px] border-[#AAAAAA] flex-col font-iranyekan font-medium text-xl">

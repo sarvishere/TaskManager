@@ -1,102 +1,190 @@
-import React, { useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import TitleForm from "../Modal/calendarmodal.tsx";
-import styles from "./styles.module.css";
-import { BoardResponse } from "../../services/board-service.ts";
+import { useEffect, useState } from "react";
+import moment from "jalali-moment";
+import Flex from "../ui/Flex";
+import Button from "../ui/Button";
+import Text from "../ui/Text";
+import Icon from "../ui/Icon";
+import useBoards from "../../hooks/useBoards";
+import TaskCol from "./Task";
 
 export interface CalendarProps {
+  // boards: BoardResponse[];
   projectId: number;
   workspaceId: number;
-  boards: BoardResponse[];
-  // getBoards: any;
 }
 
-const Calendar = () => {
-  const [currentEvents, setCurrentEvents] = useState([]);
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(null);
+const daysOfWeek = [
+  "شنبه",
+  "یکشنبه",
+  "دوشنبه",
+  "سه‌شنبه",
+  "چهارشنبه",
+  "پنجشنبه",
+  "جمعه",
+];
+const months = [
+  "فروردین",
+  "اردیبهشت",
+  "خرداد",
+  "تیر",
+  "مرداد",
+  "شهریور",
+  "مهر",
+  "آبان",
+  "آذر",
+  "دی",
+  "بهمن",
+  "اسفند",
+];
 
-  const handleDateClick = (selected: React.SetStateAction<null>) => {
-    setSelectedDate(selected);
+const convertToPersian = (number: number | string) => {
+  const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  return String(number).replace(
+    /\d/g,
+    (match) => persianNumbers[parseInt(match)]
+  );
+};
+
+const PersianCalendar = ({ projectId, workspaceId }: CalendarProps) => {
+  const [currentDate, setCurrentDate] = useState(moment());
+  const [todayDate, setTodayDate] = useState(moment());
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const { error, getBoards, boards } = useBoards();
+
+  useEffect(() => {
+    if (workspaceId && projectId) {
+      getBoards(workspaceId, projectId);
+    }
+  }, [workspaceId]);
+
+  const handlePrevMonth = () => {
+    setCurrentDate(currentDate.clone().subtract(1, "jMonth"));
+  };
+
+  const handleNextMonth = () => {
+    setCurrentDate(currentDate.clone().add(1, "jMonth"));
+  };
+
+  const handleToday = () => {
+    setCurrentDate(todayDate);
+  };
+
+  const handleClick = (day: number) => {
+    setSelectedDay(day);
     setModalOpen(true);
   };
 
-  const handleTitleSubmit = (title: string) => {
-    if (selectedDate) {
-      const { dateStr, startStr, endStr, allDay } = selectedDate;
-      const calendarApi = selectedDate.view.calendar;
-      calendarApi.unselect();
-
-      if (title) {
-        calendarApi.addEvent({
-          id: `${dateStr}-${title}`,
-          title,
-          start: startStr,
-          end: endStr,
-          allDay,
-        });
-      }
+  const daysInMonth = () => {
+    const firstDayOfMonth = currentDate.clone().startOf("jMonth");
+    const days: (number | string)[] = [];
+    for (let i = 0; i < firstDayOfMonth.jDay(); i++) {
+      days.push("");
+    }
+    for (let i = 1; i <= currentDate.jDaysInMonth(); i++) {
+      days.push(i);
+    }
+    while (days.length % 7 !== 0) {
+      days.push("");
     }
 
-    setSelectedDate(null);
-    setModalOpen(false);
+    return days;
   };
 
-  const handleCloseModal = () => {
-    setSelectedDate(null);
-    setModalOpen(false);
+  const isToday = (day: number) => {
+    return (
+      todayDate.jYear() === currentDate.jYear() &&
+      todayDate.jMonth() === currentDate.jMonth() &&
+      todayDate.jDate() === day
+    );
   };
 
-  const customButtons = {
-    customTodayButton: {
-      text: "امروز",
-      click: function () {
-        if (calendarRef.current) {
-          const calendarApi = calendarRef.current.getApi();
-          if (calendarApi) {
-            calendarApi.today();
-          }
-        }
-      },
-    },
+  const formatJalaliDate = (day: number) => {
+    return currentDate.clone().date(day).format("jYYYY/jMM/jDD");
   };
-
-  const calendarRef = React.useRef<FullCalendar>(null);
 
   return (
-    <div className="h-[779px] w-[1033]">
-      <FullCalendar
-        ref={calendarRef}
-        locale="fa"
-        direction="rtl"
-        plugins={[dayGridPlugin, interactionPlugin]}
-        headerToolbar={{
-          left: "title",
-          center: "customTodayButton,prev,next",
-          right: "",
-        }}
-        customButtons={customButtons}
-        firstDay={6}
-        initialView="dayGridMonth"
-        editable={true}
-        selectable={true}
-        dayMaxEvents={true}
-        select={handleDateClick}
-        eventsSet={(events) => setCurrentEvents(events)}
-      />
+    <div>
+      <div className="w-[1033px] h-auto bg-white">
+        {/* Header */}
+        <Flex className="w-full border-b">
+          <Button
+            onClick={handleToday}
+            weight="400"
+            className="font-iranyekan bg-white text-black text-sm p-3"
+          >
+            <Text className="bg-red">امروز</Text>
+          </Button>
 
-      {isModalOpen && (
-        <div className={styles["modal"]}>
-          <TitleForm
-            onTitleSubmit={handleTitleSubmit}
-            onClose={handleCloseModal}
-          />
-        </div>
-      )}
+          <Button onClick={handlePrevMonth} asChild>
+            <Icon iconName="ChevronRight" />
+          </Button>
+          <Button onClick={handleNextMonth} asChild>
+            <Icon iconName="ChevronLeft" />
+          </Button>
+
+          <Text
+            weight="400"
+            className="font-iranyekan bg-white text-black text-sm p-3"
+          >
+            {months[currentDate.jMonth()]}{" "}
+            {convertToPersian(currentDate.jYear())}
+          </Text>
+        </Flex>
+
+        {/* Body */}
+        <Flex className="h-full">
+          <div className="grid w-full gap-3 grid-cols-7">
+            {/* Days of Week */}
+            {daysOfWeek.map((day, index) => (
+              <div
+                key={index}
+                className="text-center font-medium text-gray-500"
+              >
+                {day}
+              </div>
+            ))}
+
+            {/* Days of Month */}
+            {daysInMonth().map((day, index) => (
+              <div
+                key={index}
+                className={`w-full h-[100px] flex border ${
+                  day === "" ? "text-gray-400" : "text-gray-900"
+                } ${isToday(day as number) ? "border border-[#208D8E]" : ""}`}
+              >
+                {day !== "" && (
+                  <div className="flex flex-col">
+                    <button
+                      className="w-[30px] h-[20px]"
+                      onClick={() => handleClick(day as number)}
+                    >
+                      {convertToPersian(day)}
+
+                      {error ? (
+                        <div>Error: {error.message}</div>
+                      ) : (
+                        boards.map((board) => (
+                          <ul key={board.id} id={board.id.toString()}>
+                            <TaskCol
+                              date={formatJalaliDate(day as number)}
+                              boardId={board.id}
+                              projectId={projectId}
+                              workspaceId={workspaceId}
+                            />
+                          </ul>
+                        ))
+                      )}
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </Flex>
+      </div>
     </div>
   );
 };
 
-export default Calendar;
+export default PersianCalendar;
