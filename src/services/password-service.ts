@@ -1,5 +1,4 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
-import APIClient from "./api-client";
 import TokenManager from "./token-service";
 
 export interface IPassword{

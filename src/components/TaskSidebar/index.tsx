@@ -7,6 +7,8 @@ import Accordion from "../Accordion/Accordion";
 import WorkspaceButton from "../Modal/WS/workspaceButton";
 import { IWorkspaces } from "../../services/workspaces-service";
 import { IWorkspace } from "../../services/WorkspaceService";
+import logo from "../../assets/images/project.png";
+import Head from "../TaskboardListView/TaskProject";
 
 interface TaskSidebarProps {
   workspaces: IWorkspaces[] | IWorkspace[];
@@ -53,7 +55,7 @@ const TaskSidebar = ({
       dir="rtl"
       className="flex flex-col w-[340px] h-[999px] border-l-[0.5px] border-[#AAAAAA] pr-12 font-iranyekan"
     >
-      <div className=" mt-10 flex ">
+      <div className=" mt-10 flex items-center">
         <h1
           style={{
             backgroundImage: "linear-gradient(to right, #118C80, #4AB7D8)",
@@ -62,43 +64,35 @@ const TaskSidebar = ({
           }}
           className="text-lh font-iranyekan font-black"
         >
-          کوئرا تسک منیجر
+          TaskBunny
         </h1>
+        <img
+          src={logo}
+          alt="Logo"
+          className="mr-4 p-1"
+          style={{
+            width: "80px",
+            height: "80px",
+            borderRadius: "20%",
+            border: "1px solid #AAAAAA",
+          }}
+        />
       </div>
-      <div className="w-[274px]">
+      <div className="w-[274px] p-1">
         <Accordion
           id="workspaces"
-          head={
-            <div className="flex justify-between">
-              <p className="font-black text-base">ورک اسپیس‌ها</p>
-              <Icon iconName={"ChevronDown"} />
-            </div>
-          }
+          head={<Head id={"workspaces"} title={"ورک اسپیس‌ها"} />}
         >
-          <div className="relative w-full h-[40px] mt-[16px]">
-            <input
-              className=" w-full h-full bg-gray-secondary pr-9 rounded-[5px]"
-              placeholder=" جستجو کنید"
-            />
-            <button
-              className="absolute top-1/2 transform -translate-y-1/2 right-3 "
-              type="button"
-            >
-              <Icon iconName="Search" />
-            </button>
-          </div>
-          <div>
-            <button
-              onClick={toggleModal}
-              className="flex bg-[#D3D3D3] h-[32px] rounded-[6px] justify-center items-center mt-[16px] w-[274px]"
-            >
-              <Icon iconName="SquarePlus" />
-              <h3 className="font-iranyekan font-normal text-[12px] ">
-                {" "}
-                ساختن ورک‌اسپیس جدید
-              </h3>
-            </button>
-          </div>
+          <button
+            onClick={toggleModal}
+            className="flex bg-[#D3D3D3] h-[32px] rounded-[3px] justify-center items-center mb-8 w-[274px]"
+          >
+            <h3 className="font-iranyekan font-normal text-[12px] ">
+              {" "}
+              ساختن ورک‌اسپیس جدید
+            </h3>
+          </button>
+
           <WorkspacesList
             workspaces={workspaces}
             deleteWorkspace={deleteWorkspace}
