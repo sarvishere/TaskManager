@@ -29,9 +29,7 @@ const BoardListView: FC<BoardListViewProps> = ({
             isOpen ? "" : "rotate-180"
           }`}
         />
-        <span
-          className={`bg-${BoardColor}-primary text-white py-1 px-[6px] rounded`}
-        >
+        <span className={`bg-${BoardColor}-primary  py-1 px-[6px] rounded`}>
           <Text size="L" weight="500">
             {BoardName}
           </Text>

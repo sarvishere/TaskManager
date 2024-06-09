@@ -9,7 +9,6 @@ import ResetPage from "../pages/ResetPage/ResetPage";
 import ProfileLayout from "../layout/ProfileLayout";
 import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
-import SettingsPage from "../pages/ProfilePages/SettingsPage";
 import Board from "../layout/Board";
 import TaskboardListView from "../components/TaskboardListView/TaskboardListView";
 import TaskboardColumnView from "../components/TaskboardColumnView/TaskboardColumnView";
@@ -35,21 +34,19 @@ const router = createBrowserRouter([
       { path: "users", element: <UsersPage /> },
       {
         path: ":workspaceId/:projectId",
-        element: <Board />, // Ensure this matches your BoardPage component
+        element: <Board />,
         children: [
           { path: "columnview", element: <TaskboardColumnView /> },
           {
             path: "listview",
             element: (
-              <TaskboardListView
-                projectId={0}
-                projectName=""
-                workspaceId={0}
-                boards={[]}
-              />
+              <TaskboardListView projectId={0} projectName="" workspaceId={0} />
             ),
           },
-          { path: "calendar", element: <Calendar /> },
+          {
+            path: "calendar",
+            element: <Calendar projectId={0} workspaceId={0} />,
+          },
         ],
       },
       {
@@ -58,7 +55,6 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <PersonalInfoPage /> },
           { path: "accountinfo", element: <AccountsInfoPage /> },
-          { path: "settings", element: <SettingsPage /> },
         ],
       },
     ],

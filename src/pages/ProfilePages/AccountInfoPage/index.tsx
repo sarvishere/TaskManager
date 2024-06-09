@@ -9,20 +9,19 @@ import useAuth from "../../../hooks/useAuth";
 import useResetPassword from "../../../hooks/useResetPassword";
 import { z } from "zod";
 
-
-type FormData=z.infer<typeof accountInfoSchema>;
+type FormData = z.infer<typeof accountInfoSchema>;
 
 const AccountsInfoPage: React.FC = (): JSX.Element => {
   const { user } = useAuth();
-  const { updateProfile } = useProfile(user?.user_id);
-  const { resetPassword } = useResetPassword(user?.user_id);
+  const { updateProfile } = useProfile();
+  const { resetPassword } = useResetPassword();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(accountInfoSchema) });
 
-  const onSubmit =(data:FormData) => {
+  const onSubmit = (data: FormData) => {
     const updatedProfileInfo = {
       email: data.email,
       username: data.username,
@@ -45,7 +44,11 @@ const AccountsInfoPage: React.FC = (): JSX.Element => {
       <h2 className="text-[31px] font-extraBold mb-8">اطلاعات حساب</h2>
       <Input label="ایمیل" {...register("email")} placeholder={user?.email} />
       <ErrorMessage error={errors.email as FieldError} />
-      <Input label="نام کاربری" {...register("username")} placeholder={user?.username} />
+      <Input
+        label="نام کاربری"
+        {...register("username")}
+        placeholder={user?.username}
+      />
       <ErrorMessage error={errors.username as FieldError} />
       <Input label="رمز عبور فعلی" {...register("old_password")} />
       <ErrorMessage error={errors.old_password as FieldError} />

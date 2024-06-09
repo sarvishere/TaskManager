@@ -36,9 +36,7 @@ const TaskList = ({
                 boardColor={boardColor}
                 taskDeadline={task.deadline}
                 TaskName={task.name}
-                TaskPriority={task.priority}
                 Description={task.description}
-                Member={task.thumbnail}
               />
             ))}
           </ul>

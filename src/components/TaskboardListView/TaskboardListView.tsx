@@ -22,7 +22,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
     if (workspaceId && projectId) {
       getBoards(workspaceId, projectId);
     }
-  }, []);
+  }, [workspaceId]);
 
   return (
     <>

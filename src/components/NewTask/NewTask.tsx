@@ -145,7 +145,7 @@ const NewTask: React.FC<NewTaskProps> = ({
           >
             <Flex justifyContent="between" alignItems="center">
               <Flex alignItems="center">
-                <span className=" bg-gray-primary w-4 h-4 rounded"></span>
+                <Icon iconName="Add" />
                 <input
                   className="w-full px-4 text-mh placeholder:text-gray-800 focus:outline-gray-secondary"
                   placeholder="عنوان تسک"
@@ -178,8 +178,6 @@ const NewTask: React.FC<NewTaskProps> = ({
                           </option>
                         ))}
                     </select>
-                    برای
-                    <Icon iconName="DashedAddMember" />
                   </Flex>
                 ) : (
                   <p className="text-lg text-gray-800">{`عنوان برد: ${boardName}`}</p>

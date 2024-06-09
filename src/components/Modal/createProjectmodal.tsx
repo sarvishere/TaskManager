@@ -37,7 +37,6 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
   const handleUpdateWorkspaceName = () => {
     onUpdateWorkspaceName(workspaceId, newWorkspaceName);
     onClose();
-    console.log("here in modal", newWorkspaceName, workspaceId);
   };
 
   const handleClose = () => {
@@ -53,10 +52,10 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             style={{
               background: "transparent",
               border: "1px solid #AAAAAA",
-              borderRadius: "50%", // Ensure the border radius makes it circular
+              borderRadius: "50%",
               width: "30px",
               height: "30px",
-              padding: "0", // Remove padding to ensure the button fits the icon properly
+              padding: "0",
               cursor: "pointer",
             }}
           />

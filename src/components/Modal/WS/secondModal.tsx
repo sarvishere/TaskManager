@@ -18,8 +18,7 @@ const Second: React.FC<SecondProps> = ({ isOpen, onSubmit, buttonText }) => {
     <div className={isOpen ? "modal" : "modal hidden"}>
       <div className="w-[500px] h-52">
         <div className="flex-col flex gap-[40px]">
-          <div className="flex gap-4 mt-10">
-            <div> hey </div>
+          <div className="flex mr-10">
             <div className="flex flex-col flex-wrap">
               <h2 className="mb-2 text-[14px] font-normal leading-5 text-right">
                 رنگ ورک‌اسپیس

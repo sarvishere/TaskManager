@@ -20,7 +20,6 @@ const WorkspaceButton: React.FC<WBModalProps> = ({
   const [workspaceColor, setWorkspaceColor] = useState("");
 
   const handleFirstModalSubmit = (value: string) => {
-    console.log("First modal submitted with value:", value);
     setWorkspaceName(value);
     setFirstModalOpen(false);
     setSecondModalOpen(true);
