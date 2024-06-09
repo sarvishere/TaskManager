@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Icon from "../ui/Icon";
+import useAddBoard from "../../hooks/useAddBoard";
+import Button from "../ui/Button";
 
 interface CreateTaskModalProps {
   onClose: () => void;
@@ -23,13 +25,13 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   onUpdateProjectName,
 }) => {
   const [newProjectName, setNewProjectName] = useState(projectName);
+  const [newBoard, setNewBoard] = useState("");
+  const [boardColor, setBoardColor] = useState("");
   const [showNewTask, setShowNewTask] = useState(false);
 
-  const handleClose = () => {
-    onClose();
-  };
+  const { addBoard } = useAddBoard();
 
-  const handleTask = () => {
+  const handleModal = () => {
     setShowNewTask(true);
   };
 
@@ -40,7 +42,19 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
   const handleDeleteProject = () => {
     onDeleteProject(workspaceId, projectId);
-    handleClose();
+    onClose();
+  };
+
+  const handleCreateBoard = () => {
+    if (newBoard && boardColor) {
+      addBoard(workspaceId, projectId, {
+        name: newBoard,
+        color: boardColor,
+      });
+      onClose();
+    } else {
+      alert("Please enter a board name and select a color.");
+    }
   };
 
   return (
@@ -49,34 +63,80 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
         className="modal-content"
         style={{ boxShadow: "0px 4px 16px 0px #00000029" }}
       >
-        <button onClick={handleClose}>
+        <button onClick={onClose}>
           <Icon
             iconName="Close"
             style={{
-              background: "transparent",
+              background: "white",
               border: "1px solid #AAAAAA",
-              borderRadius: "50%", // Ensure the border radius makes it circular
+              borderRadius: "50%",
               width: "30px",
               height: "30px",
-              padding: "0", // Remove padding to ensure the button fits the icon properly
+              padding: "0",
               cursor: "pointer",
             }}
           />
         </button>
         <div>
-          {showNewTask ? (
-            <h1> must show new task</h1>
-          ) : (
-            // <NewTask
-            //   onClose={function (): void {
-            //     throw new Error("Function not implemented.");
-            //   }}
-            // />
-            <div className="flex ">
-              <button onClick={handleTask}>
-                <Icon iconName="Add" />
-              </button>
-              <p> ساخت تسک جدید </p>
+          <div className="flex">
+            <button onClick={handleModal}>
+              <Icon iconName="Add" />
+            </button>
+            <input
+              type="text"
+              placeholder=" ایجاد برد جدید"
+              value={newBoard}
+              onChange={(e) => setNewBoard(e.target.value)}
+            />
+          </div>
+
+          {showNewTask && (
+            <div>
+              <div className="flex mt-2 gap-2">
+                <button
+                  onClick={() => setBoardColor("red")}
+                  style={{
+                    backgroundColor: "red",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50px",
+                    border: boardColor === "red" ? "2px solid black" : "none",
+                  }}
+                ></button>
+                <button
+                  onClick={() => setBoardColor("yellow")}
+                  style={{
+                    backgroundColor: "yellow",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50px",
+                    border:
+                      boardColor === "yellow" ? "2px solid black" : "none",
+                  }}
+                ></button>
+                <button
+                  onClick={() => setBoardColor("green")}
+                  style={{
+                    backgroundColor: "green",
+                    width: "30px",
+                    height: "30px",
+                    borderRadius: "50px",
+                    border: boardColor === "green" ? "2px solid black" : "none",
+                  }}
+                ></button>
+              </div>
+
+              <Button
+                className="items-center flex mt-2 "
+                onClick={handleCreateBoard}
+                color="brand"
+                variant="primary"
+                size="small"
+                weight="200"
+                fontSize="S"
+              >
+                Create Board
+              </Button>
             </div>
           )}
 

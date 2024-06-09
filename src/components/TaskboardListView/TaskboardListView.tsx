@@ -2,28 +2,22 @@ import useBoards from "../../hooks/useBoards";
 import Accordion from "../Accordion/Accordion";
 import BoardListView from "./BoardTitle";
 import TaskList from "./TaskList";
-import { useEffect } from "react";
 import Head from "./TaskProject";
 
 export interface TaskboardListViewProps {
   projectId: number;
   projectName: string;
   workspaceId: number;
+  boards: any;
 }
 
 const TaskboardListView: React.FC<TaskboardListViewProps> = ({
   projectId,
   workspaceId,
   projectName,
+  boards,
 }: TaskboardListViewProps) => {
-  const { error, getBoards, boards } = useBoards();
-
-  useEffect(() => {
-    if (workspaceId && projectId) {
-      getBoards(workspaceId, projectId);
-    }
-  }, [workspaceId]);
-
+  const { error } = useBoards();
   return (
     <>
       <Accordion
@@ -34,7 +28,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
           {error ? (
             <div>Error: {error.message}</div>
           ) : (
-            boards.map((board) => (
+            boards.map((board: any) => (
               <Accordion
                 key={board.id}
                 id={board.id.toString()}

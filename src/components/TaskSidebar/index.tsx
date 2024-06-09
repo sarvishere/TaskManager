@@ -87,7 +87,6 @@ const TaskSidebar = ({
             className="flex bg-[#D3D3D3] h-[32px] rounded justify-center items-center mb-8 w-[250px]"
           >
             <h3 className="font-iranyekan font-normal text-[12px] ">
-              {" "}
               ساختن ورک‌اسپیس جدید
             </h3>
           </button>

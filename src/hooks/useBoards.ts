@@ -12,7 +12,7 @@ const useBoards = () => {
       .getAll()
       .then((res) => {
         setBoards(res.data);
-        return res.data; // Return the data so it can be chained
+        return res.data; 
       })
       .catch((error) => {
         setError(error);

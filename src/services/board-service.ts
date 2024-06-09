@@ -4,17 +4,17 @@ import { Task } from "./task-service";
 export interface BoardResponse {
   id: number;
   name: string;
-  order: number;
+  // order: number;
   tasks: Task[];
   tasks_count: number;
-  is_archive: boolean;
+  // is_archive: boolean;
   color: string;
 }
 
 export interface AddBoardData {
   name: string;
-  order: number;
-  is_archive: boolean;
+  // order: number;
+  // is_archive: boolean;
   color: string;
 }
 export interface UpdateBoardData extends Partial<AddBoardData> {}

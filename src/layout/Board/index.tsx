@@ -8,6 +8,8 @@ import useWorkspaces from "../../hooks/useWorkspaces";
 import { useNavigate, useParams } from "react-router-dom";
 import useProjects from "../../hooks/useProjects";
 import useAddWorkspace from "../../hooks/useAddWorkspace";
+import useBoards from "../../hooks/useBoards";
+import useAddBoard from "../../hooks/useAddBoard";
 
 interface ContextValue {
   projectNameState: string;
@@ -50,6 +52,7 @@ const BoardPage: React.FC = () => {
 
   const { addWorkspace } = useAddWorkspace();
   const { getProjects } = useProjects(workspaceIdState);
+  const { getBoards, boards } = useBoards();
 
   useEffect(() => {
     getWorkspaces();
@@ -70,6 +73,12 @@ const BoardPage: React.FC = () => {
       });
     }
   }, [workspaces]);
+
+  useEffect(() => {
+    if (workspaceId && projectId) {
+      getBoards(workspaceIdState, projectIdState);
+    }
+  }, [workspaceIdState, projectIdState]);
 
   useEffect(() => {
     if (
@@ -105,6 +114,7 @@ const BoardPage: React.FC = () => {
             projectId={projectIdState as number}
             projectName={projectNameState}
             workspaceId={workspaceIdState}
+            boards={boards}
           />
         );
       case "calendar":
