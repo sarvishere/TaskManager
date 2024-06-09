@@ -104,7 +104,12 @@ const NewTask: React.FC<NewTaskProps> = ({
   };
   const handleSubmitNewTask = (e: FormEvent) => {
     e.preventDefault();
-    addTask(workspaceId, projectId, selectedBoardId, task);
+    addTask(
+      Number(workspaceId),
+      Number(projectId),
+      Number(selectedBoardId),
+      task
+    );
     onClose();
   };
   const handleCloseModal = () => {

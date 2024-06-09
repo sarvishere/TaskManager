@@ -2,7 +2,7 @@
 import APIClient from "./api-client";
 
 export interface Project {
-  id?: number;
+  id: number;
   name: string;
 }
 

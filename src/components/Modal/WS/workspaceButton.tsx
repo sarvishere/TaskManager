@@ -3,7 +3,6 @@ import First from "./firstModal";
 import Second from "./secondModal";
 import Third from "./thirdModal";
 import Icon from "../../ui/Icon";
-// import { IWorkspace } from "../../../services/WorkspaceService";
 
 interface WBModalProps {
   onClose: () => void;
@@ -13,8 +12,7 @@ interface WBModalProps {
 const WorkspaceButton: React.FC<WBModalProps> = ({
   onClose,
   addWorkspace,
-}: // workspaces,
-WBModalProps) => {
+}: WBModalProps) => {
   const [firstModalOpen, setFirstModalOpen] = useState(true);
   const [secondModalOpen, setSecondModalOpen] = useState(false);
   const [thirdModalOpen, setThirdModalOpen] = useState(false);
@@ -36,11 +34,19 @@ WBModalProps) => {
   };
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center ">
-      <div className="bg-white p-4 rounded shadow-lg">
+    <div className="modal-container">
+      <div className="modal-content">
         <div className="flex items-center">
-          <button className="close" onClick={onClose}>
-            <Icon iconName="Close" />
+          <button onClick={onClose}>
+            <Icon
+              iconName="Close"
+              style={{
+                width: "30px",
+                height: "30px",
+                borderRadius: "20%",
+                border: "1px solid #AAAAAA",
+              }}
+            />
           </button>
           <h1 className="mr-[70px] font-black text-2xl">
             {firstModalOpen && "ساختن ورک‌اسپیس جدید‌"}

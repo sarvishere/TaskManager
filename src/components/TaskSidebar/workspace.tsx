@@ -9,7 +9,6 @@ export interface WorkspaceProps {
   WorkspaceName: string;
   deleteWorkspace: any;
   updateWorkspaceName: any;
-  workspaceName: string;
 }
 
 const Workspace: React.FC<WorkspaceProps> = ({
@@ -81,18 +80,14 @@ const Workspace: React.FC<WorkspaceProps> = ({
       </li>
 
       {isWorkspaceModal && (
-        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
-          <div className="bg-white p-4 rounded shadow-lg">
-            <CreateProjectModal
-              onClose={handleCloseModal}
-              workspaceId={workspaceId}
-              onAddProject={addProject}
-              onDeleteWorkspace={deleteWorkspace}
-              workspaceName={WorkspaceName}
-              onUpdateWorkspaceName={updateWorkspaceName}
-            />
-          </div>
-        </div>
+        <CreateProjectModal
+          onClose={handleCloseModal}
+          workspaceId={workspaceId}
+          onAddProject={addProject}
+          onDeleteWorkspace={deleteWorkspace}
+          workspaceName={WorkspaceName}
+          onUpdateWorkspaceName={updateWorkspaceName}
+        />
       )}
     </div>
   );

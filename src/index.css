@@ -161,10 +161,8 @@
 
 .active-button svg {
 
-  stroke: #208d8e; /* Apply the color to the icon */
+  stroke: #208d8e;
 }
-
-
 
 .active
 {
@@ -172,6 +170,28 @@
   width: 100%;
   padding: 4px 6px;
   border-radius: 4px;
-  background-color: #E9F9FF;
+  background-color: #ffffff;
 }
 
+
+.modal-container {
+    background-color: transparent;
+position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+
+  

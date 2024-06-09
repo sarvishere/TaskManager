@@ -16,7 +16,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
   workspaceId,
   projectName,
 }: TaskboardListViewProps) => {
-  const { isLoading, error, getBoards, boards } = useBoards();
+  const { error, getBoards, boards } = useBoards();
 
   useEffect(() => {
     if (workspaceId && projectId) {
@@ -31,9 +31,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
         head={<Head id={projectId.toString()} title={projectName} />}
       >
         <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
-          {isLoading ? (
-            <div>Loading...</div>
-          ) : error ? (
+          {error ? (
             <div>Error: {error.message}</div>
           ) : (
             boards.map((board) => (

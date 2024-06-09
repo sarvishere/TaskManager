@@ -40,13 +40,6 @@ const BoardListView: FC<BoardListViewProps> = ({
           تسک: {BoardTask}
         </Text>
       </Flex>
-      <Text
-        size="L"
-        weight="500"
-        className={`basis-2/12 ${isOpen ? "visible" : "invisible"}`}
-      >
-        اعضا
-      </Text>
 
       <Text
         size="L"
@@ -54,14 +47,6 @@ const BoardListView: FC<BoardListViewProps> = ({
         className={`basis-2/12 ${isOpen ? "visible" : "invisible"}`}
       >
         ددلاین
-      </Text>
-
-      <Text
-        size="L"
-        weight="500"
-        className={`basis-2/12 ${isOpen ? "visible" : "invisible"}`}
-      >
-        اولویت
       </Text>
 
       <Text

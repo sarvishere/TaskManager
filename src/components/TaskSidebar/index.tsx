@@ -6,12 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Accordion from "../Accordion/Accordion";
 import WorkspaceButton from "../Modal/WS/workspaceButton";
 import { IWorkspaces } from "../../services/workspaces-service";
-import { IWorkspace } from "../../services/WorkspaceService";
 import logo from "../../assets/images/project.png";
 import Head from "../TaskboardListView/TaskProject";
 
 interface TaskSidebarProps {
-  workspaces: IWorkspaces[] | IWorkspace[];
+  workspaces: IWorkspaces[];
   deleteWorkspace: any;
   updateWorkspaceName: any;
   AddWorkspace: any;
@@ -53,7 +52,7 @@ const TaskSidebar = ({
   return (
     <div
       dir="rtl"
-      className="flex flex-col w-[340px] h-[999px] border-l-[0.5px] border-[#AAAAAA] pr-12 font-iranyekan"
+      className="flex flex-col w-[340px] h-screen border-l-[0.5px] border-[#AAAAAA] pr-12 font-iranyekan sticky top-0 "
     >
       <div className=" mt-10 flex items-center">
         <h1
@@ -85,7 +84,7 @@ const TaskSidebar = ({
         >
           <button
             onClick={toggleModal}
-            className="flex bg-[#D3D3D3] h-[32px] rounded-[3px] justify-center items-center mb-8 w-[274px]"
+            className="flex bg-[#D3D3D3] h-[32px] rounded justify-center items-center mb-8 w-[250px]"
           >
             <h3 className="font-iranyekan font-normal text-[12px] ">
               {" "}
@@ -100,7 +99,7 @@ const TaskSidebar = ({
           />
         </Accordion>
       </div>
-      <div className=" flex flex-col p-12  mt-auto">
+      <div className=" flex flex-col pt-40 ">
         {user && (
           <div className="flex items-center gap-2">
             <div className="w-[36px] h-[36px] flex justify-center items-center bg-gray-secondary rounded-full mr-[8px]">

@@ -29,16 +29,17 @@ const ProjectList: React.FC<ProjectListProps> = ({
         <div>Error: {error.message}</div>
       ) : (
         <ul>
-          {projects.map((project) => (
-            <EachProject
-              key={project.id}
-              workspaceId={workspaceId}
-              projectId={project.id}
-              projectName={project.name}
-              updateProjectName={updateProjectName}
-              deleteProject={deleteProject}
-            />
-          ))}
+          {projects &&
+            projects.map((project) => (
+              <EachProject
+                key={project.id}
+                workspaceId={workspaceId}
+                projectId={project.id}
+                projectName={project.name}
+                updateProjectName={updateProjectName}
+                deleteProject={deleteProject}
+              />
+            ))}
         </ul>
       )}
     </div>

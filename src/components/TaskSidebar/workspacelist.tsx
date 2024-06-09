@@ -1,9 +1,9 @@
 import Workspace from "./workspace";
 import useWorkspaces from "../../hooks/useWorkspaces";
-import { IWorkspace } from "../../services/WorkspaceService";
+import { IWorkspaces } from "../../services/workspaces-service";
 
 interface WorkspaceListProps {
-  workspaces: IWorkspace[];
+  workspaces: IWorkspaces[];
   deleteWorkspace: any;
   updateWorkspaceName: any;
 }
