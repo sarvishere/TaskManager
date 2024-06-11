@@ -16,6 +16,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@types/react-beautiful-dnd": "^13.1.8",
     "axios": "^1.6.7",
+    "jalaali-js": "^1.2.6",
     "jalali-moment": "^3.3.11",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
