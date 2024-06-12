@@ -17,7 +17,8 @@ const PersonalInfoPage: React.FC = (): JSX.Element => {
   const { updateProfile,getProfile,profileData } = useProfile();
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(personalInfoSchema) });
 
-  useEffect(()=>{
+  useEffect(()=>{;
+    
     getProfile(userId);
   },[])
 
