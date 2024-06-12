@@ -13,11 +13,11 @@ const useProfile = () => {
       formData.append(key, value);
 
     setIsLoading(true);
-    profileService<FormData>()
+    profileService<FormData>(userId)
       .patch(
-        formData,
-        { headers: { "Content-Type": "multipart/form-data" } },
-        userId
+        userId,
+        formData
+        // { headers: { "Content-Type": "multipart/form-data" } },
       )
       .then((res) => {
         setProfileData(res.data)
