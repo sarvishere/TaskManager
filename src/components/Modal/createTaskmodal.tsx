@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Icon from "../ui/Icon";
 import useAddBoard from "../../hooks/useAddBoard";
 import Button from "../ui/Button";
@@ -14,6 +14,7 @@ interface CreateTaskModalProps {
     projectId: number,
     newProjectName: string
   ) => void;
+  handleAddBoard: (newBoard: any) => void;
 }
 
 const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
@@ -23,9 +24,10 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   workspaceId,
   onDeleteProject,
   onUpdateProjectName,
+  handleAddBoard,
 }) => {
   const [newProjectName, setNewProjectName] = useState(projectName);
-  const [newBoard, setNewBoard] = useState("");
+  const [newName, setNewName] = useState("");
   const [boardColor, setBoardColor] = useState("");
   const [showNewTask, setShowNewTask] = useState(false);
 
@@ -46,15 +48,17 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   };
 
   const handleCreateBoard = () => {
-    if (newBoard && boardColor) {
+    if (newName && boardColor) {
       addBoard(workspaceId, projectId, {
-        name: newBoard,
+        name: newName,
         color: boardColor,
       });
+
       onClose();
     } else {
       alert("Please enter a board name and select a color.");
     }
+    // handleAddBoard(newboard);
   };
 
   return (
@@ -85,8 +89,8 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             <input
               type="text"
               placeholder=" ایجاد برد جدید"
-              value={newBoard}
-              onChange={(e) => setNewBoard(e.target.value)}
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
             />
           </div>
 

@@ -23,6 +23,7 @@ const EachProject: React.FC<ProjectProps> = ({
     UpdateProjectIdState,
     UpdateWorkspaceIdState,
     projectIdState,
+    handleAddBoard,
   } = useContext(BoardContext);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isHover, setIsHover] = useState<boolean>(false);
@@ -82,6 +83,7 @@ const EachProject: React.FC<ProjectProps> = ({
             workspaceId={workspaceId}
             onDeleteProject={deleteProject}
             onUpdateProjectName={updateProjectName}
+            handleAddBoard={handleAddBoard}
           />
         </div>
       )}

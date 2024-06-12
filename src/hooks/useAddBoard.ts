@@ -1,5 +1,5 @@
-import { useState } from "react";
-import boardService, {
+
+import { useState } from "react";import boardService, {
   AddBoardData,
   BoardResponse,
 } from "../services/board-service";
@@ -7,9 +7,9 @@ import boardService, {
 const useAddBoard = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [addedBoard, setAddedBoard] = useState<BoardResponse>();
-  const [addError, setAddError] = useState<Error>();
+  const [addError, setAddError] = useState<Error >();
 
-  const addBoard =(
+  const addBoard = (
     workspaceId: number,
     projectId: number,
     data: AddBoardData
@@ -17,12 +17,22 @@ const useAddBoard = () => {
     setIsLoading(true);
     boardService<AddBoardData, BoardResponse>(workspaceId, projectId)
       .create(data)
-      .then((res) => setAddedBoard(res.data))
-      .catch((error) => setAddError(error))
-      .finally(() => setIsLoading(false));
+      .then((res) => {
+        const newBoard: BoardResponse = res.data; 
+        setAddedBoard(newBoard);
+console.log(newBoard)
+
+      })
+      .catch((error) => {
+        setAddError(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
-  return { addBoard, addedBoard, isLoading, addError };
+  return { addBoard, addedBoard, isLoading, addError  };
 };
 
 export default useAddBoard;
+
