@@ -1,5 +1,6 @@
 import useBoards from "../../hooks/useBoards";
 import Accordion from "../Accordion/Accordion";
+import Flex from "../ui/Flex";
 import BoardListView from "./BoardTitle";
 import TaskList from "./TaskList";
 import Head from "./TaskProject";
@@ -24,7 +25,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
         id={projectId.toString()}
         head={<Head id={projectId.toString()} title={projectName} />}
       >
-        <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
+        <Flex direction="col" onClick={(e) => e.stopPropagation()}>
           {error ? (
             <div>Error: {error.message}</div>
           ) : (
@@ -50,7 +51,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
               </Accordion>
             ))
           )}
-        </div>
+        </Flex>
       </Accordion>
     </>
   );

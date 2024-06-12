@@ -21,7 +21,7 @@ const BoardListView: FC<BoardListViewProps> = ({
   const isOpen = openAccordions.includes(BoardId.toString());
 
   return (
-    <Flex className="w-full text-center pr-8">
+    <Flex width="w-full">
       <Flex alignItems="center" className="basis-4/12">
         <Icon
           iconName="ChevronDown"

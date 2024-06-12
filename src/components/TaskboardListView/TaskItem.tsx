@@ -42,12 +42,15 @@ const TaskItem: FC<TaskItemProps> = ({
         <span className={`bg-${boardColor}-primary w-5 h-5 rounded`}></span>
         <Text size="M">{TaskName}</Text>
       </Flex>
-      <Flex justifyContent="center" className="basis-2/12">
+      <Flex justifyContent="start" className="basis-2/12">
         <Text size="M">{convertToJalali(taskDeadline)}</Text>
       </Flex>
       <Flex justifyContent="start" className="basis-2/12 ">
         <Icon iconName="Description" width={20} height={20} />
         <h3> {Description}</h3>
+      </Flex>
+      <Flex justifyContent="end" className="basis-2/12 ">
+        <Icon iconName="Remove" width={20} height={20} />
       </Flex>
     </Flex>
   );

@@ -23,7 +23,7 @@ const TaskList = ({
 
   return (
     <div>
-      <div className="flex flex-col" onClick={(e) => e.stopPropagation()}>
+      <div className="flex flex-col " onClick={(e) => e.stopPropagation()}>
         {isLoading ? (
           <div>Loading...</div>
         ) : error ? (
