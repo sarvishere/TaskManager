@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Icon from "../ui/Icon";
 import useAddBoard from "../../hooks/useAddBoard";
 import Button from "../ui/Button";
@@ -49,16 +49,18 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
 
   const handleCreateBoard = () => {
     if (newName && boardColor) {
-      addBoard(workspaceId, projectId, {
-        name: newName,
-        color: boardColor,
-      });
-
+      addBoard(
+        workspaceId,
+        projectId,
+        { name: newName, color: boardColor },
+        (newBoard) => {
+          handleAddBoard(newBoard);
+        }
+      );
       onClose();
     } else {
       alert("Please enter a board name and select a color.");
     }
-    // handleAddBoard(newboard);
   };
 
   return (
@@ -88,7 +90,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             </button>
             <input
               type="text"
-              placeholder=" ایجاد برد جدید"
+              placeholder="ایجاد برد جدید"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
             />
@@ -131,7 +133,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
               </div>
 
               <Button
-                className="items-center flex mt-2 "
+                className="items-center flex mt-2"
                 onClick={handleCreateBoard}
                 color="brand"
                 variant="primary"
@@ -160,7 +162,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             <button onClick={handleDeleteProject}>
               <Icon iconName="Remove" />
             </button>
-            <p> حذف</p>
+            <p>حذف</p>
           </div>
         </div>
       </div>
