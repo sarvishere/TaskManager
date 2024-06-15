@@ -38,6 +38,7 @@ const BoardPage: React.FC = () => {
     workspaces,
     setWorkspaces,
     updateWorkspaceName,
+    addAndGetWorkspaces,
   } = useWorkspaces();
 
   const [activeButton, setActiveButton] = useState("columnview");
@@ -63,10 +64,15 @@ const BoardPage: React.FC = () => {
 
   useEffect(() => {
     if (workspaces) {
-      const initWorkspaceId = workspaces[workspaces.length - 1].id;
+      let initWorkspaceId = 0;
+      if (workspaces.length === 0) {
+        initWorkspaceId = 0;
+      } else {
+        initWorkspaceId = workspaces[workspaces.length - 1].id;
+      }
       setWorkspaceIdState(initWorkspaceId);
     }
-    if (workspaceIdState) {
+    if (workspaceIdState !== 0) {
       getProjects().then((projects) => {
         if (projects && projects.length > 0) {
           const initProject = projects[projects.length - 1];
@@ -98,7 +104,11 @@ const BoardPage: React.FC = () => {
   }, [workspaceId, projectId]);
 
   useEffect(() => {
-    if (projectIdState !== null && workspaceIdState !== 0) {
+    if (
+      projectIdState !== null &&
+      workspaceIdState !== 0 &&
+      projectIdState !== 0
+    ) {
       navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
     }
   }, [projectIdState, workspaceIdState, activeButton, navigate]);
@@ -118,20 +128,10 @@ const BoardPage: React.FC = () => {
     switch (activeButton) {
       case "listview":
         return (
-          <TaskboardListView
-            projectId={projectIdState as number}
-            projectName={projectNameState}
-            workspaceId={workspaceIdState}
-            boards={boards}
-          />
+          <TaskboardListView projectName={projectNameState} boards={boards} />
         );
       case "calendar":
-        return (
-          <Calendar
-            projectId={projectIdState as number}
-            workspaceId={workspaceIdState}
-          />
-        );
+        return <Calendar />;
       default:
         return <TaskboardColumnView />;
     }
@@ -155,7 +155,9 @@ const BoardPage: React.FC = () => {
           deleteWorkspace={deleteWorkspace}
           updateWorkspaceName={updateWorkspaceName}
           AddWorkspace={addWorkspace}
+          getWorkspaces={getWorkspaces}
           setWorkspaces={setWorkspaces}
+          addAndGetWorkspaces={addAndGetWorkspaces}
         />
         <div>
           <TaskNav

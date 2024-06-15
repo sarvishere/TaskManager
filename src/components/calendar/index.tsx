@@ -6,12 +6,13 @@ import Text from "../ui/Text";
 import Icon from "../ui/Icon";
 import useBoards from "../../hooks/useBoards";
 import TaskCol from "./Task";
+import { useParams } from "react-router-dom";
 
-export interface CalendarProps {
-  // boards: BoardResponse[];
-  projectId: number;
-  workspaceId: number;
-}
+// export interface CalendarProps {
+//   // boards: BoardResponse[];
+//   // projectId: number;
+//   // workspaceId: number;
+// }
 
 const daysOfWeek = [
   "شنبه",
@@ -45,7 +46,12 @@ const convertToPersian = (number: number | string) => {
   );
 };
 
-const PersianCalendar = ({ projectId, workspaceId }: CalendarProps) => {
+const PersianCalendar = () => {
+  const params = useParams();
+  const { workspaceId, projectId } = params as {
+    workspaceId: string;
+    projectId: string;
+  };
   const [currentDate, setCurrentDate] = useState(moment());
   const [todayDate, setTodayDate] = useState(moment());
   const [isModalOpen, setModalOpen] = useState(false);
@@ -54,7 +60,7 @@ const PersianCalendar = ({ projectId, workspaceId }: CalendarProps) => {
 
   useEffect(() => {
     if (workspaceId && projectId) {
-      getBoards(workspaceId, projectId);
+      getBoards(Number(workspaceId), Number(projectId));
     }
   }, [workspaceId]);
 
@@ -169,8 +175,8 @@ const PersianCalendar = ({ projectId, workspaceId }: CalendarProps) => {
                             <TaskCol
                               date={formatJalaliDate(day as number)}
                               boardId={board.id}
-                              projectId={projectId}
-                              workspaceId={workspaceId}
+                              projectId={Number(projectId)}
+                              workspaceId={Number(workspaceId)}
                             />
                           </ul>
                         ))

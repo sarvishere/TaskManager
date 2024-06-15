@@ -1,3 +1,4 @@
+import { useParams } from "react-router-dom";
 import useBoards from "../../hooks/useBoards";
 import Accordion from "../Accordion/Accordion";
 import Flex from "../ui/Flex";
@@ -6,19 +7,24 @@ import TaskList from "./TaskList";
 import Head from "./TaskProject";
 
 export interface TaskboardListViewProps {
-  projectId: number;
+  // projectId: number;
   projectName: string;
-  workspaceId: number;
+  // workspaceId: number;
   boards: any;
 }
 
 const TaskboardListView: React.FC<TaskboardListViewProps> = ({
-  projectId,
-  workspaceId,
+  // projectId,
+  // workspaceId,
   projectName,
   boards,
 }: TaskboardListViewProps) => {
+  const params = useParams();
   const { error } = useBoards();
+  const { workspaceId, projectId } = params as {
+    workspaceId: string;
+    projectId: string;
+  };
   return (
     <>
       <Accordion
@@ -43,8 +49,8 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
                 }
               >
                 <TaskList
-                  workspaceId={workspaceId}
-                  projectId={projectId}
+                  workspaceId={Number(workspaceId)}
+                  projectId={Number(projectId)}
                   boardId={board.id}
                   boardColor={board.color}
                 />

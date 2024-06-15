@@ -33,6 +33,23 @@ interface UpdateWorkspaceData {
     }
   };
 
+  const addAndGetWorkspaces = async (data: any) => {
+    setIsLoading(true);
+    await workspacesService<IWorkspaces[]>().create(data)
+      .catch((err: Error) => setError(err))
+      .finally(() => setIsLoading(false));
+    try {
+      const response = await workspacesService<IWorkspaces[]>().getAll();
+      const fetchedworkspaces = response.data;
+      setWorkspaces(fetchedworkspaces);
+      return fetchedworkspaces;
+    } catch (error) {
+      setError(error as Error);
+      throw error;
+    } finally {
+    }
+  };
+
 
 
 
@@ -77,7 +94,7 @@ interface UpdateWorkspaceData {
   };
 
 
-    return{isLoading ,setWorkspaces, workspaces , error , getWorkspaces , deleteWorkspace , updateWorkspaceName}
+    return{isLoading ,setWorkspaces, workspaces , error , getWorkspaces , deleteWorkspace , updateWorkspaceName, addAndGetWorkspaces}
 };
 
 export default useWorkspaces
