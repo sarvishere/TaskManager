@@ -10,7 +10,6 @@ interface Props {
   onClickOutside?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
-  onArchive?: () => void;
   onAddTask?: () => void;
 }
 
@@ -38,7 +37,6 @@ const ColumnDropdownMenu: FC<Props> = ({
   onEdit,
   onAddTask,
   onDelete,
-  onArchive,
 }) => {
   const dropdownRef = useClickOutside(() => {
     onClickOutside?.();
@@ -61,12 +59,6 @@ const ColumnDropdownMenu: FC<Props> = ({
             <Flex alignItems="center">
               <Icon iconName="Add" />
               <Text size="S">افزودن تسک</Text>
-            </Flex>
-          </Button>
-          <Button onClick={onArchive} asChild className="text-sm">
-            <Flex alignItems="center">
-              <Icon iconName="Archive" />
-              <Text size="S">آرشیو تمام تسک‌ها</Text>
             </Flex>
           </Button>
           <Button onClick={onDelete} asChild className="text-sm">

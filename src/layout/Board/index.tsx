@@ -127,13 +127,11 @@ const BoardPage: React.FC = () => {
   const renderActiveComponent = () => {
     switch (activeButton) {
       case "listview":
-        return (
-          <TaskboardListView projectName={projectNameState} boards={boards} />
-        );
+        return <TaskboardListView boards={boards} />;
       case "calendar":
         return <Calendar />;
       default:
-        return <TaskboardColumnView />;
+        return <TaskboardColumnView boards={boards} setBoards={setBoards} />;
     }
   };
 

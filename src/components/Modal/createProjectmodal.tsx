@@ -52,7 +52,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
             style={{
               background: "transparent",
               border: "1px solid #AAAAAA",
-              borderRadius: "50%",
+              borderRadius: "50%", // Ensure the border radius makes it circular
               width: "30px",
               height: "30px",
               padding: "0",
@@ -66,6 +66,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               <Icon iconName="Add" />
             </button>
             <input
+              className="hover:bg-blue-light hover:border-gray-primary hover:border rounded"
               type="text"
               placeholder=" ایجاد پروژه جدید"
               value={newProject}
@@ -78,6 +79,7 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({
               <Icon iconName="Edit" />
             </button>
             <input
+              className="hover:bg-blue-light hover:border-gray-primary hover:border rounded"
               type="text"
               placeholder=" ویرایش نام ورک اسپیس "
               value={newWorkspaceName}

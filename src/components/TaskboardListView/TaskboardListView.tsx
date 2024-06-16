@@ -5,18 +5,15 @@ import Flex from "../ui/Flex";
 import BoardListView from "./BoardTitle";
 import TaskList from "./TaskList";
 import Head from "./TaskProject";
+import { useContext } from "react";
+import { BoardContext } from "../../layout/Board";
+import { BoardResponse } from "../../services/board-service";
 
 export interface TaskboardListViewProps {
-  // projectId: number;
-  projectName: string;
-  // workspaceId: number;
-  boards: any;
+  boards: BoardResponse[];
 }
 
 const TaskboardListView: React.FC<TaskboardListViewProps> = ({
-  // projectId,
-  // workspaceId,
-  projectName,
   boards,
 }: TaskboardListViewProps) => {
   const params = useParams();
@@ -25,11 +22,12 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
     workspaceId: string;
     projectId: string;
   };
+  const { projectNameState } = useContext(BoardContext);
   return (
     <>
       <Accordion
         id={projectId.toString()}
-        head={<Head id={projectId.toString()} title={projectName} />}
+        head={<Head id={projectId.toString()} title={projectNameState} />}
       >
         <Flex direction="col" onClick={(e) => e.stopPropagation()}>
           {error ? (

@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { toast } from "react-toastify";
 import useAddBoard from "../../hooks/useAddBoard";
 import useAddTask from "../../hooks/useAddTask";
-import useBoards from "../../hooks/useBoards";
 import useDeleteBoard from "../../hooks/useDeleteBoard";
 import useDeleteTask from "../../hooks/useDeleteTask";
 import useUpdateBoard from "../../hooks/useUpdateBoard";
-import { UpdateBoardData } from "../../services/board-service";
+import { BoardResponse, UpdateBoardData } from "../../services/board-service";
 import { Task } from "../../services/task-service";
 import Button from "../ui/Button";
 import Flex from "../ui/Flex";
@@ -18,9 +17,16 @@ import Board from "./Board/Board";
 import NewTask from "../NewTask/NewTask";
 import { useParams } from "react-router-dom";
 
-const TaskboardColumnView = () => {
-  const [showArchive, setShowArchive] = useState(false);
-  const { getBoards, boards, setBoards } = useBoards();
+export interface TaskboardColumnViewProps {
+  boards: BoardResponse[];
+  setBoards: any;
+}
+
+const TaskboardColumnView = ({
+  boards,
+  setBoards,
+}: TaskboardColumnViewProps) => {
+  // const [showArchive, setShowArchive] = useState(false);
   const { addBoard, addedBoard, addError } = useAddBoard();
   const { deleteBoard, error } = useDeleteBoard();
   const { addTask } = useAddTask();
@@ -31,9 +37,9 @@ const TaskboardColumnView = () => {
   // To get the workspaceId and projectId from the params of the page
   const { workspaceId, projectId } = useParams();
 
-  useEffect(() => {
-    getBoards(Number(workspaceId), Number(projectId));
-  }, [workspaceId, projectId]);
+  // useEffect(() => {
+  //   getBoards(Number(workspaceId), Number(projectId));
+  // }, [workspaceId, projectId]);
 
   const tempId = new Date().getTime();
 
@@ -50,7 +56,7 @@ const TaskboardColumnView = () => {
     await addBoard(Number(workspaceId), Number(projectId), data);
 
     if (addedBoard)
-      setBoards((prevBoards) =>
+      setBoards((prevBoards: any) =>
         prevBoards.map((b) => (b.id === tempId ? addedBoard : b))
       );
     else if (addError) {
@@ -89,45 +95,6 @@ const TaskboardColumnView = () => {
         </Text>
       );
     }
-  };
-
-  const handleArchiveBoard = async (
-    boardId: number,
-    board: UpdateBoardData
-  ) => {
-    const originalBoards = [...boards];
-    setShowArchive(false);
-
-    setBoards((prevBoards) =>
-      prevBoards.map((b) => (b.id === boardId ? { ...b, is_archive: true } : b))
-    );
-    await updateBoard(Number(workspaceId), Number(projectId), boardId, {
-      ...board,
-      is_archive: true,
-    });
-    if (boardUpdateError) {
-      setBoards(originalBoards);
-      toast.error(
-        <Text size="M" weight="500">
-          خطایی در آرشیو کردن رخ داده است
-        </Text>
-      );
-    }
-  };
-
-  const handleRestoreArchivedTasks = () => {
-    setShowArchive(true);
-
-    boards.forEach(async (b) => {
-      if (b.is_archive)
-        await updateBoard(Number(workspaceId), Number(projectId), b.id, {
-          ...b,
-          is_archive: false,
-        });
-    });
-    setBoards((prevBoards) =>
-      prevBoards.map((b) => (b.is_archive ? { ...b, is_archive: false } : b))
-    );
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -222,10 +189,6 @@ const TaskboardColumnView = () => {
     return result;
   };
 
-  const filteredBoards = boards.filter((b) =>
-    showArchive ? b : b.is_archive === false
-  );
-
   const newTaskModalHandler = () => {
     setTaskModal(!taskModal);
   };
@@ -237,7 +200,7 @@ const TaskboardColumnView = () => {
       <div className="h-full">
         <Seperator orientation="vertically" />
         <Flex className="h-full" gap="S">
-          {filteredBoards.map((board) => (
+          {boards.map((board) => (
             <Board
               key={board.id}
               board={board}
@@ -245,7 +208,6 @@ const TaskboardColumnView = () => {
               project={Number(projectId)}
               onUpdateBoard={handleUpdateBoard}
               onDeleteBoard={handleDeleteBoard}
-              onArchiveBoard={handleArchiveBoard}
             />
           ))}
           <Button

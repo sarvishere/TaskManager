@@ -16,11 +16,10 @@ import useTasks from "../../../hooks/useTasks";
 
 interface BoardProps {
   board: BoardResponse;
-  workspace:number,
-  project:number,
+  workspace: number;
+  project: number;
   onDeleteBoard: (id: number) => void;
   onUpdateBoard: (title: string, id: number) => void;
-  onArchiveBoard: (id: number, board: UpdateBoardData) => void;
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -29,16 +28,15 @@ const Board: React.FC<BoardProps> = ({
   project,
   onDeleteBoard,
   onUpdateBoard,
-  onArchiveBoard,
 }) => {
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(board.name);
-  const [taskModal,setTaskModal]=useState(false);
-  
+  const [taskModal, setTaskModal] = useState(false);
+
   // To get all tasks
-  const {getAllTasks,tasks}=useTasks()
+  const { getAllTasks, tasks } = useTasks();
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -51,7 +49,7 @@ const Board: React.FC<BoardProps> = ({
   }, [isEditing]);
 
   useEffect(() => {
-getAllTasks(workspace, project, board.id)
+    getAllTasks(workspace, project, board.id);
   }, [workspace, project, board.id]);
 
   const handleEdit = () => {
@@ -80,9 +78,9 @@ getAllTasks(workspace, project, board.id)
     setIsEditing(false);
   };
 
-  const handleTaskModal=()=>{
+  const handleTaskModal = () => {
     setTaskModal(true);
-  }
+  };
   return (
     <div>
       <div
@@ -92,7 +90,6 @@ getAllTasks(workspace, project, board.id)
         <ColumnDropdownMenu
           boardId={board.id}
           onDelete={() => onDeleteBoard(board.id)}
-          onArchive={() => onArchiveBoard(board.id, board)}
           onEdit={handleEdit}
           visible={showDropdown}
           onClickOutside={handleClickOutside}
@@ -134,7 +131,14 @@ getAllTasks(workspace, project, board.id)
             <Button asChild onClick={handleTaskModal}>
               <Icon iconName="Add" />
             </Button>
-            {taskModal&&<NewTask location="board" boardId={board.id} boardName={board.name} onClose={()=>setTaskModal(false)}></NewTask>}
+            {taskModal && (
+              <NewTask
+                location="board"
+                boardId={board.id}
+                boardName={board.name}
+                onClose={() => setTaskModal(false)}
+              ></NewTask>
+            )}
           </div>
         )}
       </div>
@@ -145,9 +149,10 @@ getAllTasks(workspace, project, board.id)
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            {tasks && tasks.map((task, index) => (
-              <TaskCard key={task.id} index={index} task={task} />
-            ))}
+            {tasks &&
+              tasks.map((task, index) => (
+                <TaskCard key={task.id} index={index} task={task} />
+              ))}
             {provided.placeholder}
           </div>
         )}

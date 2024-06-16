@@ -7,13 +7,11 @@ export interface BoardResponse {
   tasks: Task[];
   tasks_count: number;
   color: string;
-  is_archive?:boolean;
 }
 
 export interface AddBoardData {
   name: string;
   color: string;
-  is_archive?:boolean;
 }
 export interface UpdateBoardData extends Partial<AddBoardData> {}
 

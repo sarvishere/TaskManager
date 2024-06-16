@@ -3,9 +3,7 @@ import Button from "../ui/Button";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import DatePickerCard from "../DatePickerCard/DatePickerCard";
-import FlagSelection from "./FlagSelection";
 import useRadioStore from "../../hooks/useRadioStore";
-import { priorities } from "./priorities";
 import useAddTask from "../../hooks/useAddTask";
 import { useParams } from "react-router-dom";
 import { BoardResponse } from "../../services/board-service";
@@ -35,25 +33,13 @@ const NewTask: React.FC<NewTaskProps> = ({
   const { addTask } = useAddTask();
 
   const [calenderVisibility, setCalenderVisibility] = useState(false);
-  const [priorityVisibility, setPriorityVisibility] = useState(false);
-
   const selectedValue = useRadioStore((state) => state.selectedValue);
-  const getColorForPriority = (selectedValue: number): string => {
-    const selectedPriority = priorities.find(
-      (priority) => priority.id === selectedValue
-    );
-
-    return selectedPriority ? selectedPriority.color : "#C1C1C1";
-  };
 
   const [startTask, setStartTask] = useState("");
   const [endTask, setEndTask] = useState("");
 
   const [taskName, setTaskName] = useState("عنوان تسک");
   const [taskDesc, setTaskDesc] = useState("");
-
-  const [attachment, setAttachment] = useState<Blob | string>("");
-  const [thumbnail, setThumbnail] = useState<Blob | string>("");
 
   // To get the current workspaceId from the params
   const { workspaceId, projectId } = useParams();
@@ -67,21 +53,6 @@ const NewTask: React.FC<NewTaskProps> = ({
       setSelectedBoardId(boards[0].id);
     }
   }, [boards, boardId]);
-
-  const handleAttachment = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setAttachment(e.target.files[0]);
-    }
-  };
-  const handleThumbnail = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setThumbnail(e.target.files[0]);
-    }
-  };
-
-  const handleTaskName = (e: ChangeEvent<HTMLInputElement>) => {
-    setTaskName(e.target.value);
-  };
 
   const handleTaskDesc = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTaskDesc(e.target.value);
@@ -97,8 +68,6 @@ const NewTask: React.FC<NewTaskProps> = ({
   const task = {
     name: taskName,
     description: taskDesc,
-    attachment: attachment,
-    thumbnail: thumbnail,
     priority: selectedValue,
     order: 1,
   };
@@ -145,12 +114,12 @@ const NewTask: React.FC<NewTaskProps> = ({
           >
             <Flex justifyContent="between" alignItems="center">
               <Flex alignItems="center">
-                <Icon iconName="Add" />
+                <Icon iconName="Edit" />
                 <input
-                  className="w-full px-4 text-mh placeholder:text-gray-800 focus:outline-gray-secondary"
+                  className="w-full px-4 text-mh placeholder:text-gray-800 focus:outline-gray-secondary hover:bg-blue-light hover:border-gray-primary hover:border rounded"
                   placeholder="عنوان تسک"
                   type="text"
-                  onChange={handleTaskName}
+                  onChange={(e) => setTaskName(e.target.value)}
                   value={taskName}
                 />
               </Flex>
@@ -208,70 +177,23 @@ const NewTask: React.FC<NewTaskProps> = ({
                 onChange={handleTaskDesc}
               />
             </Flex>
-            <Flex className="font-medium">
-              افزودن پیوست
-              <label
-                htmlFor="attached"
-                className="cursor-pointer flex items-center gap-1 py-1 px-2 border-[1px] border-brand-primary rounded text-sm "
-              >
-                <Icon iconName="Link" fill="#208D8E" />
-                <span>آپلود فایل</span>
-              </label>
-              <input
-                id="attached"
-                type="file"
-                className="hidden"
-                onChange={handleAttachment}
-              />
-            </Flex>
-            <Flex className="font-medium">
-              افزودن کاور
-              <label
-                htmlFor="attached"
-                className="cursor-pointer flex items-center gap-1 py-1 px-2 border-[1px] border-brand-primary rounded text-sm "
-              >
-                <Icon iconName="Link" fill="#208D8E" />
-                <span>آپلود فایل</span>
-              </label>
-              <input
-                id="attached"
-                type="file"
-                className="hidden"
-                onChange={handleThumbnail}
-              />
-            </Flex>
-            <Flex justifyContent="between" alignItems="center">
-              <Flex gap="L" className=" relative">
-                <Icon
-                  iconName="DashedFlag"
-                  className="cursor-pointer"
-                  onClick={() => {
-                    setPriorityVisibility(true);
-                  }}
-                  stroke={getColorForPriority(selectedValue)}
-                />
-                <FlagSelection
-                  visible={priorityVisibility}
-                  onClose={() => setPriorityVisibility(false)}
-                />
-                <Icon
-                  iconName="DashedCalendar"
-                  className={`cursor-pointer ${
-                    startTask && endTask
-                      ? "text-green-500"
-                      : "text-default-color"
-                  }`}
-                  onClick={() => setCalenderVisibility(true)}
-                />
 
-                <DatePickerCard
-                  visible={calenderVisibility}
-                  onSelectFinishDate={(date) => handleStartDate(date)}
-                  onSelectStartDate={(date) => handleEndDate(date)}
-                  onClose={() => setCalenderVisibility(false)}
-                />
-                <Icon iconName="DashedTag" />
-              </Flex>
+            <Flex justifyContent="between" alignItems="center">
+              <Icon
+                iconName="DashedCalendar"
+                className={`cursor-pointer ${
+                  startTask && endTask ? "text-green-500" : "text-default-color"
+                }`}
+                onClick={() => setCalenderVisibility(true)}
+              />
+
+              <DatePickerCard
+                visible={calenderVisibility}
+                onSelectFinishDate={(date) => handleStartDate(date)}
+                onSelectStartDate={(date) => handleEndDate(date)}
+                onClose={() => setCalenderVisibility(false)}
+              />
+
               <Button
                 weight="400"
                 color="brand"
