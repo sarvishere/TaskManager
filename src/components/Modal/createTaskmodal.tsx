@@ -29,12 +29,12 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
   const [newProjectName, setNewProjectName] = useState(projectName);
   const [newName, setNewName] = useState("");
   const [boardColor, setBoardColor] = useState("");
-  const [showNewTask, setShowNewTask] = useState(false);
+  const [showNewBoard, setShowNewBoard] = useState(false);
 
   const { addBoard } = useAddBoard();
 
   const handleModal = () => {
-    setShowNewTask(true);
+    setShowNewBoard(true);
   };
 
   const handleUpdateProjectName = () => {
@@ -96,7 +96,7 @@ const CreateTaskModal: React.FC<CreateTaskModalProps> = ({
             />
           </div>
 
-          {showNewTask && (
+          {showNewBoard && (
             <div>
               <div className="flex mt-2 gap-2">
                 <button

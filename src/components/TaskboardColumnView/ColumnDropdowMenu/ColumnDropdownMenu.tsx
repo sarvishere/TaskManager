@@ -3,13 +3,15 @@ import Button from "../../ui/Button";
 import Flex from "../../ui/Flex";
 import Icon from "../../ui/Icon";
 import Text from "../../ui/Text";
+import useDeleteBoard from "../../../hooks/useDeleteBoard";
+import { useParams } from "react-router-dom";
 
 interface Props {
   boardId: number;
   visible: boolean;
   onClickOutside?: () => void;
   onEdit?: () => void;
-  onDelete?: () => void;
+  onDelete: (id: number) => void;
   onAddTask?: () => void;
 }
 
@@ -37,10 +39,19 @@ const ColumnDropdownMenu: FC<Props> = ({
   onEdit,
   onAddTask,
   onDelete,
+  boardId,
 }) => {
+  const { deleteBoard } = useDeleteBoard();
+  const { workspaceId, projectId } = useParams();
+
   const dropdownRef = useClickOutside(() => {
     onClickOutside?.();
   });
+
+  const handleDeleteBoard = () => {
+    deleteBoard(Number(workspaceId), Number(projectId), boardId);
+    onDelete(boardId);
+  };
 
   return (
     visible && (
@@ -61,11 +72,13 @@ const ColumnDropdownMenu: FC<Props> = ({
               <Text size="S">افزودن تسک</Text>
             </Flex>
           </Button>
-          <Button onClick={onDelete} asChild className="text-sm">
-            <Flex alignItems="center">
-              <Icon iconName="Remove" />
-              <Text size="S">حذف ستون</Text>
-            </Flex>
+          <Button asChild className="text-sm">
+            <button onClick={handleDeleteBoard}>
+              <Flex alignItems="center">
+                <Icon iconName="Remove" />
+                <Text size="S">حذف ستون</Text>
+              </Flex>
+            </button>
           </Button>
         </Flex>
       </div>

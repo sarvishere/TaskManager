@@ -27,9 +27,6 @@ const TaskSidebar = ({
   workspaces,
   deleteWorkspace,
   updateWorkspaceName,
-  AddWorkspace,
-  getWorkspaces,
-  setWorkspaces,
   addAndGetWorkspaces,
 }: TaskSidebarProps) => {
   const { user, logout } = useAuth();
@@ -42,20 +39,8 @@ const TaskSidebar = ({
   };
 
   const handleCreateWorkspace = async (name: string, color: string) => {
-    // AddWorkspace({ name, color });
     addAndGetWorkspaces({ name, color });
     setShowModal(!showModal);
-    // const newWorkspace: IWorkspaces = {
-    //   id: workspaces.length + 1,
-    //   name,
-    //   color,
-    // };
-    // const updatedWorkspaces = [...workspaces, newWorkspace];
-    // setWorkspaces(updatedWorkspaces);
-    // let workspaces = await getWorkspaces();
-    // console.log(workspaces);
-
-    // setWorkspaces(workspaces);
   };
 
   return (

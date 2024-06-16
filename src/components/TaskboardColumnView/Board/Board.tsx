@@ -18,7 +18,7 @@ interface BoardProps {
   board: BoardResponse;
   workspace: number;
   project: number;
-  onDeleteBoard: (id: number) => void;
+  handleDeleteBoard: (id: number) => void;
   onUpdateBoard: (title: string, id: number) => void;
 }
 
@@ -26,7 +26,7 @@ const Board: React.FC<BoardProps> = ({
   board,
   workspace,
   project,
-  onDeleteBoard,
+  handleDeleteBoard,
   onUpdateBoard,
 }) => {
   const EditBoxRef = useRef<HTMLInputElement>(null);
@@ -89,7 +89,8 @@ const Board: React.FC<BoardProps> = ({
       >
         <ColumnDropdownMenu
           boardId={board.id}
-          onDelete={() => onDeleteBoard(board.id)}
+          //here handledelete board
+          onDelete={handleDeleteBoard}
           onEdit={handleEdit}
           visible={showDropdown}
           onClickOutside={handleClickOutside}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { toast } from "react-toastify";
 import useAddBoard from "../../hooks/useAddBoard";
@@ -16,6 +16,8 @@ import Text from "../ui/Text";
 import Board from "./Board/Board";
 import NewTask from "../NewTask/NewTask";
 import { useParams } from "react-router-dom";
+import { BoardContext } from "../../layout/Board";
+import NewBoard from "./TaskCountBadge/NewBoard";
 
 export interface TaskboardColumnViewProps {
   boards: BoardResponse[];
@@ -26,48 +28,40 @@ const TaskboardColumnView = ({
   boards,
   setBoards,
 }: TaskboardColumnViewProps) => {
-  // const [showArchive, setShowArchive] = useState(false);
-  const { addBoard, addedBoard, addError } = useAddBoard();
-  const { deleteBoard, error } = useDeleteBoard();
+  const { handleAddBoard, handleDeleteBoard } = useContext(BoardContext);
+  const { workspaceId, projectId } = useParams();
+  // const { deleteBoard, error } = useDeleteBoard();
+  // const { addBoard } = useAddBoard();
+
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
   const { updateBoard, boardUpdateError, updatedBoard } = useUpdateBoard();
   const [taskModal, setTaskModal] = useState(false);
 
-  // To get the workspaceId and projectId from the params of the page
-  const { workspaceId, projectId } = useParams();
-
-  // useEffect(() => {
-  //   getBoards(Number(workspaceId), Number(projectId));
-  // }, [workspaceId, projectId]);
-
   const tempId = new Date().getTime();
 
-  const handleAddBoard = async () => {
-    const originalBoards = [...boards];
-    const data = {
-      color: "border-red-primary",
-      name: "Todo",
-      order: boards.length + 1,
-      is_archive: false,
-    };
-    setBoards([...boards, { ...data, id: tempId, tasks: [], tasks_count: 0 }]);
-
-    await addBoard(Number(workspaceId), Number(projectId), data);
-
-    if (addedBoard)
-      setBoards((prevBoards: any) =>
-        prevBoards.map((b) => (b.id === tempId ? addedBoard : b))
-      );
-    else if (addError) {
-      setBoards(originalBoards);
-      toast.error(
-        <Text size="M" weight="500">
-          افزودن بورد با مشکل مواجه شد
-        </Text>
-      );
-    }
-  };
+  // const handleAddBoard = async () => {
+  // const originalBoards = [...boards];
+  // const data = {
+  //   color: "border-red-primary",
+  //   name: "Todo",
+  //   order: boards.length + 1,
+  // };
+  // setBoards([...boards, { ...data, id: tempId, tasks: [], tasks_count: 0 }]);
+  // await addBoard(Number(workspaceId), Number(projectId), data);
+  // if (addedBoard)
+  //   setBoards((prevBoards: any) =>
+  //     prevBoards.map((b) => (b.id === tempId ? addedBoard : b))
+  //   );
+  // else if (addError) {
+  //   setBoards(originalBoards);
+  //   toast.error(
+  //     <Text size="M" weight="500">
+  //       افزودن بورد با مشکل مواجه شد
+  //     </Text>
+  //   );
+  // }
+  // };
 
   const handleUpdateBoard = (title: string, boardId: number) => {
     updateBoard(Number(workspaceId), Number(projectId), boardId, {
@@ -81,21 +75,21 @@ const TaskboardColumnView = ({
       );
   };
 
-  const handleDeleteBoard = async (boardId: number) => {
-    const originalBoards = [...boards];
+  // const handleDeleteBoard = async (boardId: number) => {
+  //   const originalBoards = [...boards];
 
-    setBoards((prevBoards) => prevBoards.filter((b) => b.id !== boardId));
-    await deleteBoard(Number(workspaceId), Number(projectId), boardId);
+  //   setBoards((prevBoards) => prevBoards.filter((b) => b.id !== boardId));
+  //   await deleteBoard(Number(workspaceId), Number(projectId), boardId);
 
-    if (error) {
-      setBoards(originalBoards);
-      toast.error(
-        <Text size="M" weight="500">
-          خطایی در حذف بورد رخ داده است
-        </Text>
-      );
-    }
-  };
+  //   if (error) {
+  //     setBoards(originalBoards);
+  //     toast.error(
+  //       <Text size="M" weight="500">
+  //         خطایی در حذف بورد رخ داده است
+  //       </Text>
+  //     );
+  //   }
+  // };
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -197,7 +191,7 @@ const TaskboardColumnView = ({
   };
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="h-full">
+      <div className="h-full py-5">
         <Seperator orientation="vertically" />
         <Flex className="h-full" gap="S">
           {boards.map((board) => (
@@ -207,19 +201,15 @@ const TaskboardColumnView = ({
               workspace={Number(workspaceId)}
               project={Number(projectId)}
               onUpdateBoard={handleUpdateBoard}
-              onDeleteBoard={handleDeleteBoard}
+              handleDeleteBoard={handleDeleteBoard}
             />
           ))}
-          <Button
-            onClick={handleAddBoard}
-            className="flex items-center flex-shrink-0 shadow-[0_3px_4px_0_rgba(0,0,0,0.2)] rounded-2xl w-[250px] h-[40px] py-2 px-3 bg-white"
-            asChild
-          >
-            <Icon iconName="Add" />
-            <Text size="M" weight="500">
-              ساختن برد جدید
-            </Text>
-          </Button>
+          {/* //here use add board */}
+          <NewBoard
+            workspaceId={Number(workspaceId)}
+            projectId={Number(projectId)}
+            handleAddBoard={handleAddBoard}
+          />
         </Flex>
         <Button
           color="brand"
