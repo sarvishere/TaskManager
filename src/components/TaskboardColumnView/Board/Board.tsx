@@ -10,7 +10,6 @@ import { Droppable } from "react-beautiful-dnd";
 import NewTask from "../../NewTask/NewTask";
 import useTasks from "../../../hooks/useTasks";
 import { useParams } from "react-router-dom";
-import useBoards from "../../../hooks/useBoards";
 import useUpdateBoard from "../../../hooks/useUpdateBoard";
 
 interface BoardProps {
@@ -73,15 +72,14 @@ const Board: React.FC<BoardProps> = ({
 
   const handleSaveChanges = () => {
     handleUpdateBoard(title, board.id);
-    console.log(title);
-    //here add useupdatetitle
+    //here add useupdatetitle || err
     updateBoard(Number(workspaceId), Number(projectId), board.id, title);
     setIsEditing(false);
   };
 
   const handleDiscardChanges = () => {
     setIsEditing(false);
-    setTitle(board.name); // Reset the title to the original board name
+    setTitle(board.name);
   };
 
   const handleTaskModal = () => {

@@ -1,10 +1,8 @@
 import { useContext, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
-import { toast } from "react-toastify";
 import useAddTask from "../../hooks/useAddTask";
 import useDeleteTask from "../../hooks/useDeleteTask";
-// import useUpdateBoard from "../../hooks/useUpdateBoard";
-import { BoardResponse, UpdateBoardData } from "../../services/board-service";
+import { BoardResponse } from "../../services/board-service";
 import { Task } from "../../services/task-service";
 import Button from "../ui/Button";
 import Flex from "../ui/Flex";
@@ -34,18 +32,6 @@ const TaskboardColumnView = ({
   const [taskModal, setTaskModal] = useState(false);
 
   const tempId = new Date().getTime();
-
-  // const handleUpdateBoard = (title: string, boardId: number) => {
-  //   updateBoard(Number(workspaceId), Number(projectId), boardId, {
-  //     name: title,
-  //   });
-  //   console.log(updatedBoard);
-
-  //   if (updatedBoard)
-  //     setBoards((prevBoards) =>
-  //       prevBoards.map((b) => (b.id === boardId ? updatedBoard : b))
-  //     );
-  // };
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
