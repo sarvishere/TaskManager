@@ -19,7 +19,8 @@ interface ContextValue {
   UpdateProjectIdState: (newState: number) => void;
   UpdateWorkspaceIdState: (newState: number) => void;
   handleAddBoard: (newBoard: BoardResponse) => void;
-  handleDeleteBoard: any;
+  handleDeleteBoard: (boardId: number) => void;
+  handleUpdateBoard: (title: string, boardId: number) => void;
 }
 
 export const BoardContext = createContext<ContextValue>({
@@ -31,6 +32,7 @@ export const BoardContext = createContext<ContextValue>({
   UpdateWorkspaceIdState: () => {},
   handleAddBoard: () => {},
   handleDeleteBoard: () => {},
+  handleUpdateBoard: () => {},
 });
 
 const BoardPage: React.FC = () => {
@@ -133,6 +135,14 @@ const BoardPage: React.FC = () => {
     });
   };
 
+  const handleUpdateBoard = (title: string, boardId: number) => {
+    if (title) {
+      setBoards((prevBoards) =>
+        prevBoards.map((b) => (b.id === boardId ? { ...b, name: title } : b))
+      );
+    }
+  };
+
   const renderActiveComponent = () => {
     switch (activeButton) {
       case "listview":
@@ -155,6 +165,7 @@ const BoardPage: React.FC = () => {
         UpdateWorkspaceIdState,
         handleAddBoard,
         handleDeleteBoard,
+        handleUpdateBoard,
       }}
     >
       <div className="flex">

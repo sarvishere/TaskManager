@@ -72,7 +72,7 @@ const colors: {
 enum Size {
   default = "p-3",
   full = "w-full",
-  small = "w-[100px] h-[10px]",
+  small = "w-[100px] h-[9px]",
 }
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;

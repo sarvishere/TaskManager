@@ -6,20 +6,19 @@ import Text from "../../ui/Text";
 import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
 import TaskCard from "../TaskCard/TaskCard";
-import {
-  BoardResponse,
-  UpdateBoardData,
-} from "../../../services/board-service";
 import { Droppable } from "react-beautiful-dnd";
 import NewTask from "../../NewTask/NewTask";
 import useTasks from "../../../hooks/useTasks";
+import { useParams } from "react-router-dom";
+import useBoards from "../../../hooks/useBoards";
+import useUpdateBoard from "../../../hooks/useUpdateBoard";
 
 interface BoardProps {
-  board: BoardResponse;
+  board: any;
   workspace: number;
   project: number;
   handleDeleteBoard: (id: number) => void;
-  onUpdateBoard: (title: string, id: number) => void;
+  handleUpdateBoard: (title: string, id: number) => void;
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -27,7 +26,7 @@ const Board: React.FC<BoardProps> = ({
   workspace,
   project,
   handleDeleteBoard,
-  onUpdateBoard,
+  handleUpdateBoard,
 }) => {
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -37,7 +36,8 @@ const Board: React.FC<BoardProps> = ({
 
   // To get all tasks
   const { getAllTasks, tasks } = useTasks();
-
+  const { updateBoard } = useUpdateBoard();
+  const { workspaceId, projectId } = useParams();
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
@@ -56,9 +56,11 @@ const Board: React.FC<BoardProps> = ({
     setIsEditing(true);
     setShowDropdown(false);
   };
+
   const handleClickOutside = () => {
     setShowDropdown(false);
   };
+
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
@@ -70,17 +72,22 @@ const Board: React.FC<BoardProps> = ({
   };
 
   const handleSaveChanges = () => {
-    onUpdateBoard(title, board.id);
+    handleUpdateBoard(title, board.id);
+    console.log(title);
+    //here add useupdatetitle
+    updateBoard(Number(workspaceId), Number(projectId), board.id, title);
     setIsEditing(false);
   };
 
   const handleDiscardChanges = () => {
     setIsEditing(false);
+    setTitle(board.name); // Reset the title to the original board name
   };
 
   const handleTaskModal = () => {
     setTaskModal(true);
   };
+
   return (
     <div>
       <div
@@ -89,7 +96,6 @@ const Board: React.FC<BoardProps> = ({
       >
         <ColumnDropdownMenu
           boardId={board.id}
-          //here handledelete board
           onDelete={handleDeleteBoard}
           onEdit={handleEdit}
           visible={showDropdown}
@@ -108,9 +114,9 @@ const Board: React.FC<BoardProps> = ({
             <Flex alignItems="center">
               <input
                 ref={EditBoxRef}
-                defaultValue={title}
                 onChange={handleOnChange}
-                onBlur={() => setIsEditing(false)}
+                value={title}
+                onBlur={handleSaveChanges}
                 onKeyDown={handleKeyboardEvents}
                 type="text"
                 className="font-iranyekan w-full outline-none border-none"

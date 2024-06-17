@@ -59,7 +59,10 @@ const useProjects = (workspaceId: number) => {
   ) => {
     setIsLoading(true);
     try {
-      const data: Project = { name: newProjectName }; 
+      const data: Project = {
+        name: newProjectName,
+        id: 0
+      }; 
       await projectService(workspaceId).patch(projectId, data);
 
       const updatedProjects = projects.map(project => {

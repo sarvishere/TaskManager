@@ -13,11 +13,11 @@ const useUpdateBoard = () => {
     workspaceId: number,
     projectId: number,
     id: number,
-    data: UpdateBoardData
+    name: UpdateBoardData
   ) => {
     setIsLoading(true);
     boardService<UpdateBoardData, BoardResponse>(workspaceId, projectId)
-      .patch(id,data)
+      .patch(id,name)
       .then((res) => setUpdatedBoard(res.data))
       .catch((error) => {
         setError(error);
