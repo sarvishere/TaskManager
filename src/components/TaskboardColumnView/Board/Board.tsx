@@ -142,6 +142,7 @@ const Board: React.FC<BoardProps> = ({
                 boardId={board.id}
                 boardName={board.name}
                 onClose={() => setTaskModal(false)}
+                setTasks={setTasks}
               ></NewTask>
             )}
           </div>

@@ -13,6 +13,7 @@ import NewTask from "../NewTask/NewTask";
 import { useParams } from "react-router-dom";
 import { BoardContext } from "../../layout/Board";
 import NewBoard from "./TaskCountBadge/NewBoard";
+import useTasks from "../../hooks/useTasks";
 
 export interface TaskboardColumnViewProps {
   boards: BoardResponse[];
@@ -26,11 +27,10 @@ const TaskboardColumnView = ({
   const { handleAddBoard, handleDeleteBoard, handleUpdateBoard } =
     useContext(BoardContext);
   const { workspaceId, projectId } = useParams();
-
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
   const [taskModal, setTaskModal] = useState(false);
-
+  const { setTasks } = useTasks();
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -127,6 +127,7 @@ const TaskboardColumnView = ({
   const handleCloseModal = () => {
     setTaskModal(false);
   };
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="h-full py-5">
@@ -162,6 +163,7 @@ const TaskboardColumnView = ({
             location="columnView"
             boards={boards}
             onClose={handleCloseModal}
+            setTasks={setTasks}
           ></NewTask>
         )}
       </div>

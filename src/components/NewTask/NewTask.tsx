@@ -2,13 +2,12 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
-
 import useRadioStore from "../../hooks/useRadioStore";
 import useAddTask from "../../hooks/useAddTask";
 import { useParams } from "react-router-dom";
 import { BoardResponse } from "../../services/board-service";
 import moment from "jalali-moment";
-import useTask from "../../hooks/useTasks";
+import { Task } from "../../services/task-service";
 
 interface NewTaskProps {
   onClose: () => void;
@@ -16,6 +15,7 @@ interface NewTaskProps {
   boardId?: number;
   boardName?: string;
   boards?: BoardResponse[];
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
 const convertToPersian = (number: number | string) => {
@@ -32,25 +32,17 @@ const NewTask: React.FC<NewTaskProps> = ({
   boardId,
   boardName,
   boards,
+  setTasks,
 }) => {
-  const { addTask, task: newTask } = useAddTask();
-  const { tasks, setTasks } = useTask();
-
+  const { addTask } = useAddTask();
   const [startTask, setStartTask] = useState("");
-  const selectedValue = useRadioStore((state) => state.selectedValue);
-
   const [taskName, setTaskName] = useState("عنوان تسک");
   const [taskDesc, setTaskDesc] = useState("");
-
-  // To get the current workspaceId from the params
   const { workspaceId, projectId } = useParams();
-
-  // To store the selected board's id
   const [selectedBoardId, setSelectedBoardId] = useState<number | undefined>(
     boardId
   );
 
-  // The following useEffect makes sure that if there is no boardId, the first board is selected by default
   useEffect(() => {
     if (boards && boards.length > 0 && !boardId) {
       setSelectedBoardId(boards[0].id);
@@ -74,23 +66,24 @@ const NewTask: React.FC<NewTaskProps> = ({
   const handleSubmitNewTask = async (e: FormEvent) => {
     e.preventDefault();
     if (selectedBoardId) {
-      const taskData = {
-        name: taskName,
-        description: taskDesc,
-      };
+      const taskData = { name: taskName, description: taskDesc };
 
-      const newTaskResponse = await addTask(
-        Number(workspaceId),
-        Number(projectId),
-        selectedBoardId,
-        taskData
-      );
-
-      if (newTaskResponse) {
-        setTasks((prevTasks) => [...prevTasks, newTaskResponse]);
+      try {
+        const newTask = await addTask(
+          Number(workspaceId),
+          Number(projectId),
+          selectedBoardId,
+          taskData
+        );
+        if (newTask && newTask.id) {
+          setTasks((prevTasks: Task[]) => [...prevTasks, newTask]);
+          onClose();
+        } else {
+          console.error("Failed to add new task");
+        }
+      } catch (error) {
+        console.error("Error adding task:", error);
       }
-
-      onClose();
     }
   };
 
@@ -123,14 +116,11 @@ const NewTask: React.FC<NewTaskProps> = ({
                 />
               </Flex>
               <button onClick={handleCloseModal}>
-                {" "}
-                <Icon iconName="Close" />{" "}
+                <Icon iconName="Close" />
               </button>
             </Flex>
             <div className="w-full flex justify-between">
               <div>
-                {/* When the NewTask button is clicked on the board itself, the board name will be displayed
-                otherwise the list of boards the user can choose from */}
                 {location === "columnView" ? (
                   <Flex alignItems="center">
                     در
@@ -162,7 +152,6 @@ const NewTask: React.FC<NewTaskProps> = ({
                 </div>
               </div>
             </div>
-
             <Flex>
               <textarea
                 placeholder="توضیحاتی برای این تسک بنویسید"
@@ -170,7 +159,6 @@ const NewTask: React.FC<NewTaskProps> = ({
                 onChange={handleTaskDesc}
               />
             </Flex>
-
             <Flex justifyContent="between" alignItems="center">
               <Button
                 weight="400"
@@ -187,4 +175,5 @@ const NewTask: React.FC<NewTaskProps> = ({
     </div>
   );
 };
+
 export default NewTask;
