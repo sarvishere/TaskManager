@@ -13,9 +13,12 @@ const useDeleteTask = () => {
     taskService(workspaceId, projectId, boardId)
       .delete(id)
       .catch((error) => setError(error));
+      
   };
 
   return { deleteTask, error };
 };
 
 export default useDeleteTask;
+
+

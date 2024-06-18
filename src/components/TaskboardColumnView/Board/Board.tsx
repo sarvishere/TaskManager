@@ -34,7 +34,7 @@ const Board: React.FC<BoardProps> = ({
   const [taskModal, setTaskModal] = useState(false);
 
   // To get all tasks
-  const { getAllTasks, tasks } = useTasks();
+  const { getAllTasks, tasks, setTasks } = useTasks();
   const { updateBoard } = useUpdateBoard();
   const { workspaceId, projectId } = useParams();
   const toggleDropdown = () => {
@@ -156,7 +156,14 @@ const Board: React.FC<BoardProps> = ({
           >
             {tasks &&
               tasks.map((task, index) => (
-                <TaskCard key={task.id} index={index} task={task} />
+                <TaskCard
+                  key={task.id}
+                  index={index}
+                  task={task}
+                  boardId={board.id}
+                  setTasks={setTasks}
+                  get={getAllTasks}
+                />
               ))}
             {provided.placeholder}
           </div>

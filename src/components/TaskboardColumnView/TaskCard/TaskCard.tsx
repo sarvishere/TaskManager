@@ -3,41 +3,34 @@ import Button from "../../ui/Button";
 import Flex from "../../ui/Flex";
 import Icon from "../../ui/Icon";
 import Text from "../../ui/Text";
-import TagBadge from "../../ui/TagBadge";
-import Avatar from "../../ui/Avatar";
 import { Task } from "../../../services/task-service";
 import { Draggable } from "react-beautiful-dnd";
 import moment from "jalali-moment";
-import PriorityFlag from "./changetask";
-import AvatarGroup from "../../ui/AvatarGroup";
-import useTaskMembers from "../../../hooks/useTaskMembers";
-import { useEffect, useState } from "react";
-import getImageUrl from "../../../getImageUrl";
-import ChangeTask from "./changetask";
+import useDeleteTask from "../../../hooks/useDeleteTask";
+import { useParams } from "react-router-dom";
 
 export interface TaskProps {
   task: Task;
   index: number;
+  boardId: number;
+  setTasks: any;
+  get: any;
 }
 
-const TaskCard: React.FC<TaskProps> = ({ task, index }) => {
-  const [isModalOpen, setModalOpen] = useState(false);
-
-  const handleModalOpen = () => {
-    setModalOpen(true);
+const TaskCard = ({ task, index, boardId, setTasks, get }: TaskProps) => {
+  const { deleteTask } = useDeleteTask();
+  const { workspaceId, projectId } = useParams();
+  const handleDeleteTask = () => {
+    deleteTask(Number(workspaceId), Number(projectId), boardId, task.id);
+    setTasks((prevTasks: any) => {
+      const updateTask = prevTasks.filter((t: any) => t.id !== task.id);
+      return updateTask;
+    });
   };
-
-  // const handleModalClose = () => {
-  //   setModalOpen(false);
-  // };
 
   const persianDeadline = moment(task.deadline)
     .locale("fa")
     .format("YYYY/MM/DD");
-
-  // useEffect(() => {
-  //   getMembers(workspaceId, projectId, boardId, task.id);
-  // }, []);
 
   return (
     <Draggable index={index} draggableId={String(task.id)}>
@@ -66,20 +59,12 @@ const TaskCard: React.FC<TaskProps> = ({ task, index }) => {
             </Flex>
             <Flex direction="col" gap="S" className="hidden group-hover:flex">
               <Flex justifyContent="between">
-                <Button asChild onClick={handleModalOpen}>
-                  <Icon iconName="More" />
+                <Button asChild onClick={handleDeleteTask}>
+                  <Icon iconName="Remove" stroke="red" />
                 </Button>
               </Flex>
             </Flex>
           </Flex>
-          {isModalOpen && (
-            <ChangeTask
-              onClose={() => {
-                setModalOpen(false);
-              }}
-              handleonDelete={handledelete}
-            />
-          )}
         </div>
       )}
     </Draggable>
