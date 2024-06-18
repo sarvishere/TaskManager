@@ -31,8 +31,6 @@ const TaskboardColumnView = ({
   const { deleteTask } = useDeleteTask();
   const [taskModal, setTaskModal] = useState(false);
 
-  const tempId = new Date().getTime();
-
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
