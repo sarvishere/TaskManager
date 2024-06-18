@@ -2,12 +2,13 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
-import DatePickerCard from "../DatePickerCard/DatePickerCard";
+
 import useRadioStore from "../../hooks/useRadioStore";
 import useAddTask from "../../hooks/useAddTask";
 import { useParams } from "react-router-dom";
 import { BoardResponse } from "../../services/board-service";
 import moment from "jalali-moment";
+import useTask from "../../hooks/useTasks";
 
 interface NewTaskProps {
   onClose: () => void;
@@ -16,6 +17,7 @@ interface NewTaskProps {
   boardName?: string;
   boards?: BoardResponse[];
 }
+
 const convertToPersian = (number: number | string) => {
   const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
   return String(number).replace(
@@ -23,6 +25,7 @@ const convertToPersian = (number: number | string) => {
     (match) => persianNumbers[parseInt(match)]
   );
 };
+
 const NewTask: React.FC<NewTaskProps> = ({
   onClose,
   location,
@@ -30,13 +33,11 @@ const NewTask: React.FC<NewTaskProps> = ({
   boardName,
   boards,
 }) => {
-  const { addTask } = useAddTask();
-
-  const [calenderVisibility, setCalenderVisibility] = useState(false);
-  const selectedValue = useRadioStore((state) => state.selectedValue);
+  const { addTask, task: newTask } = useAddTask();
+  const { tasks, setTasks } = useTask();
 
   const [startTask, setStartTask] = useState("");
-  const [endTask, setEndTask] = useState("");
+  const selectedValue = useRadioStore((state) => state.selectedValue);
 
   const [taskName, setTaskName] = useState("عنوان تسک");
   const [taskDesc, setTaskDesc] = useState("");
@@ -45,7 +46,9 @@ const NewTask: React.FC<NewTaskProps> = ({
   const { workspaceId, projectId } = useParams();
 
   // To store the selected board's id
-  const [selectedBoardId, setSelectedBoardId] = useState(boardId);
+  const [selectedBoardId, setSelectedBoardId] = useState<number | undefined>(
+    boardId
+  );
 
   // The following useEffect makes sure that if there is no boardId, the first board is selected by default
   useEffect(() => {
@@ -54,51 +57,47 @@ const NewTask: React.FC<NewTaskProps> = ({
     }
   }, [boards, boardId]);
 
+  useEffect(() => {
+    const currentDate = moment().locale("fa").format("YYYY/MM/DD");
+    setStartTask(currentDate);
+  }, []);
+
   const handleTaskDesc = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTaskDesc(e.target.value);
   };
 
   const handleSelectBoard = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedBoardName = e.target.value;
-    const selectedId = boards?.find(
-      (board) => board.name === selectedBoardName
-    )?.id;
-    setSelectedBoardId(selectedId);
+    const selectedBoardId = Number(e.target.value);
+    setSelectedBoardId(selectedBoardId);
   };
-  const task = {
-    name: taskName,
-    description: taskDesc,
-    priority: selectedValue,
-    order: 1,
-  };
-  const handleSubmitNewTask = (e: FormEvent) => {
+
+  const handleSubmitNewTask = async (e: FormEvent) => {
     e.preventDefault();
-    addTask(
-      Number(workspaceId),
-      Number(projectId),
-      Number(selectedBoardId),
-      task
-    );
-    onClose();
+    if (selectedBoardId) {
+      const taskData = {
+        name: taskName,
+        description: taskDesc,
+      };
+
+      const newTaskResponse = await addTask(
+        Number(workspaceId),
+        Number(projectId),
+        selectedBoardId,
+        taskData
+      );
+
+      if (newTaskResponse) {
+        setTasks((prevTasks) => [...prevTasks, newTaskResponse]);
+      }
+
+      onClose();
+    }
   };
+
   const handleCloseModal = () => {
     onClose();
   };
 
-  // Handling the conversion of the start date
-  const handleStartDate = (date: string) => {
-    const convertedDate = convertToPersian(
-      moment(date, "YYYY-MM-DD").locale("fa").format("jDD jMMMM jYYYY")
-    );
-    setStartTask(convertedDate);
-  };
-  // Handling the conversion of the end date
-  const handleEndDate = (date: string) => {
-    const convertedDate = convertToPersian(
-      moment(date, "YYYY-MM-DD").locale("fa").format("jDD jMMMM jYYYY")
-    );
-    setEndTask(convertedDate);
-  };
   return (
     <div className="fixed inset-0 flex justify-center items-center z-50">
       <form onSubmit={handleSubmitNewTask}>
@@ -138,11 +137,11 @@ const NewTask: React.FC<NewTaskProps> = ({
                     <select
                       onChange={handleSelectBoard}
                       className="border-2 border-gray-secondary rounded-md basis-1/6 p-1 focus:outline-gray-primary"
-                      value={!selectedBoardId && boards && boards[0].id}
+                      value={selectedBoardId}
                     >
                       {boards &&
-                        boards.map((board, index) => (
-                          <option key={index} value={board.name}>
+                        boards.map((board) => (
+                          <option key={board.id} value={board.id}>
                             {board.name}
                           </option>
                         ))}
@@ -153,19 +152,13 @@ const NewTask: React.FC<NewTaskProps> = ({
                 )}
               </div>
               <div className="flex pl-20">
-                {/* Start date displayed */}
-                <div className="flex flex-col ml-4">
-                  <p className="text-xs font-normal text-gray-primary mb-2">
+                <div className="flex pl-20 items-center justify-evenly gap-2">
+                  <p className="text-xs font-normal text-gray-primary ">
                     ساخته شده در:
                   </p>
-                  <p className="font- text-base">{startTask}</p>
-                </div>
-                {/* End date displayed */}
-                <div className="flex flex-col ml-4">
-                  <p className="text-xs font-normal text-gray-primary mb-2">
-                    ددلاین:
+                  <p className="text-xs font-normal text-gray-primary">
+                    {convertToPersian(startTask)}
                   </p>
-                  <p className="font- text-base">{endTask}</p>
                 </div>
               </div>
             </div>
@@ -179,21 +172,6 @@ const NewTask: React.FC<NewTaskProps> = ({
             </Flex>
 
             <Flex justifyContent="between" alignItems="center">
-              <Icon
-                iconName="DashedCalendar"
-                className={`cursor-pointer ${
-                  startTask && endTask ? "text-green-500" : "text-default-color"
-                }`}
-                onClick={() => setCalenderVisibility(true)}
-              />
-
-              <DatePickerCard
-                visible={calenderVisibility}
-                onSelectFinishDate={(date) => handleStartDate(date)}
-                onSelectStartDate={(date) => handleEndDate(date)}
-                onClose={() => setCalenderVisibility(false)}
-              />
-
               <Button
                 weight="400"
                 color="brand"

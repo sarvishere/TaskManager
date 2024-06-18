@@ -5,21 +5,12 @@ export interface Task {
   name: string;
   description: string;
   deadline: string;
-  priority: number;
-  attachment: string;
-  thumbnail: string;
-  order: number;
-  members: string;
-  created_at: string;
 }
 
 export interface AddTaskData {
   name: string;
   description: string;
-  attachment: Blob | string;
-  thumbnail: Blob | string;
-  priority: number;
-  order: number;
+
 }
 
 const taskService = <TData = any, TResponse = Task>(

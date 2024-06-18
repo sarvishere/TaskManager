@@ -14,10 +14,9 @@ export interface TaskProps {
   index: number;
   boardId: number;
   setTasks: any;
-  get: any;
 }
 
-const TaskCard = ({ task, index, boardId, setTasks, get }: TaskProps) => {
+const TaskCard = ({ task, index, boardId, setTasks }: TaskProps) => {
   const { deleteTask } = useDeleteTask();
   const { workspaceId, projectId } = useParams();
   const handleDeleteTask = () => {

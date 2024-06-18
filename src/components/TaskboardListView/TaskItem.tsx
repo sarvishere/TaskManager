@@ -3,20 +3,38 @@ import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import Text from "../ui/Text";
 import jalaali from "jalaali-js";
+import useDeleteTask from "../../hooks/useDeleteTask";
+import { useParams } from "react-router-dom";
 
 interface TaskItemProps {
   taskDeadline: string;
   TaskName: string;
   boardColor: string;
   Description: string;
+  taskId: number;
+  setTasks: any;
+  boardId: number;
 }
 
 const TaskItem: FC<TaskItemProps> = ({
+  taskId,
   boardColor,
   taskDeadline,
   TaskName,
   Description,
+  setTasks,
+  boardId,
 }) => {
+  const { deleteTask } = useDeleteTask();
+  const { workspaceId, projectId } = useParams();
+  const handleDeleteTask = () => {
+    deleteTask(Number(workspaceId), Number(projectId), boardId, taskId);
+    setTasks((prevTasks: any) => {
+      const updateTask = prevTasks.filter((t: any) => t.id !== taskId);
+      return updateTask;
+    });
+  };
+
   const convertToPersianNumber = (number: number | string) => {
     const persianNumbers = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
     return number
@@ -50,7 +68,9 @@ const TaskItem: FC<TaskItemProps> = ({
         <h3> {Description}</h3>
       </Flex>
       <Flex justifyContent="end" className="basis-2/12 ">
-        <Icon iconName="Remove" width={20} height={20} />
+        <button onClick={handleDeleteTask}>
+          <Icon iconName="Remove" width={20} height={20} stroke="red" />
+        </button>
       </Flex>
     </Flex>
   );

@@ -162,7 +162,6 @@ const Board: React.FC<BoardProps> = ({
                   task={task}
                   boardId={board.id}
                   setTasks={setTasks}
-                  get={getAllTasks}
                 />
               ))}
             {provided.placeholder}

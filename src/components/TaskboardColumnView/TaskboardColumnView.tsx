@@ -99,8 +99,6 @@ const TaskboardColumnView = ({
       if (sourceBoardId !== destinationBoardId) {
         addTask(Number(workspaceId), Number(projectId), destinationBoardId, {
           ...movedTask,
-          thumbnail: "",
-          attachment: "",
         });
         deleteTask(
           Number(workspaceId),

@@ -23,6 +23,7 @@ const TaskboardListView: React.FC<TaskboardListViewProps> = ({
     projectId: string;
   };
   const { projectNameState } = useContext(BoardContext);
+
   return (
     <>
       <Accordion

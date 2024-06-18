@@ -15,7 +15,7 @@ const TaskList = ({
   boardId,
   boardColor,
 }: TaskListProps) => {
-  const { getAllTasks, tasks, isLoading, error } = useTask();
+  const { getAllTasks, tasks, isLoading, error, setTasks } = useTask();
 
   useEffect(() => {
     getAllTasks(workspaceId, projectId, boardId);
@@ -32,11 +32,13 @@ const TaskList = ({
           <ul>
             {tasks.map((task) => (
               <TaskItem
-                key={task.id}
+                taskId={task.id}
                 boardColor={boardColor}
                 taskDeadline={task.deadline}
                 TaskName={task.name}
                 Description={task.description}
+                setTasks={setTasks}
+                boardId={boardId}
               />
             ))}
           </ul>
