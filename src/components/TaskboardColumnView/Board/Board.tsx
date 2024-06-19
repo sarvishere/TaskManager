@@ -164,9 +164,12 @@ const Board: React.FC<BoardProps> = ({
                 <TaskCard
                   key={task.id}
                   index={index}
-                  task={task}
                   boardId={bordId}
                   setTasks={setTasks}
+                  taskName={task.name}
+                  taskDeadline={task.deadline}
+                  taskDes={task.description}
+                  taskId={task.id}
                 />
               ))}
             {provided.placeholder}
