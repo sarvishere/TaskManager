@@ -12,7 +12,6 @@ interface Props {
   onClickOutside?: () => void;
   onEdit?: () => void;
   onDelete: (id: number) => void;
-  onAddTask?: () => void;
 }
 
 const useClickOutside = (handler: () => void) => {
@@ -37,7 +36,6 @@ const ColumnDropdownMenu: FC<Props> = ({
   visible,
   onClickOutside,
   onEdit,
-  onAddTask,
   onDelete,
   boardId,
 }) => {
@@ -57,7 +55,7 @@ const ColumnDropdownMenu: FC<Props> = ({
     visible && (
       <div
         ref={dropdownRef}
-        className="absolute top-[100%] left-0 w-[166px] h-[152px] rounded-lg p-3 bg-white shadow-[0_4px_16px_0_rgba(0, 0, 0, 0.16)] shadow-lg"
+        className="absolute top-[100%] left-6 w-[166px] h-[90px] p-3 bg-white shadow-[0_4px_16px_0_rgba(0, 0.16, 0.16, 0.80)] shadow-lg"
       >
         <Flex direction="col" gap="S">
           <Button onClick={onEdit} asChild className="text-sm">
@@ -66,12 +64,7 @@ const ColumnDropdownMenu: FC<Props> = ({
               <Text size="S">ویرایش نام ستون</Text>
             </Flex>
           </Button>
-          <Button onClick={onAddTask} asChild className="text-sm">
-            <Flex alignItems="center">
-              <Icon iconName="Add" />
-              <Text size="S">افزودن تسک</Text>
-            </Flex>
-          </Button>
+
           <Button asChild className="text-sm">
             <button onClick={handleDeleteBoard}>
               <Flex alignItems="center">

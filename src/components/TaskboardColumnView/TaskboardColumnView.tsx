@@ -1,19 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import useAddTask from "../../hooks/useAddTask";
 import useDeleteTask from "../../hooks/useDeleteTask";
 import { BoardResponse } from "../../services/board-service";
 import { Task } from "../../services/task-service";
-import Button from "../ui/Button";
 import Flex from "../ui/Flex";
-import Icon from "../ui/Icon";
 import Seperator from "../ui/Seperator";
 import Board from "./Board/Board";
-import NewTask from "../NewTask/NewTask";
 import { useParams } from "react-router-dom";
 import { BoardContext } from "../../layout/Board";
 import NewBoard from "./TaskCountBadge/NewBoard";
-import useTasks from "../../hooks/useTasks";
 
 export interface TaskboardColumnViewProps {
   boards: BoardResponse[];
@@ -29,8 +25,6 @@ const TaskboardColumnView = ({
   const { workspaceId, projectId } = useParams();
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
-  const [taskModal, setTaskModal] = useState(false);
-  const { setTasks } = useTasks();
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
       return;
@@ -121,13 +115,6 @@ const TaskboardColumnView = ({
     return result;
   };
 
-  const newTaskModalHandler = () => {
-    setTaskModal(!taskModal);
-  };
-  const handleCloseModal = () => {
-    setTaskModal(false);
-  };
-
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <div className="h-full py-5">
@@ -150,22 +137,6 @@ const TaskboardColumnView = ({
             handleAddBoard={handleAddBoard}
           />
         </Flex>
-        <Button
-          color="brand"
-          className="fixed bottom-6 left-6 flex gap-1 items-center"
-          onClick={newTaskModalHandler}
-        >
-          <Icon iconName="SquarePlus" stroke="#FFF" />
-          تسک جدید
-        </Button>
-        {taskModal && (
-          <NewTask
-            location="columnView"
-            boards={boards}
-            onClose={handleCloseModal}
-            setTasks={setTasks}
-          ></NewTask>
-        )}
       </div>
     </DragDropContext>
   );

@@ -90,7 +90,10 @@ const Board: React.FC<BoardProps> = ({
     <div>
       <div
         key={board.id}
-        className={`group relative flex justify-between items-center w-[250px] h-10 rounded-2xl shadow-[0_3px_4px_0_rgba(0,0,0,0.2)] bg-white py-2 px-3 border-t-2 ${board.color}`}
+        className={
+          "group relative flex justify-between items-center w-[250px] h-10 rounded-2xl shadow-[0_3px_4px_0_rgba(0,0,0,0.2)] bg-white py-2 px-3 border-t-2 "
+        }
+        style={{ borderColor: board.color }}
       >
         <ColumnDropdownMenu
           boardId={board.id}
@@ -101,8 +104,8 @@ const Board: React.FC<BoardProps> = ({
         />
         <Flex className="space-x-1" alignItems="center">
           {!isEditing && (
-            <Flex alignItems="center">
-              <Text className=" max-w-28 truncate" size="M" weight="500">
+            <Flex alignItems="center" color={board.color}>
+              <Text className=" max-w-28 truncate " size="M" weight="500">
                 {title}
               </Text>
               <TaskCountBadge count={board.tasks_count} />
