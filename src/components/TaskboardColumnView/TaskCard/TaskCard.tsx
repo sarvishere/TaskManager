@@ -42,13 +42,17 @@ const TaskCard = ({
     .format("YYYY/MM/DD");
 
   return (
-    <Draggable index={index} draggableId={String(taskId)}>
-      {(provided) => (
+    <Draggable index={index} draggableId={String(taskId)} key={taskId}>
+      {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
           {...provided.dragHandleProps}
           {...provided.draggableProps}
-          className={`${styles.multipleShadows} w-[250px]  bg-white rounded-lg p-4`}
+          className={`${
+            styles.multipleShadows
+          } w-[250px] bg-white rounded-lg p-4 ${
+            snapshot.isDragging ? "dragging" : ""
+          }`}
         >
           <Flex className="group" direction="col" gap="S">
             <Flex justifyContent="between" alignItems="center">
