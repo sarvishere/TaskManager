@@ -123,9 +123,10 @@ const TaskboardColumnView = ({
           {boards.map((board) => (
             <Board
               key={board.id}
-              board={board}
-              workspace={Number(workspaceId)}
-              project={Number(projectId)}
+              bordId={board.id}
+              boardColor={board.color}
+              boardTask={board.tasks_count}
+              boardName={board.name}
               handleUpdateBoard={handleUpdateBoard}
               handleDeleteBoard={handleDeleteBoard}
             />

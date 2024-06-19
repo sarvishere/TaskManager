@@ -49,7 +49,8 @@ const BoardPage: React.FC = () => {
   const [projectNameState, setProjectNameState] = useState<string>("");
   const [projectIdState, setProjectIdState] = useState<number>(0);
   const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
-  const [boards, setBoards] = useState<BoardResponse[]>([]);
+  // const [boards, setBoards] = useState<BoardResponse[]>([]);
+  const { boards, setBoards } = useBoards();
 
   const params = useParams();
   const navigate = useNavigate();

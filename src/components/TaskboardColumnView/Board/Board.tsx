@@ -13,24 +13,26 @@ import { useParams } from "react-router-dom";
 import useUpdateBoard from "../../../hooks/useUpdateBoard";
 
 interface BoardProps {
-  board: any;
-  workspace: number;
-  project: number;
   handleDeleteBoard: (id: number) => void;
   handleUpdateBoard: (title: string, id: number) => void;
+  bordId: number;
+  boardColor: string;
+  boardTask: number;
+  boardName: string;
 }
 
 const Board: React.FC<BoardProps> = ({
-  board,
-  workspace,
-  project,
   handleDeleteBoard,
   handleUpdateBoard,
+  bordId,
+  boardColor,
+  boardTask,
+  boardName,
 }) => {
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(board.name);
+  const [title, setTitle] = useState(boardName);
   const [taskModal, setTaskModal] = useState(false);
 
   // To get all tasks
@@ -48,8 +50,8 @@ const Board: React.FC<BoardProps> = ({
   }, [isEditing]);
 
   useEffect(() => {
-    getAllTasks(workspace, project, board.id);
-  }, [workspace, project, board.id]);
+    getAllTasks(Number(workspaceId), Number(projectId), bordId);
+  }, [workspaceId, projectId, bordId]);
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -71,15 +73,15 @@ const Board: React.FC<BoardProps> = ({
   };
 
   const handleSaveChanges = () => {
-    handleUpdateBoard(title, board.id);
+    handleUpdateBoard(title, bordId);
     //here add useupdatetitle || err
-    updateBoard(Number(workspaceId), Number(projectId), board.id, title);
+    updateBoard(Number(workspaceId), Number(projectId), bordId, title);
     setIsEditing(false);
   };
 
   const handleDiscardChanges = () => {
     setIsEditing(false);
-    setTitle(board.name);
+    setTitle(boardName);
   };
 
   const handleTaskModal = () => {
@@ -89,14 +91,14 @@ const Board: React.FC<BoardProps> = ({
   return (
     <div>
       <div
-        key={board.id}
+        key={bordId}
         className={
           "group relative flex justify-between items-center w-[250px] h-10 rounded-2xl shadow-[0_3px_4px_0_rgba(0,0,0,0.2)] bg-white py-2 px-3 border-t-2 "
         }
-        style={{ borderColor: board.color }}
+        style={{ borderColor: boardColor }}
       >
         <ColumnDropdownMenu
-          boardId={board.id}
+          boardId={bordId}
           onDelete={handleDeleteBoard}
           onEdit={handleEdit}
           visible={showDropdown}
@@ -104,11 +106,11 @@ const Board: React.FC<BoardProps> = ({
         />
         <Flex className="space-x-1" alignItems="center">
           {!isEditing && (
-            <Flex alignItems="center" color={board.color}>
+            <Flex alignItems="center" color={boardColor}>
               <Text className=" max-w-28 truncate " size="M" weight="500">
                 {title}
               </Text>
-              <TaskCountBadge count={board.tasks_count} />
+              <TaskCountBadge count={boardTask} />
             </Flex>
           )}
           {isEditing && (
@@ -141,9 +143,8 @@ const Board: React.FC<BoardProps> = ({
             </Button>
             {taskModal && (
               <NewTask
-                location="board"
-                boardId={board.id}
-                boardName={board.name}
+                boardId={bordId}
+                boardName={boardName}
                 onClose={() => setTaskModal(false)}
                 setTasks={setTasks}
               ></NewTask>
@@ -151,7 +152,7 @@ const Board: React.FC<BoardProps> = ({
           </div>
         )}
       </div>
-      <Droppable droppableId={String(board.id)}>
+      <Droppable droppableId={String(bordId)}>
         {(provided) => (
           <div
             className="flex mt-2 gap-2 flex-col"
@@ -164,7 +165,7 @@ const Board: React.FC<BoardProps> = ({
                   key={task.id}
                   index={index}
                   task={task}
-                  boardId={board.id}
+                  boardId={bordId}
                   setTasks={setTasks}
                 />
               ))}
