@@ -13,6 +13,7 @@ interface BoardProps {
   boardTask: number;
   boardName: string;
   boardTasks: any;
+  newTask: any;
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -23,6 +24,7 @@ const Board: React.FC<BoardProps> = ({
   boardTask,
   boardName,
   boardTasks,
+  newTask,
 }) => {
   const { getAllTasks, tasks, setTasks, setIsLoading, isLoading } = useTasks();
   const { workspaceId, projectId } = useParams();
@@ -33,7 +35,7 @@ const Board: React.FC<BoardProps> = ({
       setIsLoading(false);
     };
     fetchTasks();
-  }, [workspaceId, projectId, boardId]);
+  }, [workspaceId, projectId, boardId, newTask]);
 
   if (isLoading) {
     return <div> Loading tasks... </div>;

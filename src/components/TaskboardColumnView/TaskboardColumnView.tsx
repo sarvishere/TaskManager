@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import useAddTask from "../../hooks/useAddTask";
 import useDeleteTask from "../../hooks/useDeleteTask";
@@ -15,15 +15,13 @@ export interface TaskboardColumnViewProps {
   setBoards: any;
 }
 
-const TaskboardColumnView = ({
-  boards,
-  setBoards,
-}: TaskboardColumnViewProps) => {
+const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
   const { handleAddBoard, handleDeleteBoard, handleUpdateBoard } =
     useContext(BoardContext);
   const { workspaceId, projectId } = useParams();
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
+  const [newTask, setNewTask] = useState<any>(null);
 
   const handleDragEnd = async (result: DropResult) => {
     const { source, destination, draggableId } = result;
@@ -62,28 +60,7 @@ const TaskboardColumnView = ({
       );
 
       // Update local state
-      const updatedBoards = boards.map((board) => {
-        if (board.id === sourceBoardId) {
-          // Remove task from source board
-          const updatedTasks = board.tasks.filter((task) => task.id !== taskId);
-          return {
-            ...board,
-            tasks: updatedTasks,
-            tasks_count: updatedTasks.length,
-          };
-        } else if (board.id === destinationBoardId) {
-          // Add task to destination board
-          const updatedTasks = [...board.tasks, newTask];
-          return {
-            ...board,
-            tasks: updatedTasks,
-            tasks_count: updatedTasks.length,
-          };
-        }
-        return board;
-      });
-
-      setBoards(updatedBoards);
+      setNewTask(newTask);
 
       // Delete task from source board
       await deleteTask(
@@ -112,6 +89,7 @@ const TaskboardColumnView = ({
               handleUpdateBoard={handleUpdateBoard}
               handleDeleteBoard={handleDeleteBoard}
               boardTasks={board.tasks}
+              newTask={newTask}
             />
           ))}
           <NewBoard
