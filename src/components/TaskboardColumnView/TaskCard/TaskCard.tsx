@@ -50,7 +50,7 @@ const TaskCard = ({
           {...provided.draggableProps}
           className={`${
             styles.multipleShadows
-          } w-[250px] bg-white rounded-lg p-4 ${
+          } w-[250px] bg-white rounded-lg p-4 mb-4 ${
             snapshot.isDragging ? "dragging" : ""
           }`}
         >

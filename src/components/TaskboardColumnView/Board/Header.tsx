@@ -12,7 +12,7 @@ import ColumnDropdownMenu from "../ColumnDropdowMenu/ColumnDropdownMenu";
 interface headerProps {
   handleDeleteBoard: (id: number) => void;
   handleUpdateBoard: (title: string, id: number) => void;
-  bordId: number;
+  boardId: number;
   boardColor: string;
   boardTask: number;
   boardName: string;
@@ -23,7 +23,7 @@ interface headerProps {
 const Header = ({
   handleDeleteBoard,
   handleUpdateBoard,
-  bordId,
+  boardId,
   boardColor,
   boardTask,
   boardName,
@@ -61,8 +61,10 @@ const Header = ({
   };
 
   const handleSaveChanges = () => {
-    handleUpdateBoard(title, bordId);
-    updateBoard(Number(workspaceId), Number(projectId), bordId, { name: title })
+    handleUpdateBoard(title, boardId);
+    updateBoard(Number(workspaceId), Number(projectId), boardId, {
+      name: title,
+    })
       .then(() => {
         setIsEditing(false);
       })
@@ -87,14 +89,14 @@ const Header = ({
   };
   return (
     <div
-      key={bordId}
+      key={boardId}
       className={
         "group relative flex justify-between items-center w-[250px] h-10 rounded-2xl shadow-[0_3px_4px_0_rgba(0,0,0,0.2)] bg-white py-2 px-3 border-t-2 "
       }
       style={{ borderColor: boardColor }}
     >
       <ColumnDropdownMenu
-        boardId={bordId}
+        boardId={boardId}
         onDelete={handleDeleteBoard}
         onEdit={handleEdit}
         visible={showDropdown}
@@ -138,7 +140,7 @@ const Header = ({
           </Button>
           {taskModal && (
             <NewTask
-              boardId={bordId}
+              boardId={boardId}
               boardName={boardName}
               onClose={() => setTaskModal(false)}
               setTasks={setTasks}

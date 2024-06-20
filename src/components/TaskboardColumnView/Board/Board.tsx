@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 import useTasks from "../../../hooks/useTasks";
 import { useParams } from "react-router-dom";
 import Column from "./column";
+import Header from "./Header";
 
 interface BoardProps {
   handleDeleteBoard: (id: number) => void;
   handleUpdateBoard: (title: string, id: number) => void;
-  bordId: number;
+  boardId: number;
   boardColor: string;
   boardTask: number;
   boardName: string;
@@ -17,22 +18,42 @@ interface BoardProps {
 const Board: React.FC<BoardProps> = ({
   handleDeleteBoard,
   handleUpdateBoard,
-  bordId,
+  boardId,
   boardColor,
   boardTask,
   boardName,
   boardTasks,
 }) => {
-  const { getAllTasks, tasks, setTasks } = useTasks();
+  const { getAllTasks, tasks, setTasks, setIsLoading, isLoading } = useTasks();
   const { workspaceId, projectId } = useParams();
 
   useEffect(() => {
-    getAllTasks(Number(workspaceId), Number(projectId), bordId);
-  }, [workspaceId, projectId, bordId]);
+    const fetchTasks = async () => {
+      getAllTasks(Number(workspaceId), Number(projectId), boardId);
+      setIsLoading(false);
+    };
+    fetchTasks();
+  }, [workspaceId, projectId, boardId]);
+
+  if (isLoading) {
+    return <div> Loading tasks... </div>;
+  }
 
   return (
     <div>
-      <Droppable droppableId={String(bordId)}>
+      <div className="mb-2">
+        <Header
+          handleDeleteBoard={handleDeleteBoard}
+          handleUpdateBoard={handleUpdateBoard}
+          boardId={boardId}
+          boardColor={boardColor}
+          boardTask={boardTask}
+          boardName={boardName}
+          setTasks={setTasks}
+          boardTasks={boardTasks}
+        />
+      </div>
+      <Droppable droppableId={String(boardId)}>
         {(provided) => (
           <div
             className="flex mt-2 gap-2 flex-col"
@@ -42,7 +63,7 @@ const Board: React.FC<BoardProps> = ({
             <Column
               handleDeleteBoard={handleDeleteBoard}
               handleUpdateBoard={handleUpdateBoard}
-              bordId={bordId}
+              boardId={boardId}
               boardColor={boardColor}
               boardTask={boardTask}
               boardName={boardName}

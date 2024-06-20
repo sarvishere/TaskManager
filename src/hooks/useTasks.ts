@@ -18,7 +18,7 @@ const useTask = () => {
       .finally(() => setIsLoading(false));
   };
 
-  return { getAllTasks, tasks, isLoading, error , setTasks };
+  return { getAllTasks, tasks, isLoading, error , setTasks,setIsLoading};
 };
 
 export default useTask;

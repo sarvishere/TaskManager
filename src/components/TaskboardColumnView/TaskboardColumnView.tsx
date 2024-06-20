@@ -24,105 +24,88 @@ const TaskboardColumnView = ({
   const { workspaceId, projectId } = useParams();
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
-  // const handleDragEnd = (result: DropResult) => {
-  //   if (!result.destination) {
-  //     return;
-  //   }
 
-  //   const { source, destination, draggableId } = result;
+  const handleDragEnd = async (result: DropResult) => {
+    const { source, destination, draggableId } = result;
+    if (!destination) {
+      return;
+    }
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    ) {
+      return;
+    }
 
-  //   if (
-  //     source.droppableId === destination.droppableId &&
-  //     source.index === destination.index
-  //   ) {
-  //     return;
-  //   }
+    const sourceBoardId = parseInt(source.droppableId);
+    const destinationBoardId = parseInt(destination.droppableId);
+    const taskId = parseInt(draggableId);
 
-  //   const sourceBoardId = parseInt(source.droppableId);
-  //   const destinationBoardId = parseInt(destination.droppableId);
+    // Find the task to move
+    const sourceBoard = boards.find((board) => board.id === sourceBoardId);
+    const taskToMove = sourceBoard?.tasks.find((task) => task.id === taskId);
 
-  //   const updatedBoards = boards.map((board) => {
-  //     if (board.id === sourceBoardId) {
-  //       if (sourceBoardId === destinationBoardId) {
-  //         const updatedTasks = reorder(
-  //           board.tasks,
-  //           source.index,
-  //           destination.index
-  //         );
-  //         return {
-  //           ...board,
-  //           tasks: updatedTasks,
-  //           tasks_count: updatedTasks.length,
-  //         };
-  //       } else {
-  //         const updatedTasks = board.tasks.filter(
-  //           (task) => task.id !== parseInt(draggableId)
-  //         );
-  //         return {
-  //           ...board,
-  //           tasks: updatedTasks,
-  //           tasks_count: updatedTasks.length,
-  //         };
-  //       }
-  //     } else if (board.id === destinationBoardId) {
-  //       const draggableItem = boards
-  //         .find((b) => b.id === sourceBoardId)
-  //         ?.tasks.find((task) => task.id === parseInt(draggableId));
-  //       if (draggableItem) {
-  //         // Insert the draggable item into the destination board at the specified index
-  //         const updatedTasks = [...board.tasks];
-  //         updatedTasks.splice(destination.index, 0, draggableItem);
-  //         return {
-  //           ...board,
-  //           tasks: updatedTasks,
-  //           tasks_count: updatedTasks.length,
-  //         };
-  //       }
-  //     }
-  //     return board;
-  //   });
+    if (!taskToMove) {
+      return;
+    }
 
-  //   setBoards(updatedBoards);
+    try {
+      // Add task to destination board
+      const newTask = await addTask(
+        Number(workspaceId),
+        Number(projectId),
+        destinationBoardId,
+        {
+          name: taskToMove.name,
+          description: taskToMove.description,
+        }
+      );
 
-  //   const movedTask = boards
-  //     .find((board) => board.id === sourceBoardId)
-  //     ?.tasks.find((task) => task.id === parseInt(draggableId));
+      // Update local state
+      const updatedBoards = boards.map((board) => {
+        if (board.id === sourceBoardId) {
+          // Remove task from source board
+          const updatedTasks = board.tasks.filter((task) => task.id !== taskId);
+          return {
+            ...board,
+            tasks: updatedTasks,
+            tasks_count: updatedTasks.length,
+          };
+        } else if (board.id === destinationBoardId) {
+          // Add task to destination board
+          const updatedTasks = [...board.tasks, newTask];
+          return {
+            ...board,
+            tasks: updatedTasks,
+            tasks_count: updatedTasks.length,
+          };
+        }
+        return board;
+      });
 
-  //   if (movedTask) {
-  //     if (sourceBoardId !== destinationBoardId) {
-  //       addTask(Number(workspaceId), Number(projectId), destinationBoardId, {
-  //         ...movedTask,
-  //       });
-  //       deleteTask(
-  //         Number(workspaceId),
-  //         Number(projectId),
-  //         sourceBoardId,
-  //         movedTask.id
-  //       );
-  //     }
-  //   }
-  // };
+      setBoards(updatedBoards);
 
-  // const reorder = (
-  //   list: Task[],
-  //   startIndex: number,
-  //   endIndex: number
-  // ): Task[] => {
-  //   const result = Array.from(list);
-  //   const [removed] = result.splice(startIndex, 1);
-  //   result.splice(endIndex, 0, removed);
-  //   return result;
-  // };
+      // Delete task from source board
+      await deleteTask(
+        Number(workspaceId),
+        Number(projectId),
+        sourceBoardId,
+        taskId
+      );
+    } catch (error) {
+      console.error("Failed to move task", error);
+    }
+  };
 
   return (
-    <DragDropContext onDragEnd={() => console.log("hry")}>
-      <div className="h-full py-5 ">
+    <DragDropContext onDragEnd={handleDragEnd}>
+      <div className="h-full py-5">
         <Seperator orientation="vertically" />
         <Flex className="h-full" gap="S">
           {boards.map((board) => (
             <Board
               key={board.id}
-              bordId={board.id}
+              boardId={board.id}
               boardColor={board.color}
               boardTask={board.tasks_count}
               boardName={board.name}
@@ -131,7 +114,6 @@ const TaskboardColumnView = ({
               boardTasks={board.tasks}
             />
           ))}
-          {/* //here use add board */}
           <NewBoard
             workspaceId={Number(workspaceId)}
             projectId={Number(projectId)}
