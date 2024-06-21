@@ -15,7 +15,10 @@ export interface TaskboardColumnViewProps {
   setBoards: any;
 }
 
-const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
+const TaskboardColumnView = ({
+  boards,
+  setBoards,
+}: TaskboardColumnViewProps) => {
   const {
     handleAddBoard,
     handleDeleteBoard,
@@ -44,7 +47,6 @@ const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
     const destinationBoardId = parseInt(destination.droppableId);
     const taskId = parseInt(draggableId);
 
-    // Find the task to move
     const sourceBoard = boards.find((board) => board.id === sourceBoardId);
     const taskToMove = sourceBoard?.tasks.find((task) => task.id === taskId);
 
@@ -53,7 +55,6 @@ const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
     }
 
     try {
-      // Add task to destination board
       const newTask = await addTask(
         Number(workspaceId),
         Number(projectId),
@@ -64,20 +65,26 @@ const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
         }
       );
 
-      // Update local state
       setNewTask(newTask);
 
-      // Delete task from source board
-      await deleteTask(
-        Number(workspaceId),
-        Number(projectId),
-        sourceBoardId,
-        taskId
-      );
+      deleteTask(Number(workspaceId), Number(projectId), sourceBoardId, taskId);
 
-      // Store the deleted task ID
       setDeletedTasks([...deletedTasks, taskId]);
-      // console.log(deletedTasks);
+      const updatedBoards = boards.map((board) => {
+        if (board.id === sourceBoardId) {
+          return {
+            ...board,
+            tasks_count: board.tasks_count - 1,
+          };
+        } else if (board.id === destinationBoardId) {
+          return {
+            ...board,
+            tasks_count: board.tasks_count + 1,
+          };
+        }
+        return board;
+      });
+      setBoards(updatedBoards);
     } catch (error) {
       console.error("Failed to move task", error);
     }
@@ -99,7 +106,7 @@ const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
               handleDeleteBoard={handleDeleteBoard}
               boardTasks={board.tasks}
               newTask={newTask}
-              deletedTasks={deletedTasks} // Pass deletedTasks to Board
+              deletedTasks={deletedTasks}
             />
           ))}
           <NewBoard

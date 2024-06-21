@@ -1,4 +1,6 @@
+import React from "react";
 import TaskCard from "../TaskCard/TaskCard";
+import { Droppable } from "react-beautiful-dnd";
 
 interface ColumnProps {
   handleDeleteBoard: (id: number) => void;
@@ -10,28 +12,32 @@ interface ColumnProps {
   boardTasks: any[];
   tasks: any[];
   setTasks: React.Dispatch<React.SetStateAction<any[]>>;
-  deletedTasks: any; // Ensure deletedTasks is properly typed
+  deletedTasks: any;
 }
 
 const Column = ({ boardId, tasks, setTasks, deletedTasks }: ColumnProps) => {
   const filteredTasks = tasks.filter((task) => !deletedTasks.includes(task.id));
 
-  console.log(filteredTasks);
   return (
-    <div>
-      {filteredTasks.map((task, index) => (
-        <TaskCard
-          key={task.id}
-          index={index}
-          boardId={boardId}
-          setTasks={setTasks} // Ensure this is properly used if needed
-          taskName={task.name}
-          taskDeadline={task.deadline}
-          taskDes={task.description}
-          taskId={task.id}
-        />
-      ))}
-    </div>
+    <Droppable droppableId={String(boardId)}>
+      {(provided) => (
+        <div ref={provided.innerRef} {...provided.droppableProps}>
+          {filteredTasks.map((task, index) => (
+            <TaskCard
+              key={task.id}
+              index={index}
+              boardId={boardId}
+              setTasks={setTasks}
+              taskName={task.name}
+              taskDeadline={task.deadline}
+              taskDes={task.description}
+              taskId={task.id}
+            />
+          ))}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
   );
 };
 
