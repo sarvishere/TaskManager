@@ -62,6 +62,32 @@ const BoardPage: React.FC = () => {
   const { getProjects } = useProjects(workspaceIdState);
   const { getBoards } = useBoards();
 
+  const updateProjectNameState = (newState: string) =>
+    setProjectNameState(newState);
+  const UpdateProjectIdState = (newState: number) =>
+    setProjectIdState(newState);
+  const UpdateWorkspaceIdState = (newState: number) =>
+    setWorkspaceIdState(newState);
+  const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
+  const handleAddBoard = (newBoard: BoardResponse) => {
+    setBoards((prevBoards) => [...prevBoards, newBoard]);
+  };
+
+  const handleDeleteBoard = (boardId: number) => {
+    setBoards((prevBoards) => {
+      const updatedBoards = prevBoards.filter((b) => b.id !== boardId);
+      return updatedBoards;
+    });
+  };
+
+  const handleUpdateBoard = (title: string, boardId: number) => {
+    if (title) {
+      setBoards((prevBoards) =>
+        prevBoards.map((b) => (b.id === boardId ? { ...b, name: title } : b))
+      );
+    }
+  };
+
   useEffect(() => {
     getWorkspaces();
   }, []);
@@ -93,7 +119,7 @@ const BoardPage: React.FC = () => {
         setBoards(boards)
       );
     }
-  }, [workspaceIdState, projectIdState]);
+  }, [workspaceIdState, projectIdState, handleDeleteBoard]);
 
   useEffect(() => {
     if (
@@ -116,32 +142,6 @@ const BoardPage: React.FC = () => {
       navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
     }
   }, [projectIdState, workspaceIdState, activeButton, navigate]);
-
-  const updateProjectNameState = (newState: string) =>
-    setProjectNameState(newState);
-  const UpdateProjectIdState = (newState: number) =>
-    setProjectIdState(newState);
-  const UpdateWorkspaceIdState = (newState: number) =>
-    setWorkspaceIdState(newState);
-  const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
-  const handleAddBoard = (newBoard: BoardResponse) => {
-    setBoards((prevBoards) => [...prevBoards, newBoard]);
-  };
-
-  const handleDeleteBoard = (boardId: number) => {
-    setBoards((prevBoards) => {
-      const updatedBoards = prevBoards.filter((b) => b.id !== boardId);
-      return updatedBoards;
-    });
-  };
-
-  const handleUpdateBoard = (title: string, boardId: number) => {
-    if (title) {
-      setBoards((prevBoards) =>
-        prevBoards.map((b) => (b.id === boardId ? { ...b, name: title } : b))
-      );
-    }
-  };
 
   const renderActiveComponent = () => {
     switch (activeButton) {
