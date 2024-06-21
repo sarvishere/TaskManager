@@ -16,12 +16,17 @@ export interface TaskboardColumnViewProps {
 }
 
 const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
-  const { handleAddBoard, handleDeleteBoard, handleUpdateBoard } =
-    useContext(BoardContext);
+  const {
+    handleAddBoard,
+    handleDeleteBoard,
+    handleUpdateBoard,
+    // handleDeleteTask,
+  } = useContext(BoardContext);
   const { workspaceId, projectId } = useParams();
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();
   const [newTask, setNewTask] = useState<any>(null);
+  const [deletedTasks, setDeletedTasks] = useState<number[]>([]);
 
   const handleDragEnd = async (result: DropResult) => {
     const { source, destination, draggableId } = result;
@@ -69,6 +74,10 @@ const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
         sourceBoardId,
         taskId
       );
+
+      // Store the deleted task ID
+      setDeletedTasks([...deletedTasks, taskId]);
+      // console.log(deletedTasks);
     } catch (error) {
       console.error("Failed to move task", error);
     }
@@ -90,6 +99,7 @@ const TaskboardColumnView = ({ boards }: TaskboardColumnViewProps) => {
               handleDeleteBoard={handleDeleteBoard}
               boardTasks={board.tasks}
               newTask={newTask}
+              deletedTasks={deletedTasks} // Pass deletedTasks to Board
             />
           ))}
           <NewBoard

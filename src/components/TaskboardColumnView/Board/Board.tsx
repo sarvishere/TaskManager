@@ -14,6 +14,7 @@ interface BoardProps {
   boardName: string;
   boardTasks: any;
   newTask: any;
+  deletedTasks: any;
 }
 
 const Board: React.FC<BoardProps> = ({
@@ -25,6 +26,7 @@ const Board: React.FC<BoardProps> = ({
   boardName,
   boardTasks,
   newTask,
+  deletedTasks,
 }) => {
   const { getAllTasks, tasks, setTasks, setIsLoading, isLoading } = useTasks();
   const { workspaceId, projectId } = useParams();
@@ -72,6 +74,7 @@ const Board: React.FC<BoardProps> = ({
               boardTasks={boardTasks}
               tasks={tasks}
               setTasks={setTasks}
+              deletedTasks={deletedTasks}
             />
             {provided.placeholder}
           </div>

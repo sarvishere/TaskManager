@@ -8,26 +8,29 @@ interface ColumnProps {
   boardTask: number;
   boardName: string;
   boardTasks: any[];
-  tasks: any;
-  setTasks: any;
+  tasks: any[];
+  setTasks: React.Dispatch<React.SetStateAction<any[]>>;
+  deletedTasks: any; // Ensure deletedTasks is properly typed
 }
 
-const Column = ({ boardId, tasks, setTasks }: ColumnProps) => {
+const Column = ({ boardId, tasks, setTasks, deletedTasks }: ColumnProps) => {
+  const filteredTasks = tasks.filter((task) => !deletedTasks.includes(task.id));
+
+  console.log(filteredTasks);
   return (
     <div>
-      {tasks &&
-        tasks.map((task: any, index: any) => (
-          <TaskCard
-            key={task.id}
-            index={index}
-            boardId={boardId}
-            setTasks={setTasks}
-            taskName={task.name}
-            taskDeadline={task.deadline}
-            taskDes={task.description}
-            taskId={task.id}
-          />
-        ))}
+      {filteredTasks.map((task, index) => (
+        <TaskCard
+          key={task.id}
+          index={index}
+          boardId={boardId}
+          setTasks={setTasks} // Ensure this is properly used if needed
+          taskName={task.name}
+          taskDeadline={task.deadline}
+          taskDes={task.description}
+          taskId={task.id}
+        />
+      ))}
     </div>
   );
 };
