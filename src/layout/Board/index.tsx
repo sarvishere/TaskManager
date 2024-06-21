@@ -50,6 +50,7 @@ const BoardPage: React.FC = () => {
   const [projectIdState, setProjectIdState] = useState<number>(0);
   const [workspaceIdState, setWorkspaceIdState] = useState<number>(0);
   const [boards, setBoards] = useState<BoardResponse[]>([]);
+  const [change, setChange] = useState<BoardResponse[]>([]);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -71,15 +72,12 @@ const BoardPage: React.FC = () => {
   const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
   const handleAddBoard = (newBoard: BoardResponse) => {
     setBoards((prevBoards) => [...prevBoards, newBoard]);
+    setChange((prevChange) => [...prevChange, newBoard]);
   };
 
   const handleDeleteBoard = (boardId: number) => {
-    setBoards((prevBoards) => {
-      const updatedBoards = prevBoards.filter((b) => b.id !== boardId);
-      return updatedBoards;
-    });
+    setBoards((prevBoards) => prevBoards.filter((b) => b.id !== boardId));
   };
-
   const handleUpdateBoard = (title: string, boardId: number) => {
     if (title) {
       setBoards((prevBoards) =>
@@ -94,12 +92,7 @@ const BoardPage: React.FC = () => {
 
   useEffect(() => {
     if (workspaces) {
-      let initWorkspaceId = 0;
-      if (workspaces.length === 0) {
-        initWorkspaceId = 0;
-      } else {
-        initWorkspaceId = workspaces[workspaces.length - 1].id;
-      }
+      const initWorkspaceId = workspaces[workspaces.length - 1].id;
       setWorkspaceIdState(initWorkspaceId);
     }
     if (workspaceIdState !== 0) {
@@ -119,7 +112,7 @@ const BoardPage: React.FC = () => {
         setBoards(boards)
       );
     }
-  }, [workspaceIdState, projectIdState, handleDeleteBoard]);
+  }, [workspaceIdState, projectIdState, change]);
 
   useEffect(() => {
     if (

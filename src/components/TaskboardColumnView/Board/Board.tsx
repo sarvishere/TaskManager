@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import useTasks from "../../../hooks/useTasks";
 import { useParams } from "react-router-dom";
@@ -28,7 +28,7 @@ const Board: React.FC<BoardProps> = ({
   newTask,
   deletedTasks,
 }) => {
-  const { getAllTasks, tasks, setTasks, setIsLoading, isLoading } = useTasks();
+  const { getAllTasks, setIsLoading, isLoading, tasks, setTasks } = useTasks();
   const { workspaceId, projectId } = useParams();
 
   useEffect(() => {
@@ -37,6 +37,7 @@ const Board: React.FC<BoardProps> = ({
       setIsLoading(false);
     };
     fetchTasks();
+    setTasks(tasks);
   }, [workspaceId, projectId, boardId, newTask]);
 
   if (isLoading) {
