@@ -4,7 +4,6 @@ import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import useAddTask from "../../hooks/useAddTask";
 import { useParams } from "react-router-dom";
-import { BoardResponse } from "../../services/board-service";
 import moment from "jalali-moment";
 import { Task } from "../../services/task-service";
 
@@ -13,6 +12,7 @@ interface NewTaskProps {
   boardId?: number;
   boardName?: string;
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+  incrementTaskCount: (boardId: number) => void; // Add incrementTaskCount as a prop
 }
 
 const convertToPersian = (number: number | string) => {
@@ -28,6 +28,7 @@ const NewTask: React.FC<NewTaskProps> = ({
   boardId,
   boardName,
   setTasks,
+  incrementTaskCount, // Add incrementTaskCount to the destructuring
 }) => {
   const { addTask } = useAddTask();
   const [startTask, setStartTask] = useState("");
@@ -61,6 +62,7 @@ const NewTask: React.FC<NewTaskProps> = ({
         );
         if (newTask && newTask.id) {
           setTasks((prevTasks: Task[]) => [...prevTasks, newTask]);
+          incrementTaskCount(selectedBoardId); // Call incrementTaskCount when a task is added
           onClose();
         } else {
           console.error("Failed to add new task");

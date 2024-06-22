@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import Flex from "../../ui/Flex";
-
 import Button from "../../ui/Button";
 import Icon from "../../ui/Icon";
 import NewTask from "../../NewTask/NewTask";
@@ -8,15 +7,15 @@ import TaskCountBadge from "../TaskCountBadge";
 import useUpdateBoard from "../../../hooks/useUpdateBoard";
 import { useParams } from "react-router-dom";
 import ColumnDropdownMenu from "../ColumnDropdowMenu/ColumnDropdownMenu";
+import { BoardContext } from "../../../layout/Board";
 
-interface headerProps {
+interface HeaderProps {
   handleDeleteBoard: (id: number) => void;
   handleUpdateBoard: (title: string, id: number) => void;
   boardId: number;
   boardColor: string;
   boardTask: number;
   boardName: string;
-  boardTasks: any;
   setTasks: any;
 }
 
@@ -28,7 +27,7 @@ const Header = ({
   boardTask,
   boardName,
   setTasks,
-}: headerProps) => {
+}: HeaderProps) => {
   const EditBoxRef = useRef<HTMLInputElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -36,6 +35,8 @@ const Header = ({
   const [taskModal, setTaskModal] = useState(false);
   const { updateBoard } = useUpdateBoard();
   const { workspaceId, projectId } = useParams();
+
+  const { incrementTaskCount } = useContext(BoardContext); // Use the context
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
@@ -87,6 +88,7 @@ const Header = ({
   const handleTaskModal = () => {
     setTaskModal(true);
   };
+
   return (
     <div
       key={boardId}
@@ -106,7 +108,6 @@ const Header = ({
         {!isEditing && (
           <Flex alignItems="center" color={boardColor}>
             <p>{title}</p>
-
             <TaskCountBadge count={boardTask} />
           </Flex>
         )}
@@ -144,7 +145,8 @@ const Header = ({
               boardName={boardName}
               onClose={() => setTaskModal(false)}
               setTasks={setTasks}
-            ></NewTask>
+              incrementTaskCount={incrementTaskCount} // Pass incrementTaskCount
+            />
           )}
         </div>
       )}

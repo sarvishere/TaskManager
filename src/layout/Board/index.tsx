@@ -21,6 +21,8 @@ interface ContextValue {
   handleAddBoard: (newBoard: BoardResponse) => void;
   handleDeleteBoard: (boardId: number) => void;
   handleUpdateBoard: (title: string, boardId: number) => void;
+  incrementTaskCount: (boardId: number) => void;
+  decrementTaskCount: (boardId: number) => void;
 }
 
 export const BoardContext = createContext<ContextValue>({
@@ -33,6 +35,8 @@ export const BoardContext = createContext<ContextValue>({
   handleAddBoard: () => {},
   handleDeleteBoard: () => {},
   handleUpdateBoard: () => {},
+  incrementTaskCount: () => {},
+  decrementTaskCount: () => {},
 });
 
 const BoardPage: React.FC = () => {
@@ -70,20 +74,38 @@ const BoardPage: React.FC = () => {
   const UpdateWorkspaceIdState = (newState: number) =>
     setWorkspaceIdState(newState);
   const handleButtonClick = (buttonType: string) => setActiveButton(buttonType);
+
   const handleAddBoard = (newBoard: BoardResponse) => {
     setBoards((prevBoards) => [...prevBoards, newBoard]);
     setChange((prevChange) => [...prevChange, newBoard]);
   };
 
-  const handleDeleteBoard = (boardId: number) => {
-    setBoards((prevBoards) => prevBoards.filter((b) => b.id !== boardId));
-  };
   const handleUpdateBoard = (title: string, boardId: number) => {
     if (title) {
       setBoards((prevBoards) =>
         prevBoards.map((b) => (b.id === boardId ? { ...b, name: title } : b))
       );
     }
+  };
+
+  const handleDeleteBoard = (boardId: number) => {
+    setBoards((prevBoards) => prevBoards.filter((b) => b.id !== boardId));
+  };
+
+  const incrementTaskCount = (boardId: number) => {
+    setBoards((prevBoards) =>
+      prevBoards.map((b) =>
+        b.id === boardId ? { ...b, tasks_count: b.tasks_count + 1 } : b
+      )
+    );
+  };
+
+  const decrementTaskCount = (boardId: number) => {
+    setBoards((prevBoards) =>
+      prevBoards.map((b) =>
+        b.id === boardId ? { ...b, tasks_count: b.tasks_count - 1 } : b
+      )
+    );
   };
 
   useEffect(() => {
@@ -159,6 +181,8 @@ const BoardPage: React.FC = () => {
         handleAddBoard,
         handleDeleteBoard,
         handleUpdateBoard,
+        incrementTaskCount,
+        decrementTaskCount,
       }}
     >
       <div className="flex">

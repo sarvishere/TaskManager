@@ -19,12 +19,8 @@ const TaskboardColumnView = ({
   boards,
   setBoards,
 }: TaskboardColumnViewProps) => {
-  const {
-    handleAddBoard,
-    handleDeleteBoard,
-    handleUpdateBoard,
-    // handleDeleteTask,
-  } = useContext(BoardContext);
+  const { handleAddBoard, handleDeleteBoard, handleUpdateBoard } =
+    useContext(BoardContext);
   const { workspaceId, projectId } = useParams();
   const { addTask } = useAddTask();
   const { deleteTask } = useDeleteTask();

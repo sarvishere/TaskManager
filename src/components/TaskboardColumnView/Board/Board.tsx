@@ -55,7 +55,7 @@ const Board: React.FC<BoardProps> = ({
           boardTask={boardTask}
           boardName={boardName}
           setTasks={setTasks}
-          boardTasks={boardTasks}
+          // boardTasks={boardTasks}
         />
       </div>
       <Droppable droppableId={String(boardId)}>

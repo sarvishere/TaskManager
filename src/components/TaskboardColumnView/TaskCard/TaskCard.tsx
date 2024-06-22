@@ -7,6 +7,8 @@ import { Draggable } from "react-beautiful-dnd";
 import moment from "jalali-moment";
 import useDeleteTask from "../../../hooks/useDeleteTask";
 import { useParams } from "react-router-dom";
+import { BoardContext } from "../../../layout/Board";
+import { useContext } from "react";
 
 export interface TaskProps {
   index: number;
@@ -29,10 +31,12 @@ const TaskCard = ({
 }: TaskProps) => {
   const { deleteTask } = useDeleteTask();
   const { workspaceId, projectId } = useParams();
+  const { decrementTaskCount } = useContext(BoardContext);
   const handleDeleteTask = () => {
     deleteTask(Number(workspaceId), Number(projectId), boardId, taskId);
     setTasks((prevTasks: any) => {
       const updateTask = prevTasks.filter((t: any) => t.id !== taskId);
+      decrementTaskCount(boardId);
       return updateTask;
     });
   };
