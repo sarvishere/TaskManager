@@ -13,7 +13,7 @@ type FormData = z.infer<typeof accountInfoSchema>;
 
 const AccountsInfoPage: React.FC = (): JSX.Element => {
   const { user } = useAuth();
-  const userId=user && Number( user.id);
+  const userId = user && Number(user.id);
   const { updateProfile } = useProfile();
   const { resetPassword } = useResetPassword();
   const {
@@ -21,8 +21,6 @@ const AccountsInfoPage: React.FC = (): JSX.Element => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(accountInfoSchema) });
-
-
 
   const onSubmit = (data: FormData) => {
     const updatedProfileInfo = {

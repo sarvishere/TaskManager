@@ -36,16 +36,17 @@ const router = createBrowserRouter([
         path: ":workspaceId/:projectId",
         element: <Board />,
         children: [
-          { path: "columnview", element: <TaskboardColumnView /> },
+          {
+            path: "columnview",
+            element: <TaskboardColumnView boards={[]} setBoards={undefined} />,
+          },
           {
             path: "listview",
-            element: (
-              <TaskboardListView projectId={0} projectName="" workspaceId={0} />
-            ),
+            element: <TaskboardListView boards={[]} />,
           },
           {
             path: "calendar",
-            element: <Calendar projectId={0} workspaceId={0} />,
+            element: <Calendar boards={[]} />,
           },
         ],
       },

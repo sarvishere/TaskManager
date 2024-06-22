@@ -99,18 +99,23 @@ const PersianCalendar = ({ boards }: CalendarProps) => {
   };
 
   const formatJalaliDate = (day: number) => {
-    return currentDate.clone().date(day).format("jYYYY/jMM/jDD");
+    return currentDate.clone().jDate(day).format("jYYYY/jMM/jDD");
   };
 
   return (
     <div>
-      <div className="w-[1033px] h-auto bg-white">
-        {/* Header */}
-        <Flex className="w-full border-b">
+      <div className="w-[1033px] h-auto bg-white ">
+        <Flex
+          className="w-full border-b"
+          justifyContent="start"
+          alignItems="center"
+        >
           <Button
             onClick={handleToday}
             weight="400"
-            className="font-iranyekan bg-white text-black text-sm p-3"
+            variant="outline"
+            size="small"
+            className=" border-brand-primary text-brand-primary rounded-[15px] flex items-center justify-center border"
           >
             <Text className="bg-red">امروز</Text>
           </Button>
@@ -131,7 +136,6 @@ const PersianCalendar = ({ boards }: CalendarProps) => {
           </Text>
         </Flex>
 
-        {/* Body */}
         <Flex className="h-full">
           <div className="grid w-full gap-3 grid-cols-7">
             {/* Days of Week */}
