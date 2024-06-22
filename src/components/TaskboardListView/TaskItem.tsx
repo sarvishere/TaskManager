@@ -1,10 +1,11 @@
-import { FC } from "react";
+import { FC, useContext } from "react";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import Text from "../ui/Text";
 import jalaali from "jalaali-js";
 import useDeleteTask from "../../hooks/useDeleteTask";
 import { useParams } from "react-router-dom";
+import { BoardContext } from "../../layout/Board";
 
 interface TaskItemProps {
   taskDeadline: string;
@@ -27,10 +28,12 @@ const TaskItem: FC<TaskItemProps> = ({
 }) => {
   const { deleteTask } = useDeleteTask();
   const { workspaceId, projectId } = useParams();
+  const { decrementTaskCount } = useContext(BoardContext);
   const handleDeleteTask = () => {
     deleteTask(Number(workspaceId), Number(projectId), boardId, taskId);
     setTasks((prevTasks: any) => {
       const updateTask = prevTasks.filter((t: any) => t.id !== taskId);
+      decrementTaskCount(boardId);
       return updateTask;
     });
   };

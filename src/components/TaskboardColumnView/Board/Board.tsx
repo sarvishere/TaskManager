@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import useTasks from "../../../hooks/useTasks";
 import { useParams } from "react-router-dom";

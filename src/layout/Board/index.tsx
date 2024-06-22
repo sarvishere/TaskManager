@@ -103,7 +103,9 @@ const BoardPage: React.FC = () => {
   const decrementTaskCount = (boardId: number) => {
     setBoards((prevBoards) =>
       prevBoards.map((b) =>
-        b.id === boardId ? { ...b, tasks_count: b.tasks_count - 1 } : b
+        b.id === boardId && b.tasks_count > 0
+          ? { ...b, tasks_count: b.tasks_count - 1 }
+          : b
       )
     );
   };
@@ -163,7 +165,7 @@ const BoardPage: React.FC = () => {
       case "listview":
         return <TaskboardListView boards={boards} />;
       case "calendar":
-        return <Calendar />;
+        return <Calendar boards={boards} />;
       default:
         return <TaskboardColumnView boards={boards} setBoards={setBoards} />;
     }

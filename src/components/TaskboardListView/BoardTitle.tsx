@@ -29,6 +29,7 @@ const BoardListView: FC<BoardListViewProps> = ({
 
   const DeleteBoard = () => {
     deleteBoard(Number(workspaceId), Number(projectId), BoardId);
+
     handleDeleteBoard(BoardId);
   };
 

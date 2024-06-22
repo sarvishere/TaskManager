@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import moment from "jalali-moment";
 import Flex from "../ui/Flex";
 import Button from "../ui/Button";
@@ -7,12 +7,11 @@ import Icon from "../ui/Icon";
 import useBoards from "../../hooks/useBoards";
 import TaskCol from "./Task";
 import { useParams } from "react-router-dom";
+import { BoardResponse } from "../../services/board-service";
 
-// export interface CalendarProps {
-//   // boards: BoardResponse[];
-//   // projectId: number;
-//   // workspaceId: number;
-// }
+export interface CalendarProps {
+  boards: BoardResponse[];
+}
 
 const daysOfWeek = [
   "شنبه",
@@ -46,7 +45,7 @@ const convertToPersian = (number: number | string) => {
   );
 };
 
-const PersianCalendar = () => {
+const PersianCalendar = ({ boards }: CalendarProps) => {
   const params = useParams();
   const { workspaceId, projectId } = params as {
     workspaceId: string;
@@ -56,13 +55,7 @@ const PersianCalendar = () => {
   const [todayDate, setTodayDate] = useState(moment());
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const { error, getBoards, boards } = useBoards();
-
-  useEffect(() => {
-    if (workspaceId && projectId) {
-      getBoards(Number(workspaceId), Number(projectId));
-    }
-  }, [workspaceId]);
+  const { error } = useBoards();
 
   const handlePrevMonth = () => {
     setCurrentDate(currentDate.clone().subtract(1, "jMonth"));
