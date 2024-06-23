@@ -6,10 +6,9 @@ const useProfile = () => {
   const [error, setError] = useState<Error>();
   const [isLoading, setIsLoading] = useState(false);
   const [profileData, setProfileData] = useState<IProfile | IChange>();
-  // const [profileChange, setProfileChange] = useState<IChange>();
 
 
-  const updateProfile = (userId: number, data: IProfile) => {
+  const updateProfile = (userId: number, data: IChange) => {
     const formData = new FormData();
     for (const [key, value] of Object.entries(data))
       formData.append(key, value);

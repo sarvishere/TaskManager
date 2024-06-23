@@ -34,7 +34,6 @@ const PersonalInfoPage: React.FC = (): JSX.Element => {
         first_name,
         last_name,
         phone_number,
-        user_id: "",
         username: "",
         email: "",
       });

@@ -1,7 +1,7 @@
 import APIClient from "./api-client"
 
 export interface IProfile{
-  user_id?:string,
+  user_id:string,
     username: string,
   email: string,
   first_name: string,

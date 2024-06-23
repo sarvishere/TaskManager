@@ -13,7 +13,7 @@ type FormData = z.infer<typeof accountInfoSchema>;
 
 const AccountsInfoPage: React.FC = (): JSX.Element => {
   const { user } = useAuth();
-  const userId = user && Number(user.id);
+  const userId = user ? Number(user.user_id) : null;
   const { updateProfile } = useProfile();
   const { resetPassword } = useResetPassword();
   const {
