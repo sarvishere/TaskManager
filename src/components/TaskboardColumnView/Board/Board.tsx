@@ -48,14 +48,12 @@ const Board: React.FC<BoardProps> = ({
     <div>
       <div className="mb-2">
         <Header
-          handleDeleteBoard={handleDeleteBoard}
           handleUpdateBoard={handleUpdateBoard}
           boardId={boardId}
           boardColor={boardColor}
           boardTask={boardTask}
           boardName={boardName}
           setTasks={setTasks}
-          // boardTasks={boardTasks}
         />
       </div>
       <Droppable droppableId={String(boardId)}>

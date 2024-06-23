@@ -1,6 +1,6 @@
 
 import {useState } from "react";
-import projectService, { Project } from "../services/project-service";
+import projectService, { Project, Projects } from "../services/project-service";
 
 const useProjects = (workspaceId: number) => {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -23,10 +23,10 @@ const useProjects = (workspaceId: number) => {
   };
 
 
-  const addProject = async (data: Project, workspaceId: number) => {
+  const addProject = async (data: Projects, workspaceId: number) => {
     setIsLoading(true);
     try {
-      const response = await projectService<Project, Project>(workspaceId).create(data);
+      const response = await projectService<Projects, Project>(workspaceId).create(data);
       const newProject = response.data;
       setProjects([...projects, newProject]);
 

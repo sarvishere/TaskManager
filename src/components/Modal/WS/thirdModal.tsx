@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import Icon from "../../ui/Icon";
+import React from "react";
 
 interface ThirdProps {
   isOpen: boolean;
@@ -40,10 +39,6 @@ const Third: React.FC<ThirdProps> = ({
                 className={`inline-block w-6 h-6 rounded-full ml-2 bg-${workspaceColor}-primary`}
               ></span>
             </div>
-
-            {/* <h2 className="mb-2 text-[14px] font-normal leading-5 text-right">
-              اعضا
-            </h2> */}
           </div>
           <button
             onClick={handleSubmit}

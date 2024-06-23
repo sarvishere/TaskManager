@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import Flex from "../ui/Flex";
 import Icon from "../ui/Icon";
 import Heading from "../ui/Heading";

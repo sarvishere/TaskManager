@@ -52,9 +52,7 @@ const PersianCalendar = ({ boards }: CalendarProps) => {
     projectId: string;
   };
   const [currentDate, setCurrentDate] = useState(moment());
-  const [todayDate, setTodayDate] = useState(moment());
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const todayDate = moment();
   const { error } = useBoards();
 
   const handlePrevMonth = () => {
@@ -67,11 +65,6 @@ const PersianCalendar = ({ boards }: CalendarProps) => {
 
   const handleToday = () => {
     setCurrentDate(todayDate);
-  };
-
-  const handleClick = (day: number) => {
-    setSelectedDay(day);
-    setModalOpen(true);
   };
 
   const daysInMonth = () => {
@@ -158,10 +151,7 @@ const PersianCalendar = ({ boards }: CalendarProps) => {
               >
                 {day !== "" && (
                   <div className="flex flex-col">
-                    <button
-                      className="w-[30px] h-[20px]"
-                      onClick={() => handleClick(day as number)}
-                    >
+                    <button className="w-[30px] h-[20px]">
                       {convertToPersian(day)}
 
                       {error ? (

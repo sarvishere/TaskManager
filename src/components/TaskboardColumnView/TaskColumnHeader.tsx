@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import ColumnDropdownMenu from "./ColumnDropdownMenu";
 import TaskCountBadge from "./TaskCountBadge";
 import Flex from "../ui/Flex";
 import Text from "../ui/Text";
 import Button from "../ui/Button";
 import Icon from "../ui/Icon";
+import ColumnDropdownMenu from "./ColumnDropdowMenu/ColumnDropdownMenu";
 
 interface Props {
   className?: string;
@@ -57,6 +57,7 @@ const TaskColumnHeader: React.FC<Props> = ({ className, columnTitle }) => {
         onEdit={handleEdit}
         visible={showDropdown}
         onClickOutside={handleClickOutside}
+        boardId={0}
       />
       <Flex className="space-x-1" alignItems="center">
         {!isEditing && (

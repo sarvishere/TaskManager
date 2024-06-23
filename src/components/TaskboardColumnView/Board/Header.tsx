@@ -10,7 +10,7 @@ import ColumnDropdownMenu from "../ColumnDropdowMenu/ColumnDropdownMenu";
 import { BoardContext } from "../../../layout/Board";
 
 interface HeaderProps {
-  handleDeleteBoard: (id: number) => void;
+  // handleDeleteBoard: (id: number) => void;
   handleUpdateBoard: (title: string, id: number) => void;
   boardId: number;
   boardColor: string;
@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 const Header = ({
-  handleDeleteBoard,
+  // handleDeleteBoard,
   handleUpdateBoard,
   boardId,
   boardColor,
@@ -99,7 +99,7 @@ const Header = ({
     >
       <ColumnDropdownMenu
         boardId={boardId}
-        onDelete={handleDeleteBoard}
+        // onDelete={handleDeleteBoard}
         onEdit={handleEdit}
         visible={showDropdown}
         onClickOutside={handleClickOutside}

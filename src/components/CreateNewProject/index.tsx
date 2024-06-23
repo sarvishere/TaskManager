@@ -23,7 +23,7 @@ const CreateNewProject: React.FC<ICreateNewProject> = ({
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const data = { name: `${projectName}` };
-    addProject(workspaceId, data);
+    addProject(data, workspaceId);
   };
 
   return (

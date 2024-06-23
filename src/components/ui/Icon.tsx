@@ -1123,7 +1123,7 @@ const iconMap = {
       />
     </svg>
   ),
-  CheckBox: ({ ...rest }) => (
+  CheckBox: () => (
     <svg
       width="16"
       height="17"

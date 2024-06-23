@@ -35,9 +35,7 @@ const NewTask: React.FC<NewTaskProps> = ({
   const [taskName, setTaskName] = useState("عنوان تسک");
   const [taskDesc, setTaskDesc] = useState("");
   const { workspaceId, projectId } = useParams();
-  const [selectedBoardId, setSelectedBoardId] = useState<number | undefined>(
-    boardId
-  );
+  const selectedBoardId = boardId;
 
   useEffect(() => {
     const currentDate = moment().locale("fa").format("YYYY/MM/DD");
