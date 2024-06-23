@@ -2,10 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import AuthenticationLayout from "../layout/AuthenticationLayout";
 import HomePage from "../pages/HomePage";
 import RegisterPage from "../pages/RegisterPage";
-import PasswordResetPage from "../pages/PasswordResetPage";
 import PrivateRoutes from "./PrivateRoutes";
 import UsersPage from "../pages/UsersPage";
-import ResetPage from "../pages/ResetPage/ResetPage";
 import ProfileLayout from "../layout/ProfileLayout";
 import PersonalInfoPage from "../pages/ProfilePages/PersonalInfoPage";
 import AccountsInfoPage from "../pages/ProfilePages/AccountInfoPage";
@@ -21,11 +19,6 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: "register", element: <RegisterPage /> },
-      { path: "forgot-password", element: <PasswordResetPage /> },
-      {
-        path: "reset-password",
-        element: <ResetPage />,
-      },
     ],
   },
   {

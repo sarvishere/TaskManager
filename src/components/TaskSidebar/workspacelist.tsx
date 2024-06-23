@@ -23,17 +23,6 @@ const WorkspaceList = ({
         <div>Error: {error.message}</div>
       ) : (
         <ul>
-          {/* {workspaces &&
-            workspaces.map((workspace) => (
-              <Workspace
-                key={workspace.id}
-                workspaceId={workspace.id}
-                workspaceColor={workspace.color}
-                WorkspaceName={workspace.name}
-                deleteWorkspace={deleteWorkspace}
-                updateWorkspaceName={updateWorkspaceName}
-              />
-            )) } */}
           {workspaces.length === 0 ? (
             <h1>شما ورک اسپیس ندارید</h1>
           ) : (

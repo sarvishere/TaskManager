@@ -13,8 +13,8 @@ type FormData = z.infer<typeof personalInfoSchema>;
 
 const PersonalInfoPage: React.FC = (): JSX.Element => {
   const { user } = useAuth();
-  const userId = user && Number(user.user_id);
-  const { updateProfile, getProfile, profileData } = useProfile();
+  const userId = user ? Number(user.user_id) : null;
+  const { updateProfile, getProfile } = useProfile();
   const {
     register,
     handleSubmit,
@@ -22,13 +22,23 @@ const PersonalInfoPage: React.FC = (): JSX.Element => {
   } = useForm<FormData>({ resolver: zodResolver(personalInfoSchema) });
 
   useEffect(() => {
-    getProfile(userId);
-  }, []);
+    if (userId !== null) {
+      getProfile(userId);
+    }
+  }, [userId]);
 
   const onSubmit = (formData: FormData) => {
-    const { first_name, last_name, phone_number, thumbnail } = formData;
-    const imageFile = thumbnail[0];
-    updateProfile(userId, { first_name, last_name, phone_number, imageFile });
+    if (userId !== null) {
+      const { first_name, last_name, phone_number } = formData;
+      updateProfile(userId, {
+        first_name,
+        last_name,
+        phone_number,
+        user_id: "",
+        username: "",
+        email: "",
+      });
+    }
   };
 
   return (

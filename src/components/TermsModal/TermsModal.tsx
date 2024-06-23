@@ -28,7 +28,7 @@ const TermsModal = ({ visible, onClose }: Props) => {
           قوانین و مقررات
         </Heading>
         <Flex>
-          <Text size="M"> امیدوارم به کارتون بیاد رفقا! قانونی نداریم :D</Text>
+          <Text size="M"> رعایت ادب </Text>
         </Flex>
       </div>
     </div>

@@ -13,19 +13,6 @@ interface RegisterData extends LoginData {
   email: string;
 }
 
-interface SendResetLinkData {
-  email: string;
-}
-
-interface ResetLinkResponse {
-  url: string;
-}
-
-interface ResetPasswordData {
-  password: string;
-  password1: string;
-}
-
 interface RegisterResponse {
   id: number;
   username: string;
@@ -39,7 +26,6 @@ export interface LoginResponse {
   last_name: string;
   phone_number: string;
   refresh: string;
-  thumbnail: string;
   user_id: string;
   username: string;
 }
@@ -97,36 +83,6 @@ const useAuth = () => {
     }
   };
 
-  const sendResetLink = async (data: SendResetLinkData) => {
-    try {
-      setIsLoading(true);
-
-      const response = await new APIClient<
-        SendResetLinkData,
-        ResetLinkResponse
-      >("/accounts/reset-password/").create(data);
-      return response;
-    } catch (error) {
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const resetPassword = async (data: ResetPasswordData, token: string) => {
-    try {
-      setIsLoading(true);
-
-      const response = await new APIClient<ResetPasswordData, any>(
-        "/accounts/reset-password/set-password/"
-      ).patch(data, { params: { token } });
-      return response;
-    } catch (error) {
-      throw error;
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const logout = () => {
     useAuthStore.setState({}, true);
@@ -137,8 +93,6 @@ const useAuth = () => {
   return {
     login,
     isLoading,
-    sendResetLink,
-    resetPassword,
     signUp,
     logout,
     user,

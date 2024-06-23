@@ -73,9 +73,6 @@ const LoginForm = () => {
                 label="رمز عبور"
               />
               <ErrorMessage error={errors.password} />
-              <Link to="/forgot-password" underline>
-                رمز عبور خود را فراموش کرده‌اید؟
-              </Link>
             </Flex>
           </Flex>
           <Flex className="" gap="M" direction="col">

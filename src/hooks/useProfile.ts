@@ -1,11 +1,13 @@
-import { useEffect, useState } from "react";
-import profileService, { IProfile } from "../services/profile-service";
+import { useState } from "react";
+import profileService, { IChange, IProfile } from "../services/profile-service";
 import useAuthStore from "../stores/useAuthStore";
 
 const useProfile = () => {
   const [error, setError] = useState<Error>();
   const [isLoading, setIsLoading] = useState(false);
-  const [profileData, setProfileData] = useState<IProfile>();
+  const [profileData, setProfileData] = useState<IProfile | IChange>();
+  // const [profileChange, setProfileChange] = useState<IChange>();
+
 
   const updateProfile = (userId: number, data: IProfile) => {
     const formData = new FormData();
@@ -13,11 +15,10 @@ const useProfile = () => {
       formData.append(key, value);
 
     setIsLoading(true);
-    profileService<FormData>(userId)
+    profileService<FormData>()
       .patch(
         userId,
         formData
-        // { headers: { "Content-Type": "multipart/form-data" } },
       )
       .then((res) => {
         setProfileData(res.data)
