@@ -115,10 +115,13 @@ const BoardPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (workspaces) {
+    if (workspaces && workspaces.length > 0) {
       const initWorkspaceId = workspaces[workspaces.length - 1].id;
       setWorkspaceIdState(initWorkspaceId);
     }
+  }, [workspaces]);
+
+  useEffect(() => {
     if (workspaceIdState !== 0) {
       getProjects().then((projects) => {
         if (projects && projects.length > 0) {
@@ -128,15 +131,7 @@ const BoardPage: React.FC = () => {
         }
       });
     }
-  }, [workspaces]);
-
-  useEffect(() => {
-    if (workspaceId && projectId) {
-      getBoards(workspaceIdState, projectIdState).then((boards) =>
-        setBoards(boards)
-      );
-    }
-  }, [workspaceIdState, projectIdState, change]);
+  }, [workspaceIdState]);
 
   useEffect(() => {
     if (
@@ -151,12 +146,18 @@ const BoardPage: React.FC = () => {
   }, [workspaceId, projectId]);
 
   useEffect(() => {
-    if (
-      projectIdState !== null &&
-      workspaceIdState !== 0 &&
-      projectIdState !== 0
-    ) {
+    if (workspaceIdState !== 0 && projectIdState !== 0) {
+      getBoards(workspaceIdState, projectIdState).then((boards) =>
+        setBoards(boards)
+      );
+    }
+  }, [workspaceIdState, projectIdState, change]);
+
+  useEffect(() => {
+    if (projectIdState !== 0 && workspaceIdState !== 0) {
       navigate(`/${workspaceIdState}/${projectIdState}/${activeButton}`);
+    } else {
+      navigate(`/:workspaceId/:projectId`);
     }
   }, [projectIdState, workspaceIdState, activeButton, navigate]);
 
